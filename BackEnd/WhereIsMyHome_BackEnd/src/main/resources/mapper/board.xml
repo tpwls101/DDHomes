@@ -108,7 +108,11 @@
 	</update>
 	
 	<!-- 댓글 수정 -->
-	
+	<update id="modifyComment" parameterType="map">
+		update comment
+		set content = #{content}
+		where commentNo = #{commentNo}
+	</update>
 	
 	<!-- 댓글 삭제 -->
 	<delete id="deleteComment" parameterType="int">

@@ -40,19 +40,27 @@ function deleteArticle(articleNo, success, fail) {
 // Comment
 
 function registComment(boardCommentDto, success, fail) {
+  // dto 형태로 파라미터 받기
   local.post(`${url}/comment/write`, JSON.stringify(boardCommentDto)).then(success).catch(fail);
 }
 
 function listComment(articleNo, success, fail) {
+  // path variable로 파라미터 넘기기
   local.get(`${url}/comment/list/${articleNo}`).then(success).catch(fail);
 }
 
 function likeComment(param, success, fail) {
-  // console.log(param);
+  // map 형태로 파라미터 넘기기
   local.put(`${url}/comment/like`, JSON.stringify(param)).then(success).catch(fail);
 }
 
+function modifyComment(param, success, fail) {
+  // map 형태로 파라미터 넘기기
+  local.put(`${url}/comment/modify`, JSON.stringify(param)).then(success).catch(fail);
+}
+
 function deleteComment(commentNo, success, fail) {
+  // path variable로 파라미터 넘기기
   local.delete(`${url}/comment/delete/${commentNo}`).then(success).catch(fail);
 }
 
@@ -66,5 +74,6 @@ export {
   registComment,
   listComment,
   likeComment,
+  modifyComment,
   deleteComment,
 };

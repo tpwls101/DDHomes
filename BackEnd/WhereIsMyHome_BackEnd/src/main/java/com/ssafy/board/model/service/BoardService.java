@@ -22,5 +22,6 @@ public interface BoardService {
 	int writeComment(BoardCommentDto boardCommentDto) throws Exception;
 	List<BoardCommentDto> listComment(int articleNo) throws Exception;
 	int likeComment(Map<String, Object> map) throws Exception;
+	int modifyComment(Map<String, String> map) throws Exception;
 	int deleteComment(int commentNo) throws Exception;
 }

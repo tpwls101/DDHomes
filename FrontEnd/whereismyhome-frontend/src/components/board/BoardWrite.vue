@@ -19,6 +19,21 @@ const boardDto = ref({
 });
 
 const write = () => {
+  // 입력한 데이터 체크
+  if (boardDto.value.userId === "") {
+    alert("[오류] 사용자가 확인되지 않습니다. 로그인 해 주세요!");
+    return;
+  } else if (boardDto.value.subject === "") {
+    alert("[오류] 제목을 입력 해 주세요!");
+    return;
+  } else if (boardDto.value.content === "") {
+    alert("[오류] 내용을 입력 해 주세요!");
+    return;
+  } else if (boardDto.value.boardType === "") {
+    alert("[오류] 게시판 종류를 선택해 주세요!");
+    return;
+  }
+
   // console.log(boardDto.value);
   registArticle(
     boardDto.value,

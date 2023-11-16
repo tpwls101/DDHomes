@@ -23,5 +23,6 @@ public interface BoardMapper {
 	int writeComment(BoardCommentDto boardCommentDto) throws SQLException;
 	List<BoardCommentDto> listComment(int articleNo) throws SQLException;
 	int likeComment(Map<String, Object> map) throws SQLException;
+	int modifyComment(Map<String, String> map) throws SQLException;
 	int deleteComment(int commentNo) throws SQLException;
 }

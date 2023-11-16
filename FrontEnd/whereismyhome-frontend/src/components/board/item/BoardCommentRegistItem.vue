@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { registComment } from "@/api/board";
+import { registComment, modifyComment } from "@/api/board";
 
 const route = useRoute();
 const router = useRouter();
@@ -10,8 +10,7 @@ const router = useRouter();
 const { articleNo } = route.params;
 
 // 댓글 수정인 경우 받아온다
-const props = defineProps({ "comment": Object });
-
+const props = defineProps({ comment: Object });
 
 const param = ref({
   articleNo: articleNo,
@@ -22,6 +21,10 @@ const param = ref({
 
 function commentRegist() {
   // console.log(param.value);
+  if (param.value.content === "") {
+    alert("[오류] 댓글을 입력해 주세요!");
+    return;
+  }
 
   registComment(
     param.value,
@@ -36,6 +39,27 @@ function commentRegist() {
   );
 }
 
+function commentModify() {
+  // 수정 위한 파라미터 만들기
+  let params = {
+    commentNo: props.comment.commentNo,
+    content: props.comment.content,
+  };
+
+  modifyComment(
+    params,
+    ({ data }) => {
+      // console.log(data);
+      location.reload();
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+
+  console.log(params);
+}
+
 // console.log(props.comment.commentNo);
 </script>
 
@@ -45,8 +69,26 @@ function commentRegist() {
     <p>
       <span class="fw-bold">작성자: {{ param.userId }}</span> <br />
     </p>
-    <textarea id="comment-textarea" placeholder="내용을 입력하세요" v-model="param.content"></textarea>
-    <input id="btn-regist" type="button" value="등록" @click="commentRegist" />
+    <textarea
+      v-if="props.comment == null"
+      id="comment-textarea"
+      placeholder="내용을 입력하세요"
+      v-model="param.content"
+    ></textarea>
+    <textarea
+      v-else
+      id="comment-textarea"
+      placeholder="내용을 입력하세요"
+      v-model="props.comment.content"
+    ></textarea>
+    <input
+      v-if="props.comment == null"
+      id="btn-regist"
+      type="button"
+      value="등록"
+      @click="commentRegist"
+    />
+    <input v-else id="btn-modify" type="button" value="수정" @click="commentModify" />
   </div>
 </template>
 

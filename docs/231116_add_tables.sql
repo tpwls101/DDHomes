@@ -1,5 +1,4 @@
 use ddhomes;
-show tables;
 
 /* ================ 기존 테이블 컬럼 수정 ================ */
 -- houseinfo 테이블 필요없는 컬럼 제거
@@ -93,8 +92,8 @@ CREATE TABLE IF NOT EXISTS `favorite` (
 alter table houseinfo drop index `UNIQUE`;
 
 -- houseinfo 테이블 제약 수정
-alter table `houseinfo`
-drop constraint `buildYear`;
+-- alter table `houseinfo`
+-- drop constraint `buildYear`;
 
 -- board 테이블 제약사항 추가
 alter table `board`
