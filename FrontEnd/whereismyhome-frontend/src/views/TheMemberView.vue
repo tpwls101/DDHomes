@@ -1,6 +1,4 @@
-<script setup>
-import MemberJoin from "@/components/member/MemberJoin.vue";
-</script>
+<script setup></script>
 
 <template>
   <router-view></router-view>

@@ -47,7 +47,7 @@ function myPage() {
       <div class="container-fluid">
         <ul class="navbar-nav me-5">
           <li class="nav-item">
-            <a class="nav-link active" href="/"><img id="home-img" :src="mouseEventImgSrc"></a>
+            <a class="nav-link active" href="/"><img id="home-img" :src="mouseEventImgSrc" /></a>
           </li>
         </ul>
         <!-- board start-------------------------------------------------------------------------------- -->
@@ -68,8 +68,12 @@ function myPage() {
           <!-- <c:if test="${not empty userinfo}"> -->
           <li id="nav-myPage" class="nav-item">
             <div class="dropdown dropstart">
-              <button class="nav-link btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <button
+                class="nav-link btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <img id="user-img" src="@/assets/user.png" />
               </button>
               <ul class="dropdown-menu">
@@ -81,7 +85,9 @@ function myPage() {
                 </li>
                 <!-- <c:if test="${userinfo.grade eq 'admin'}"> -->
                 <li>
-                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')">글쓰기</a>
+                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')"
+                    >글쓰기</a
+                  >
                 </li>
                 <!-- </c:if> -->
                 <li>
@@ -96,7 +102,7 @@ function myPage() {
           <!-- <%-- <c:otherwise> --%> -->
           <!-- <c:if test="${empty userinfo}"> -->
           <li id="nav-signUp" class="nav-item">
-            <a class="nav-link" href="#" @click="join()">회원가입</a>
+            <a class="nav-link" @click="join()">회원가입</a>
           </li>
           <li id="nav-signIn" class="nav-item">
             <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">로그인</a>
