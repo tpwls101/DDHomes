@@ -2,8 +2,8 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { detailArticle, deleteArticle, listComment } from "@/api/board";
-import BoardCommentItem from "./item/BoardCommentItem.vue";
-import BoardCommentRegistItem from "./item/BoardCommentRegistItem.vue";
+import BoardCommentItem from "@/components/board/item/BoardCommentItem.vue";
+import BoardCommentRegistItem from "@/components/board/item/BoardCommentRegistItem.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -87,10 +87,8 @@ function articleDelete(articleNo) {
       <div class="row">
         <div class="col-md-8">
           <div class="clearfix align-content-center">
-            <img
-              class="avatar me-2 float-md-start bg-light p-2"
-              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
-            />
+            <img class="avatar me-2 float-md-start bg-light p-2"
+              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
             <p>
               <span class="fw-bold">{{ article.userId }}</span> <br />
               <span class="text-secondary fw-light">
@@ -104,29 +102,16 @@ function articleDelete(articleNo) {
         <div v-html="article.content"></div>
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
-          <button
-            type="button"
-            id="btn-list"
-            class="btn btn-outline-primary mb-3"
-            @click="boardList(article.boardType)"
-          >
+          <button type="button" id="btn-list" class="btn btn-outline-primary mb-3" @click="boardList(article.boardType)">
             글목록
           </button>
           <!-- <c:if test="${userinfo.userId eq article.userId}"> -->
-          <button
-            type="button"
-            id="btn-mv-modify"
-            class="btn btn-outline-success mb-3 ms-1"
-            @click="modifyArticle(articleNo)"
-          >
+          <button type="button" id="btn-mv-modify" class="btn btn-outline-success mb-3 ms-1"
+            @click="modifyArticle(articleNo)">
             글수정
           </button>
-          <button
-            type="button"
-            id="btn-delete"
-            class="btn btn-outline-danger mb-3 ms-1"
-            @click="articleDelete(articleNo)"
-          >
+          <button type="button" id="btn-delete" class="btn btn-outline-danger mb-3 ms-1"
+            @click="articleDelete(articleNo)">
             글삭제
           </button>
           <!-- </c:if> -->
@@ -139,11 +124,10 @@ function articleDelete(articleNo) {
     <BoardCommentRegistItem :articleNo="articleNo"></BoardCommentRegistItem>
     <!-- 댓글 목록 -->
     <hr />
-    <BoardCommentItem
-      v-for="comment in comments"
-      :key="comment.commentNo"
-      :comment="comment"
-    ></BoardCommentItem>
+    <!-- <router-view></router-view> -->
+    <BoardCommentItem v-for="comment in comments" :key="comment.commentNo" :comment="comment">
+    </BoardCommentItem>
+
   </div>
 </template>
 

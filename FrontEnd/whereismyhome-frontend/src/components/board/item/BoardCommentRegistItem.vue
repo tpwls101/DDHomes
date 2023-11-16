@@ -6,12 +6,17 @@ import { registComment } from "@/api/board";
 const route = useRoute();
 const router = useRouter();
 
+// 댓글이 작성될 게시물 번호
 const { articleNo } = route.params;
+
+// 댓글 수정인 경우 받아온다
+const props = defineProps({ "comment": Object });
+
 
 const param = ref({
   articleNo: articleNo,
   // 로그인한 유저로 변경 필요!!!!!!!!!!!!!!!!!!
-  userId: "testuser",
+  userId: "ssafy",
   content: "",
 });
 
@@ -30,18 +35,17 @@ function commentRegist() {
     }
   );
 }
+
+// console.log(props.comment.commentNo);
 </script>
 
 <template>
+  <!-- <h1>{{ props.comment.commentNo }}</h1> -->
   <div class="comment-item-container">
     <p>
       <span class="fw-bold">작성자: {{ param.userId }}</span> <br />
     </p>
-    <textarea
-      id="comment-textarea"
-      placeholder="내용을 입력하세요"
-      v-model="param.content"
-    ></textarea>
+    <textarea id="comment-textarea" placeholder="내용을 입력하세요" v-model="param.content"></textarea>
     <input id="btn-regist" type="button" value="등록" @click="commentRegist" />
   </div>
 </template>
