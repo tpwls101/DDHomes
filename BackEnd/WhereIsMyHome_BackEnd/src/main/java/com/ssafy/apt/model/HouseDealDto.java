@@ -3,13 +3,13 @@ package com.ssafy.apt.model;
 public class HouseDealDto {
 
 	private String no;
+	private String aptCode;
 	private String dealAmount;
 	private int dealYear;
 	private int dealMonth;
 	private int dealDay;
 	private String area;
 	private String floor;
-	private String aptCode;
 	
 	
 	public String getNo() {
