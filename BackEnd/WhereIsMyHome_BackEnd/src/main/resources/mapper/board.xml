@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.board.model.mapper.BoardMapper">
+	<resultMap type="boardDto" id="article">
+		<result column="articleNo" property="articleNo"/>
+		<result column="userId" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="boardType" property="boardType"/>
+		<result column="registerTime" property="registerTime"/>
+	</resultMap>
+	
+	<resultMap type="boardCommentDto" id="comment">
+		<result column="commentNo" property="commentNo"/>
+		<result column="articleNo" property="articleNo"/>
+		<result column="userId" property="userId"/>
+		<result column="content" property="content"/>
+		<result column="registerTime" property="registerTime"/>
+		<result column="like" property="like"/>
+	</resultMap>
+	
+	<!-- 리스트 구해오기 -->
+	<select id="listArticle" resultMap="article" parameterType="map">
+		select *
+		from board
+		where boardType = #{boardType}
+	</select>
+	
+	<!-- 글 작성 -->
+	<insert id="writeArticle" parameterType="boardDto">
+		insert into board(userId, subject, content, boardType)
+		values(#{userId}, #{subject}, #{content}, #{boardType})
+	</insert>
+	
+	<!-- 게시물 갯수 구해오기 -->
+	<select id="getTotalArticleCount" resultType="int" parameterType="map">
+		select count(articleNo)
+		from board
+		where boardType = #{boardType}
+	</select>
+	
+	<!-- 게시물 상세정보 -->
+	<select id="getArticle" resultMap="article" parameterType="int">
+		select *
+		from board
+		where articleNo = #{articleNo}
+	</select>
+	
+	<!-- 조회수 증가시키기 -->
+	<update id="updateHit" parameterType="int">
+		update board
+		set hit = hit+1
+		where articleNo = #{articleNo}
+	</update>
+	
+	<!-- 게시물 수정 -->
+	<update id="modifyArticle" parameterType="boardDto">
+		update board
+		set subject = #{subject}, content = #{content}
+		where articleNo = #{articleNo}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="deleteArticle" parameterType="int">
+		delete from board
+		where articleNo = #{articleNo}
+	</delete>
+	
+	<!-- 보드 타입 얻기 -->
+	<select id="getBoardType" resultType="string" parameterType="int">
+		select boardType
+		from board
+		where articleNo = #{articleNo}
+	</select>
+	
+	<!-- ================================================================ -->
+	<!-- Comment -->
+	
+	<!-- 댓글 등록 -->
+	<insert id="writeComment" parameterType="boardCommentDto">
+		insert into comment(articleNo, userId, content)
+		values(#{articleNo}, #{userId}, #{content})
+	</insert>
+	
+	<!-- 댓글 검색 -->
+	<select id="listComment" resultMap="comment" parameterType="int">
+		select c.commentNo, c.articleNo, c.userId, c.content, c.registerTime, c.like
+		from comment c join board b
+		on c.articleNo = b.articleNo
+		where c.articleNo = #{articleNo}
+		order by commentNo desc
+	</select>
+	
+	<!-- 좋아요 -->
+	<update id="likeComment" parameterType="map">
+		update comment
+		<choose>
+			<when test="likeId == 'like-click'">
+				set `like` = `like` + 1
+			</when>
+			<otherwise>
+				set `like` = `like` - 1
+			</otherwise>
+		</choose>
+		where commentNo = #{commentNo}
+	</update>
+	
+	<!-- 댓글 수정 -->
+	
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		delete from comment
+		where commentNo = #{commentNo};
+	</delete>
+	
+</mapper>
