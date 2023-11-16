@@ -42,7 +42,14 @@ const memberJoin = () => {
       </div>
       <div class="col-lg-8 col-md-10 col-sm-12">
         <form id="form-join" method="POST" action="">
-          <!-- <input type="hidden" name="action" value="join"/> -->
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="basic" id="basic" value="basic" />
+            <label class="form-check-label" for="inlineRadio1">일반회원</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="enter" id="enter" value="enter" />
+            <label class="form-check-label" for="inlineRadio2">정보</label>
+          </div>
           <div class="mb-3">
             <label for="username" class="form-label">이름 : </label>
             <input
