@@ -214,6 +214,18 @@ public class BoardController {
 		}
 	}
 	
+	@PutMapping("comment/modify")
+	public ResponseEntity<?> commentModify(@RequestBody Map<String, String> params) {
+		try {
+			boardService.modifyComment(params);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch(Exception e) {
+			System.out.println("board comment modify Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@DeleteMapping("comment/delete/{commentNo}")
 	public ResponseEntity<?> commentDelete(@PathVariable int commentNo) {
 		try {

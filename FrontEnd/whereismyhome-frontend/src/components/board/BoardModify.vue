@@ -31,6 +31,21 @@ const getArticle = () => {
 
 // 글 수정
 const ArticleModify = () => {
+  // 입력한 데이터 체크
+  if (article.value.userId === "") {
+    alert("[오류] 사용자가 확인되지 않습니다. 로그인 해 주세요!");
+    return;
+  } else if (article.value.subject === "") {
+    alert("[오류] 제목을 입력 해 주세요!");
+    return;
+  } else if (article.value.content === "") {
+    alert("[오류] 내용을 입력 해 주세요!");
+    return;
+  } else if (article.value.boardType === "") {
+    alert("[오류] 게시판 종류를 선택해 주세요!");
+    return;
+  }
+
   modifyArticle(
     article.value,
     ({ data }) => {

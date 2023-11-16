@@ -119,6 +119,11 @@ public class BoardServiceImpl implements BoardService {
 	public int likeComment(Map<String, Object> map) throws Exception {
 		return boardMapper.likeComment(map);
 	}
+	
+	@Override
+	public int modifyComment(Map<String, String> map) throws Exception {
+		return boardMapper.modifyComment(map);
+	}
 
 	@Override
 	public int deleteComment(int commentNo) throws Exception {
