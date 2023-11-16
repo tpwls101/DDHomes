@@ -52,6 +52,7 @@ const findPwd = () => {
               id="findIdBtn"
               class="btn btn-outline-dark btn-sm"
               @click="findId"
+              data-bs-dismiss="modal"
             >
               아이디 찾기
             </button>
@@ -60,6 +61,7 @@ const findPwd = () => {
               id="findPwdBtn"
               class="btn btn-outline-dark btn-sm"
               @click="findPwd"
+              data-bs-dismiss="modal"
             >
               비밀번호 찾기
             </button>
@@ -75,4 +77,8 @@ const findPwd = () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.close-modal {
+  display: none;
+}
+</style>
