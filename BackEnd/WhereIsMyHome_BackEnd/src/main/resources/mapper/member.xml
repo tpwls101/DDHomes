@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.member.model.mapper.MemberMapper">
+	
+	<resultMap type="memberDto" id="member">
+		<result column="userId" property="userId"/>
+		<result column="userPwd" property="userPwd"/>
+		<result column="userName" property="userName"/>
+		<result column="emailId" property="emailId"/>
+		<result column="emailDomain" property="emailDomain"/>
+		<result column="joinDate" property="joinDate"/>
+		<result column="grade" property="grade"/>
+	</resultMap>
+	
+	
+	<select id="login" parameterType="map" resultMap="member">
+		select * from members
+		where userId=#{userId}
+	</select>
+	
+	<insert id="join" parameterType="memberDto">
+		insert into members(userId, userPwd, userName, emailId, emailDomain)
+		values (#{userId}, #{userPwd}, #{userName}, #{emailId}, #{emailDomain})
+	</insert>
+	
+	<select id="idCheck" parameterType="String" resultType="int">
+		select count(userId)
+		from members
+		where userId = #{userId}
+	</select>
+	
+	<select id="findId" parameterType="map" resultMap="member">
+		select * from members
+	 	where userName=#{userName} and emailId=#{emailId} and emailDomain=#{emailDomain}
+	</select>
+	
+	<select id="findPwd" parameterType="map" resultMap="member">
+		select * from members
+		where userId=#{userId} and userName=#{userName} and emailId=#{emailId} and emailDomain=#{emailDomain}
+	</select>
+	
+	<update id="updateMember" parameterType="memberDto">
+		update members
+		set userName=#{userName}, userPwd=#{userPwd}, emailId=#{emailId}, emailDomain=#{emailDomain}
+		where userId=#{userId}
+	</update>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete from members
+		where userId=#{userId}
+	</delete>
+	
+</mapper>

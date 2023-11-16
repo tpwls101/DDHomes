@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.apt.model.mapper.AptMapper">
+	<!-- house info -->
+	<resultMap type="houseInfoDto" id="houseInfo">
+		<result column="aptCode" property="aptCode"/>
+		<result column="roadName" property="roadName"/>
+		<result column="roadNameBonBun" property="roadNameBonBun"/>
+		<result column="dongCode" property="dongCode"/>
+		<result column="dong" property="dong"/>
+		<result column="apartmentName" property="apartmentName"/>
+		<result column="lng" property="lng"/>
+		<result column="lat" property="lat"/>
+	</resultMap>
+	
+	<!-- house deal -->
+	<resultMap type="houseDealDto" id="houseDeal">
+		<result column="aptCode" property="aptCode"/>
+		<result column="dealAmount" property="dealAmount"/>
+		<result column="dealYear" property="dealYear"/>
+		<result column="dealMonth" property="dealMonth"/>
+		<result column="dealDay" property="dealDay"/>
+		<result column="area" property="area"/>
+		<result column="floor" property="floor"/>
+	</resultMap>
+
+	<!-- 
+	selector의 item 얻기
+	map -> selector: 얻어올 셀렉터의 컬럼이름
+		-> selectedValue: 이전에 선택한 셀렉터의 value
+	 -->
+	<select id="getSelectorItems" parameterType="map" resultType="map">
+		select dongCode, ${selector}
+		from dongcode
+		<choose>
+			<when test="selector == 'sidoName'">
+				where gugunName is null
+			</when>
+			<when test="selector == 'gugunName'">
+				where dongCode like concat(#{selectedValue}, '%')
+				and gugunName is not null
+				and dongName is null
+				order by gugunName
+			</when>
+			<when test="selector == 'dongName'">
+				where dongCode like concat(#{selectedValue}, '%')
+				and dongName is not null
+				order by dongName
+			</when>
+		</choose>
+	</select>
+
+	<!-- 선택한 dongCode로 house info 받기 -->
+	<select id="getHouseInfo" parameterType="string" resultMap="houseInfo">
+		select aptCode, roadName, roadNameBonBun, dongCode, dong, apartmentName, lng, lat
+		from houseinfo
+		where dongCode = #{dongCode}
+	</select>
+	
+	<!-- 선택한 aptCode로 house deal 받기 -->
+	<select id="getHouseDeal" parameterType="string" resultMap="houseDeal">
+		select aptCode, dealAmount, dealYear, dealMonth, dealDay, area, floor
+		from housedeal
+		where aptCode = #{aprCode}
+		order by dealYear desc
+	</select>
+	
+</mapper>
