@@ -20,6 +20,9 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
+	@Autowired
+	BoardUtil boardUtil;
+	
 	@Override
 	public int writeArticle(BoardDto boardDto) throws Exception{
 		return boardMapper.writeArticle(boardDto);
@@ -37,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
 		// 정렬
 		List<BoardDto> list = boardMapper.listArticle(param);
 		
-		BoardUtil.getInstance().sortBoard(list, sortCondition);
+		boardUtil.sortBoard(list, sortCondition);
 		
 		// 페이지 넘버에 따라 조절
 		if(end > list.size()) {

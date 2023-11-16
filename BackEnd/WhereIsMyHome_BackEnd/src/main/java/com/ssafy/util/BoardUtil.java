@@ -1,9 +1,9 @@
 package com.ssafy.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.ssafy.board.model.BoardDto;
 
@@ -17,13 +17,8 @@ import com.ssafy.board.model.BoardDto;
  * @author bullie
  *
  */
+@Component
 public class BoardUtil {
-	// singleton
-	static private BoardUtil instance = new BoardUtil();
-	private BoardUtil() { }
-	static public BoardUtil getInstance() {
-		return instance;
-	}
 	
 	private String sc;
 	
