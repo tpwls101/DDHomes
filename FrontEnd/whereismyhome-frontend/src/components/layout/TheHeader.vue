@@ -5,6 +5,20 @@ import MemberLogin from "@/components/member/MemberLogin.vue";
 
 const router = useRouter();
 
+// 마우스 오버 이벤트 관련
+const mouseEventClass = ref("navbar navbar-expand-sm bg-dark navbar-dark");
+const mouseEventImgSrc = ref(new URL(`@/assets/ddhomes_logo_dark.png`, import.meta.url).href);
+
+function doMouseOver() {
+  mouseEventClass.value = "navbar navbar-expand-sm bg-light navbar-light";
+  mouseEventImgSrc.value = new URL(`@/assets/ddhomes_logo_light.png`, import.meta.url).href;
+}
+
+function doMouseLeave() {
+  mouseEventClass.value = "navbar navbar-expand-sm bg-dark navbar-dark";
+  mouseEventImgSrc.value = new URL(`@/assets/ddhomes_logo_dark.png`, import.meta.url).href;
+}
+
 // 게시판 이동
 function boardList(boardType) {
   router.push({ name: "board-list", params: { boardType } });
@@ -29,13 +43,11 @@ function myPage() {
 <template>
   <!-- header start -->
   <header>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav :class="mouseEventClass" @mouseover="doMouseOver" @mouseleave="doMouseLeave">
       <div class="container-fluid">
         <ul class="navbar-nav me-5">
           <li class="nav-item">
-            <a class="nav-link active" href="/"
-              ><img id="home-img" src="@/assets/homes_logo.png"
-            /></a>
+            <a class="nav-link active" href="/"><img id="home-img" :src="mouseEventImgSrc"></a>
           </li>
         </ul>
         <!-- board start-------------------------------------------------------------------------------- -->
@@ -56,12 +68,8 @@ function myPage() {
           <!-- <c:if test="${not empty userinfo}"> -->
           <li id="nav-myPage" class="nav-item">
             <div class="dropdown dropstart">
-              <button
-                class="nav-link btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <button class="nav-link btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <img id="user-img" src="@/assets/user.png" />
               </button>
               <ul class="dropdown-menu">
@@ -73,9 +81,7 @@ function myPage() {
                 </li>
                 <!-- <c:if test="${userinfo.grade eq 'admin'}"> -->
                 <li>
-                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')"
-                    >글쓰기</a
-                  >
+                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')">글쓰기</a>
                 </li>
                 <!-- </c:if> -->
                 <li>
