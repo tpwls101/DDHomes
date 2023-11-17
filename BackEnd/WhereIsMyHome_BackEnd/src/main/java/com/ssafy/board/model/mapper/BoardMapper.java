@@ -6,11 +6,14 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.apt.model.ImgInfoDto;
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
 
 @Mapper
 public interface BoardMapper {
+	
+	int uploadImg(BoardDto boardDto) throws SQLException;
 	int writeArticle(BoardDto boardDto) throws SQLException;
 	List<BoardDto> listArticle(Map<String, String> map) throws SQLException;
 	int getTotalArticleCount(Map<String, String> map) throws SQLException;
@@ -25,4 +28,5 @@ public interface BoardMapper {
 	int likeComment(Map<String, Object> map) throws SQLException;
 	int modifyComment(Map<String, String> map) throws SQLException;
 	int deleteComment(int commentNo) throws SQLException;
+	
 }
