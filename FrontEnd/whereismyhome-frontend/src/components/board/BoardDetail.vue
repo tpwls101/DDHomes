@@ -14,6 +14,8 @@ const { articleNo } = route.params;
 const article = ref({});
 // 게시판 댓글들
 const comments = ref([]);
+// 이미지
+const imgSrc = ref(new URL(`C:/ddhomes/upload/boardImage/231117/1495b9bd-23cb-4786-875a-b8b7cb786406.png`, import.meta.url).href);
 
 onMounted(() => {
   getArticle();
@@ -71,6 +73,13 @@ function articleDelete(articleNo) {
     }
   );
 }
+
+// BoardCommentItem에서 수정버튼 클릭시 발생하는 이벤트 처리
+// BoardCommentItem을 숨기고 BoardCommentRegistItem을 보여줌
+function commentModify(commentNo) {
+  document.querySelector("#comment" + commentNo).classList.add("comment-hidden");
+  document.querySelector("#regist" + commentNo).classList.remove("comment-hidden");
+}
 </script>
 
 <template>
@@ -87,10 +96,8 @@ function articleDelete(articleNo) {
       <div class="row">
         <div class="col-md-8">
           <div class="clearfix align-content-center">
-            <img
-              class="avatar me-2 float-md-start bg-light p-2"
-              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
-            />
+            <img class="avatar me-2 float-md-start bg-light p-2"
+              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
             <p>
               <span class="fw-bold">{{ article.userId }}</span> <br />
               <span class="text-secondary fw-light">
@@ -101,32 +108,20 @@ function articleDelete(articleNo) {
         </div>
         <div class="col-md-4 align-self-center text-end">댓글 : {{ comments.length }}</div>
         <div class="divider mb-3"></div>
+        <!-- <img :src="require(`C:/ddhomes/upload/boardImage/231117/1495b9bd-23cb-4786-875a-b8b7cb786406.png`)" /> -->
         <div v-html="article.content"></div>
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
-          <button
-            type="button"
-            id="btn-list"
-            class="btn btn-outline-primary mb-3"
-            @click="boardList(article.boardType)"
-          >
+          <button type="button" id="btn-list" class="btn btn-outline-primary mb-3" @click="boardList(article.boardType)">
             글목록
           </button>
           <!-- <c:if test="${userinfo.userId eq article.userId}"> -->
-          <button
-            type="button"
-            id="btn-mv-modify"
-            class="btn btn-outline-success mb-3 ms-1"
-            @click="modifyArticle(articleNo)"
-          >
+          <button type="button" id="btn-mv-modify" class="btn btn-outline-success mb-3 ms-1"
+            @click="modifyArticle(articleNo)">
             글수정
           </button>
-          <button
-            type="button"
-            id="btn-delete"
-            class="btn btn-outline-danger mb-3 ms-1"
-            @click="articleDelete(articleNo)"
-          >
+          <button type="button" id="btn-delete" class="btn btn-outline-danger mb-3 ms-1"
+            @click="articleDelete(articleNo)">
             글삭제
           </button>
           <!-- </c:if> -->
@@ -139,7 +134,8 @@ function articleDelete(articleNo) {
     <BoardCommentRegistItem :articleNo="articleNo"></BoardCommentRegistItem>
     <!-- 댓글 목록 -->
     <hr />
-    <BoardCommentItem v-for="comment in comments" :key="comment.commentNo" :comment="comment">
+    <BoardCommentItem v-for="comment in comments" :key="comment.commentNo" :comment="comment"
+      @commentModify="commentModify">
     </BoardCommentItem>
   </div>
 </template>

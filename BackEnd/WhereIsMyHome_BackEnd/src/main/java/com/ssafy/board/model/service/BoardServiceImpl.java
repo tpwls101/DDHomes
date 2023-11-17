@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
+import com.ssafy.board.model.ImgInfoDto;
 import com.ssafy.board.model.mapper.BoardMapper;
 import com.ssafy.util.BoardUtil;
 import com.ssafy.util.PageNavigation;
@@ -24,8 +25,14 @@ public class BoardServiceImpl implements BoardService {
 	BoardUtil boardUtil;
 	
 	@Override
-	public int writeArticle(BoardDto boardDto) throws Exception{
-		return boardMapper.writeArticle(boardDto);
+	public void writeArticle(BoardDto boardDto) throws Exception{
+		boardMapper.writeArticle(boardDto);
+		// board.xml에서 selectKey해서 articleNo가 채워진다.
+		// 그걸로 이미지 파일을 테이블에 넣는다.
+		List<ImgInfoDto> imgInfos = boardDto.getImgInfos();
+		if(imgInfos != null && !imgInfos.isEmpty()) {
+			boardMapper.uploadImg(boardDto);
+		}
 	}
 
 	@Override
@@ -132,4 +139,5 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteComment(int commentNo) throws Exception {
 		return boardMapper.deleteComment(commentNo);
 	}
+
 }

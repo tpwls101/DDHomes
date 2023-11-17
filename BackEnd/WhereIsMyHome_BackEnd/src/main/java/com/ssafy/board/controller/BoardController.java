@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,11 +21,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
 import com.ssafy.board.model.BoardListDto;
+import com.ssafy.board.model.ImgInfoDto;
 import com.ssafy.board.model.service.BoardService;
+import com.ssafy.util.FileStore;
 import com.ssafy.util.PageNavigation;
 import com.ssafy.util.ParameterCheck;
 
@@ -34,7 +40,14 @@ import com.ssafy.util.ParameterCheck;
 public class BoardController {
 	
 	@Autowired
-	BoardService boardService;
+	private BoardService boardService;
+	
+	@Autowired
+	private FileStore fileStore;
+	
+	// 게시판 이미지 저장 경로(ref: application.properties)
+	@Value("${file.path.board-images}")
+	private String uploadImagePath;
 	
 	/**
 	 * 글목록 가져오기
@@ -74,20 +87,63 @@ public class BoardController {
 	}
 	
 	/**
-	 * 글쓰기 
+	 * 글쓰기 + 파일 업로드
 	 */
 	@PostMapping("/write")
-	public ResponseEntity<?> write(@RequestBody BoardDto boardDto) {
+	public ResponseEntity<?> write(MultipartHttpServletRequest formData) {
 		try {
-			// 작성자 추가할것!!!
+			// boardDto(JSON문자열)를 BoardDto객체로 변환(jackson)
+			ObjectMapper objectMapper = new ObjectMapper();
+			BoardDto boardDto = objectMapper.readValue(formData.getParameter("boardDto"), BoardDto.class);
+			// 파일들 받아오기
+			List<MultipartFile> multipartFiles = formData.getFiles("imgInfos");
+			
+			// 파일들 저장 및 dto 리스트로 변환
+			List<ImgInfoDto> imgInfos = fileStore.storeImgs(multipartFiles);
+			
+			// dto에 파일 dto 리스트 추가
+			boardDto.setImgInfos(imgInfos);
+			
+			// 서비스 호출
 			boardService.writeArticle(boardDto);
+	
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println("board write Controller Error");
+		} catch(Exception e) {
+			System.out.println("board uploadImg Controller Error");
 			e.printStackTrace();
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+//	@PostMapping(value = "/uploadimg", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+//	public ResponseEntity<?> uploadImg(@RequestParam("imgInfos") List<MultipartFile> imgInfos) {
+//		try {
+//			List<ImgInfoDto> list = fileStore.storeImgs(imgInfos);
+//			System.out.println(list);
+//			
+//			return new ResponseEntity<Void>(HttpStatus.OK);
+//		} catch(Exception e) {
+//			System.out.println("board uploadImg Controller Error");
+//			e.printStackTrace();
+//			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
+	
+	/**
+	 * 글쓰기 
+	 */
+//	@PostMapping("/write")
+//	public ResponseEntity<?> write(@RequestBody BoardDto boardDto) {
+//		try {
+//			// 작성자 추가할것!!!
+//			boardService.writeArticle(boardDto);
+//			return new ResponseEntity<Void>(HttpStatus.OK);
+//		} catch (Exception e) {
+//			System.out.println("board write Controller Error");
+//			e.printStackTrace();
+//			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 	
 	/**
 	 * 글 상세정보 확인
