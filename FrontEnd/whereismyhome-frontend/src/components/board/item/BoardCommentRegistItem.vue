@@ -19,6 +19,7 @@ const param = ref({
   content: "",
 });
 
+// 댓글 등록버튼 클릭 시
 function commentRegist() {
   // console.log(param.value);
   if (param.value.content === "") {
@@ -39,6 +40,7 @@ function commentRegist() {
   );
 }
 
+// 댓글 수정버튼 클릭 시
 function commentModify() {
   // 수정 위한 파라미터 만들기
   let params = {
@@ -50,14 +52,22 @@ function commentModify() {
     params,
     ({ data }) => {
       // console.log(data);
-      location.reload();
+      // location.reload();
+      // 취소랑 똑같은거 호출하면 등록화면과 리스트 화면이 전환되게 함
+      cancelModify();
     },
     (error) => {
       console.log(error);
     }
   );
+}
 
-  console.log(params);
+
+const emit = defineEmits(["cancelModify"]);
+
+// 댓글 수정 취소시 해당 댓글의 번호를 넘겨줌
+function cancelModify() {
+  emit("cancelModify", props.comment.commentNo);
 }
 
 // console.log(props.comment.commentNo);
@@ -69,26 +79,16 @@ function commentModify() {
     <p>
       <span class="fw-bold">작성자: {{ param.userId }}</span> <br />
     </p>
-    <textarea
-      v-if="props.comment == null"
-      id="comment-textarea"
-      placeholder="내용을 입력하세요"
-      v-model="param.content"
-    ></textarea>
-    <textarea
-      v-else
-      id="comment-textarea"
-      placeholder="내용을 입력하세요"
-      v-model="props.comment.content"
-    ></textarea>
-    <input
-      v-if="props.comment == null"
-      id="btn-regist"
-      type="button"
-      value="등록"
-      @click="commentRegist"
-    />
-    <input v-else id="btn-modify" type="button" value="수정" @click="commentModify" />
+    <textarea v-if="props.comment == null" id="comment-textarea" placeholder="내용을 입력하세요"
+      v-model="param.content"></textarea>
+    <textarea v-else id="comment-textarea" placeholder="내용을 입력하세요" v-model="props.comment.content"></textarea>
+    <div v-if="props.comment == null" class="comment-btn-container">
+      <input id="btn-regist" type="button" value="등록" @click="commentRegist" />
+    </div>
+    <div v-else class="comment-btn-container">
+      <input id="btn-modify" type="button" value="수정" @click="commentModify" />
+      <input id="btn-cancel" type="button" value="취소" @click="cancelModify" />
+    </div>
   </div>
 </template>
 
@@ -96,6 +96,15 @@ function commentModify() {
 .comment-item-container {
   width: 80%;
   padding: 20px;
+}
+
+.comment-btn-container {
+  display: flex;
+  justify-content: right;
+}
+
+.comment-btn-container>* {
+  margin: 5px;
 }
 
 #comment-textarea {
