@@ -3,9 +3,9 @@ package com.ssafy.board.model.service;
 import java.util.List;
 import java.util.Map;
 
-import com.ssafy.apt.model.ImgInfoDto;
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
+import com.ssafy.board.model.ImgInfoDto;
 import com.ssafy.util.PageNavigation;
 
 public interface BoardService {

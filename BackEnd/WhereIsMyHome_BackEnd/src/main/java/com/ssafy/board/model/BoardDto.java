@@ -2,8 +2,6 @@ package com.ssafy.board.model;
 
 import java.util.List;
 
-import com.ssafy.apt.model.ImgInfoDto;
-
 public class BoardDto {
 	private int articleNo;
 	private String userId;

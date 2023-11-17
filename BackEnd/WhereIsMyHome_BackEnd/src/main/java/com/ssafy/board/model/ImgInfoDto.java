@@ -1,4 +1,4 @@
-package com.ssafy.apt.model;
+package com.ssafy.board.model;
 
 public class ImgInfoDto {
 	private int imginfoNo;

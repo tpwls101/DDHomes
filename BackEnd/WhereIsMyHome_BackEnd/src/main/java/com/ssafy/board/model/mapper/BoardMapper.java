@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ssafy.apt.model.ImgInfoDto;
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
+import com.ssafy.board.model.ImgInfoDto;
 
 @Mapper
 public interface BoardMapper {

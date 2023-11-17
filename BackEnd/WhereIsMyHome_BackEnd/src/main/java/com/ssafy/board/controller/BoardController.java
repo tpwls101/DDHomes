@@ -25,10 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.apt.model.ImgInfoDto;
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
 import com.ssafy.board.model.BoardListDto;
+import com.ssafy.board.model.ImgInfoDto;
 import com.ssafy.board.model.service.BoardService;
 import com.ssafy.util.FileStore;
 import com.ssafy.util.PageNavigation;
