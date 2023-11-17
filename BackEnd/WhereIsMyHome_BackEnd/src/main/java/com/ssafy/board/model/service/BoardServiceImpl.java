@@ -7,9 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.apt.model.ImgInfoDto;
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
+import com.ssafy.board.model.ImgInfoDto;
 import com.ssafy.board.model.mapper.BoardMapper;
 import com.ssafy.util.BoardUtil;
 import com.ssafy.util.PageNavigation;

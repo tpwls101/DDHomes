@@ -14,6 +14,8 @@ const { articleNo } = route.params;
 const article = ref({});
 // 게시판 댓글들
 const comments = ref([]);
+// 이미지
+const imgSrc = ref(new URL(`C:/ddhomes/upload/boardImage/231117/1495b9bd-23cb-4786-875a-b8b7cb786406.png`, import.meta.url).href);
 
 onMounted(() => {
   getArticle();
@@ -106,6 +108,7 @@ function commentModify(commentNo) {
         </div>
         <div class="col-md-4 align-self-center text-end">댓글 : {{ comments.length }}</div>
         <div class="divider mb-3"></div>
+        <!-- <img :src="require(`C:/ddhomes/upload/boardImage/231117/1495b9bd-23cb-4786-875a-b8b7cb786406.png`)" /> -->
         <div v-html="article.content"></div>
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
