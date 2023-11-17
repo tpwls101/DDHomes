@@ -14,15 +14,58 @@
 	</resultMap>
 	
 	
-	<select id="login" parameterType="map" resultMap="member">
-		select * from members
-		where userId=#{userId}
-	</select>
-	
 	<insert id="join" parameterType="memberDto">
 		insert into members(userId, userPwd, userName, emailId, emailDomain)
 		values (#{userId}, #{userPwd}, #{userName}, #{emailId}, #{emailDomain})
 	</insert>
+	
+	
+	
+	<!-- 
+	<select id="login" parameterType="map" resultMap="member">
+		select * from members
+		where userId=#{userId}
+	</select> -->
+	
+	<!-- 
+	<select id="login" parameterType="map" resultMap="member">
+		select userId, userName, token
+		from members
+		where userId = #{userId} and userPwd = #{userPwd}
+	</select> -->
+	
+	<select id="login" parameterType="map" resultMap="member">
+		select * <!-- userId, userName, token + userPwd(비밀번호도 같은지 확인하기 위해) -->
+		from members
+		where userId = #{userId}
+	</select>
+	
+	<select id="userInfo" parameterType="string" resultMap="member">
+		select userName, userId, emailId, emailDomain, joinDate, grade
+		from members
+		where userId = #{userId}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update members
+		set token = #{token}
+		where userId = #{userId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from members
+		where userId = #{userId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update members
+		set token = #{token, jdbcType=VARCHAR}
+		where userId = #{userId}
+	</update>
+	
+	
+	
 	
 	<select id="idCheck" parameterType="String" resultType="int">
 		select count(userId)

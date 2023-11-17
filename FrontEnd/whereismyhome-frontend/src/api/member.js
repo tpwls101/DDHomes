@@ -11,6 +11,32 @@ function join(memberDto, success, fail) {
   local.post(`${url}/join`, JSON.stringify(memberDto)).then(success).catch(fail); // 객체 -> JSON
 }
 
+
+/** 로그인 */
+// 입력한 로그인 정보가 디비에 저장되어 있는 정보인지 확인
+async function userConfirm(param, success, fail) {
+  console.log("param", param);
+  await local.post(`${url}/login`, param).then(success).catch(fail);
+  console.log("userConfirm ok");
+}
+
+async function findById(userid, success, fail) {
+  local.defaults.headers["Authorization"] = sessionStorage.getItem("accessToken");
+  await local.get(`${url}/info/${userid}`).then(success).catch(fail);
+}
+
+async function tokenRegeneration(user, success, fail) {
+  local.defaults.headers["refreshToken"] = sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  await local.post(`${url}/refresh`, user).then(success).catch(fail);
+}
+
+async function logout(userid, success, fail) {
+  await local.get(`${url}/logout/${userid}`).then(success).catch(fail);
+}
+/** */
+
+
+
 // 파라미터를 map으로 전달
 function findId(param, success, fail) {
   // console.log(param);
@@ -39,4 +65,4 @@ function deleteMember(userId, success, fail) {
   console.log("d왜안돼,,,,,,,,,,,,,");
 }
 
-export { join, findId, findPwd, myPage, updateMyPage, deleteMember };
+export { join, userConfirm, findById, tokenRegeneration, logout, findId, findPwd, myPage, updateMyPage, deleteMember };

@@ -1,5 +1,6 @@
 package com.ssafy.member.model.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -25,16 +26,54 @@ public class MemberServiceImpl implements MemberService {
 	public int join(MemberDto memberDto) {
 		return memberMapper.join(memberDto);
 	}
+	
+	
+	
+	
+	@Override
+	public MemberDto login(MemberDto memberDto) throws Exception {
+		return memberMapper.login(memberDto);
+	}
+	
+	@Override
+	public MemberDto userInfo(String userId) throws Exception {
+		return memberMapper.userInfo(userId);
+	}
 
+	@Override
+	public void saveRefreshToken(String userId, String refreshToken) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("token", refreshToken);
+		memberMapper.saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(String userId) throws Exception {
+		return memberMapper.getRefreshToken(userId);
+	}
+
+	@Override
+	public void deleRefreshToken(String userId) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("token", null);
+		memberMapper.deleteRefreshToken(map);
+	}
+	
+	
+	
+	
+	
 	@Override
 	public int idCheck(String userId) {
 		return memberMapper.idCheck(userId);
 	}
 
-	@Override
-	public MemberDto login(Map<String, String> map) {
-		return memberMapper.login(map);
-	}
+//	@Override
+//	public MemberDto login(Map<String, String> map) {
+//		return memberMapper.login(map);
+//	}
 
 	@Override
 	public MemberDto findId(Map<String, String> map) {

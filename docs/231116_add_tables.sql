@@ -1,4 +1,5 @@
 use ddhomes;
+show tables;
 
 /* ================ 기존 테이블 컬럼 수정 ================ */
 -- houseinfo 테이블 필요없는 컬럼 제거
@@ -28,6 +29,9 @@ ALTER TABLE `houseinfo` MODIFY COLUMN `lat` 			VARCHAR(30) AFTER `buildYear`;
 
 -- housedeal 컬럼 순서 변경
 ALTER TABLE `housedeal` MODIFY COLUMN `aptCode`			BIGINT		AFTER `no`;
+
+-- members 테이블에 token 컬럼 추가
+ALTER TABLE members ADD token VARCHAR(1000) AFTER grade;
 
 /* ================ 테이블 추가 ================ */
 -- member 테이블 추가
@@ -92,8 +96,8 @@ CREATE TABLE IF NOT EXISTS `favorite` (
 alter table houseinfo drop index `UNIQUE`;
 
 -- houseinfo 테이블 제약 수정
--- alter table `houseinfo`
--- drop constraint `buildYear`;
+alter table `houseinfo`
+drop constraint `buildYear`;
 
 -- board 테이블 제약사항 추가
 alter table `board`
@@ -135,3 +139,6 @@ references forsale (`forsaleNo`);
 alter table `imginfo`
 add foreign key (`articleNo`)
 references board (`articleNo`);
+
+
+

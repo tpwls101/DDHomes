@@ -1,9 +1,24 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useMemberStore } from "../../stores/member";
+import { storeToRefs } from "pinia";
 import MemberLogin from "@/components/member/MemberLogin.vue";
 
 const router = useRouter();
+
+const memberStore = useMemberStore();
+
+const { userInfo } = storeToRefs(memberStore);
+const { getUserInfo, userLogout } = memberStore;
+
+// const userinfo = ref(null);
+
+// onMounted(() => {
+//   console.log(userInfo.value);
+//   userinfo.value = userInfo.value;
+//   console.log(userinfo.value);
+// });
 
 // 마우스 오버 이벤트 관련
 const mouseEventClass = ref("navbar navbar-expand-sm bg-dark navbar-dark");
@@ -34,9 +49,21 @@ function join() {
   router.push({ name: "member-join" });
 }
 
+// 로그아웃 버튼 클릭 시
+function logout() {
+  console.log(userInfo.value.userId + "님 로그아웃 하실게여");
+  userLogout(userInfo.value.userId);
+}
+
 // 마이페이지 이동
 function myPage() {
   router.push({ name: "member-mypage" });
+
+  // accessToken 유효기간 확인하기 위해 임시로 작성
+  let token = sessionStorage.getItem("accessToken"); // accessToken
+  getUserInfo(token);
+  console.log("accessToken : " + sessionStorage.getItem("accessToken"));
+  console.log("refreshToken : " + sessionStorage.getItem("refreshToken"));
 }
 </script>
 
@@ -62,10 +89,9 @@ function myPage() {
           </li>
         </ul>
         <!-- board end-------------------------------------------------------------------------------- -->
-        <ul class="navbar-nav me-2">
-          <!-- <%-- <c:choose> --%> -->
-          <!-- <%-- <c:when test="${not empty userinfo}"> --%> -->
-          <!-- <c:if test="${not empty userinfo}"> -->
+
+        <!-- userInfo에 로그인 정보가 있을 경우 -->
+        <ul class="navbar-nav me-2" v-if="userInfo != null">
           <li id="nav-myPage" class="nav-item">
             <div class="dropdown dropstart">
               <button
@@ -78,29 +104,26 @@ function myPage() {
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <h6 class="dropdown-header">xx님, 안녕하세요.</h6>
+                  <h6 class="dropdown-header">{{ userInfo.userName }}님, 안녕하세요.</h6>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
-                <!-- <c:if test="${userinfo.grade eq 'admin'}"> -->
                 <li>
                   <a id="write" class="dropdown-item" @click="writeArticle('announcement')"
                     >글쓰기</a
                   >
                 </li>
-                <!-- </c:if> -->
                 <li>
                   <a id="myPage" class="dropdown-item" @click="myPage()">마이페이지</a>
                 </li>
-                <li><a id="logout" class="dropdown-item">로그아웃</a></li>
+                <li><a id="logout" class="dropdown-item" @click="logout">로그아웃</a></li>
               </ul>
             </div>
           </li>
-          <!-- </c:if> -->
-          <!-- <%-- </c:when> --%> -->
-          <!-- <%-- <c:otherwise> --%> -->
-          <!-- <c:if test="${empty userinfo}"> -->
+        </ul>
+        <!-- userInfo에 로그인 정보가 없을 경우 -->
+        <ul class="navbar-nav me-2" v-else>
           <li id="nav-signUp" class="nav-item">
             <a class="nav-link" @click="join()">회원가입</a>
           </li>
@@ -109,9 +132,6 @@ function myPage() {
             <!-- 로그인 Modal -->
             <MemberLogin></MemberLogin>
           </li>
-          <!-- </c:if> -->
-          <!-- <%-- </c:otherwise> --%> -->
-          <!-- <%-- </c:choose> --%> -->
         </ul>
       </div>
     </nav>

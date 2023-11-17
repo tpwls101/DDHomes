@@ -1,7 +1,35 @@
 <script setup>
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
 
 const router = useRouter();
+
+const memberStore = useMemberStore();
+
+const { isLogin } = storeToRefs(memberStore);
+const { userLogin, getUserInfo } = memberStore;
+// const { changeMenuState } = useMenuStore();
+
+// 사용자가 입력한 로그인 정보
+const loginUser = ref({
+  userId: "",
+  userPwd: "",
+});
+
+// 로그인 버튼 클릭 시 실행되는 함수
+const login = async () => {
+  console.log("login ing!!!!!!!");
+  await userLogin(loginUser.value); // memberStore에 있는 userLogin() 실행
+  let token = sessionStorage.getItem("accessToken"); // accessToken
+  console.log("1. session storage에 담긴 accessToken : ", token);
+  console.log("isLogin: ", isLogin);
+  if (isLogin) {
+    console.log("로그인 성공!!!");
+    getUserInfo(token); // accessToken을 가지고 사용자 정보 가져오기
+  }
+};
 
 const findId = () => {
   router.push({ name: "member-findid" });
@@ -29,13 +57,19 @@ const findPwd = () => {
               <tr>
                 <td>아이디</td>
                 <td>
-                  <input type="text" name="userId" id="userId" autofocus="autofocus" />
+                  <input
+                    type="text"
+                    name="userId"
+                    id="userId"
+                    autofocus="autofocus"
+                    v-model="loginUser.userId"
+                  />
                 </td>
               </tr>
               <tr>
                 <td>비밀번호</td>
                 <td>
-                  <input type="password" name="userPwd" id="userPwd" />
+                  <input type="password" name="userPwd" id="userPwd" v-model="loginUser.userPwd" />
                   <input type="checkbox" name="isShow" id="isShow" /><span id="showUserPwd"
                     >비밀번호 보이기</span
                   >
@@ -67,7 +101,15 @@ const findPwd = () => {
             </button>
           </div>
           <div>
-            <button type="button" id="loginSubmitBtn" class="btn btn-success">로그인</button>
+            <button
+              type="button"
+              id="loginSubmitBtn"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+              @click="login"
+            >
+              로그인
+            </button>
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
           </div>
         </div>
