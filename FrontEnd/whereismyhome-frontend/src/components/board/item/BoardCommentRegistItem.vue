@@ -52,9 +52,13 @@ function commentModify() {
     params,
     ({ data }) => {
       // console.log(data);
+<<<<<<< HEAD
+      location.rel0oad();
+=======
       // location.reload();
       // 취소랑 똑같은거 호출하면 등록화면과 리스트 화면이 전환되게 함
       cancelModify();
+>>>>>>> 3a67de730a7e3e1779e16999817979c05a832974
     },
     (error) => {
       console.log(error);
