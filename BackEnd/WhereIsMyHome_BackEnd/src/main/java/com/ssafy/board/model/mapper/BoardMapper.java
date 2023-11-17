@@ -8,9 +8,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
+import com.ssafy.board.model.ImgInfoDto;
 
 @Mapper
 public interface BoardMapper {
+	
+	int uploadImg(BoardDto boardDto) throws SQLException;
 	int writeArticle(BoardDto boardDto) throws SQLException;
 	List<BoardDto> listArticle(Map<String, String> map) throws SQLException;
 	int getTotalArticleCount(Map<String, String> map) throws SQLException;
@@ -25,4 +28,5 @@ public interface BoardMapper {
 	int likeComment(Map<String, Object> map) throws SQLException;
 	int modifyComment(Map<String, String> map) throws SQLException;
 	int deleteComment(int commentNo) throws SQLException;
+	
 }

@@ -1,8 +1,30 @@
-import { localAxios } from "@/util/http-commons";
+import { localAxios, fileAxios } from "@/util/http-commons";
 
 const local = localAxios(); // axios instance
+const file = fileAxios();
 
 const url = "/board";
+
+// ===================================================================
+// Board
+
+// function registArticle(boardDto, success, fail) {
+//   // dto형태 객체로 파라미터 넘김
+//   local.post(`${url}/write`, JSON.stringify(boardDto)).then(success).catch(fail);
+// }
+
+function registArticle(params, success, fail) {
+  // 파일 데이터를 FormData로 변경
+  const formData = new FormData();
+  for (let i = 0; i < params.imgInfos.length; i++) {
+    formData.append("imgInfos", params.imgInfos[i]);
+  }
+  // dto데이터를 FormData로 변경
+  formData.append("boardDto", JSON.stringify(params.boardDto));
+
+  // axios
+  file.post(`${url}/write`, formData).then(success).catch(fail);
+}
 
 function listArticle(param, success, fail) {
   // map으로 파라미터 넘김
@@ -12,11 +34,6 @@ function listArticle(param, success, fail) {
 function detailArticle(articleNo, success, fail) {
   // int를 Path Variable로 파라미터 받음
   local.get(`${url}/detail/${articleNo}`).then(success).catch(fail);
-}
-
-function registArticle(boardDto, success, fail) {
-  // dto형태 객체로 파라미터 넘김
-  local.post(`${url}/write`, JSON.stringify(boardDto)).then(success).catch(fail);
 }
 
 // detailArticle로 상세정보 받지 않는 이유는 content의 줄바꿈 문자 때문
