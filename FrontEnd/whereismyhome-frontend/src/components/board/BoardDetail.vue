@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { detailArticle, deleteArticle, listComment } from "@/api/board";
+import { getImg } from "@/api/file";
 import BoardCommentItem from "@/components/board/item/BoardCommentItem.vue";
 import BoardCommentRegistItem from "@/components/board/item/BoardCommentRegistItem.vue";
 
@@ -14,13 +15,24 @@ const { articleNo } = route.params;
 const article = ref({});
 // 게시판 댓글들
 const comments = ref([]);
-// 이미지
-const imgSrc = ref(new URL(`C:/ddhomes/upload/boardImage/231117/1495b9bd-23cb-4786-875a-b8b7cb786406.png`, import.meta.url).href);
 
 onMounted(() => {
   getArticle();
   getComments();
 });
+
+// 이미지 불러오기
+// const getImage = () => {
+//   const param = {
+//     saveFolder: "",
+//     originalName: "",
+//     saveName: "",
+//   }
+
+//   // getImg(
+
+//   // )
+// }
 
 // 게시글 번호로 게시물 얻어오기
 const getArticle = () => {
@@ -28,7 +40,7 @@ const getArticle = () => {
   detailArticle(
     articleNo,
     ({ data }) => {
-      // console.log(data);
+      console.log(data);
       article.value = data;
     },
     (error) => {
