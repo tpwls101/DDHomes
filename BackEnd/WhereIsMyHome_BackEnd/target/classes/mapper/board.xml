@@ -12,6 +12,15 @@
 		<result column="registerTime" property="registerTime"/>
 	</resultMap>
 	
+	<resultMap type="imgInfoDto" id="img">
+		<result column="imginfoNo" property="imginfoNo" />	
+		<result column="forsaleNo" property="forsaleNo" />	
+		<result column="articleNo" property="articleNo" />	
+		<result column="saveFolder" property="saveFolder" />	
+		<result column="originalName" property="originalName" />	
+		<result column="saveName" property="saveName" />	
+	</resultMap>
+	
 	<resultMap type="boardCommentDto" id="comment">
 		<result column="commentNo" property="commentNo"/>
 		<result column="articleNo" property="articleNo"/>
@@ -32,6 +41,18 @@
 	<insert id="writeArticle" parameterType="boardDto">
 		insert into board(userId, subject, content, boardType)
 		values(#{userId}, #{subject}, #{content}, #{boardType})
+		<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<!-- 이미지 등록 -->
+	<insert id="uploadImg" parameterType="boardDto">
+		insert into imginfo (articleNo, saveFolder, originalName, saveName)
+		values
+		<foreach collection="imgInfos" item="imgInfo" separator=" , ">
+			(#{articleNo}, #{imgInfo.saveFolder}, #{imgInfo.originalName}, #{imgInfo.saveName})
+		</foreach>
 	</insert>
 	
 	<!-- 게시물 갯수 구해오기 -->
