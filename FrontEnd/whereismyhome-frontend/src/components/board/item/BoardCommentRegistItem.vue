@@ -50,7 +50,7 @@ function commentModify() {
     params,
     ({ data }) => {
       // console.log(data);
-      location.reload();
+      location.rel0oad();
     },
     (error) => {
       console.log(error);

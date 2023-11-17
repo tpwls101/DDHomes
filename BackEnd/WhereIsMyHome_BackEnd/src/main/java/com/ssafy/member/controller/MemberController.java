@@ -1,7 +1,9 @@
 package com.ssafy.member.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -25,19 +27,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.member.model.MemberDto;
 import com.ssafy.member.model.service.MemberService;
+import com.ssafy.vue.util.JWTUtil;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE} , maxAge = 6000)
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-    
+	
     private final Logger logger = LoggerFactory.getLogger(MemberController.class);
     
     private MemberService memberService;
+    private JWTUtil jwtUtil;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, JWTUtil jwtUtil) {
         super();
         this.memberService = memberService;
+        this.jwtUtil = jwtUtil;
     }
     
     
@@ -74,42 +79,161 @@ public class MemberController {
 //        }
 //    }
     
+//    @GetMapping("/login")
+//    public ResponseEntity<?> login(@RequestParam Map<String, String> map, HttpSession session) {
+//    	logger.debug("login map : {}", map);
+//        
+//        MemberDto memberDto = memberService.login(map);
+//        System.out.println("memberDto : " + memberDto);
+//        
+//        if(memberDto != null) { // 아이디가 존재할 경우
+//            String userPwd = map.get("userPwd"); // 사용자가 입력한 비밀번호
+//            System.out.println("사용자가 입력한 비밀번호 : " + userPwd);
+//            String encryptedPwd = memberDto.getUserPwd(); // 디비에 저장되어 있는 암호화된 비밀번호
+//            System.out.println("디비에 저장되어 있는 암호화된 비밀번호 : " + encryptedPwd);
+//            
+//            // 사용자가 입력한 패스워드(userPwd)와 디비에 저장되어 있는 암호화된 비밀번호(encryptedPw) 비교
+//            boolean checkpw = BCrypt.checkpw(userPwd, encryptedPwd);
+//            System.out.println("사용자가 입력한 패스워드와 암호화된 비밀번호가 같은가? : " + checkpw);
+//            
+//            if(checkpw) { // 비밀번호가 같은 경우
+//                session.setAttribute("userinfo", memberDto);
+//                System.out.println("로그인 성공");
+//                System.out.println(new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK));
+//                return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
+//            }
+//            else { // 비밀번호가 같지 않은 경우
+//                return null;
+//            }
+//            
+//        }
+//        else { // 아이디가 존재하지 않을 경우
+//           	return null;
+//        }
+//    }
+    
     @PostMapping("/login")
-    public ResponseEntity<MemberDto> login(@RequestParam Map<String, String> map, RedirectAttributes redirectAttributes, HttpSession session) {
-    	logger.debug("login map : {}", map);
-        
-        MemberDto memberDto = memberService.login(map);
-        System.out.println("memberDto : " + memberDto);
-        
-        if(memberDto != null) { // 아이디가 존재할 경우
-            String userPwd = map.get("userPwd"); // 사용자가 입력한 비밀번호
-            System.out.println("사용자가 입력한 비밀번호 : " + userPwd);
-            String encryptedPwd = memberDto.getUserPwd(); // 디비에 저장되어 있는 암호화된 비밀번호
-            System.out.println("디비에 저장되어 있는 암호화된 비밀번호 : " + encryptedPwd);
-            
-            // 사용자가 입력한 패스워드(userPwd)와 디비에 저장되어 있는 암호화된 비밀번호(encryptedPw) 비교
-            boolean checkpw = BCrypt.checkpw(userPwd, encryptedPwd);
-            System.out.println("사용자가 입력한 패스워드와 암호화된 비밀번호가 같은가? : " + checkpw);
-            
-            if(checkpw) { // 비밀번호가 같은 경우
-                session.setAttribute("userinfo", memberDto);
-                System.out.println("로그인 성공");
-                System.out.println(new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK));
-                return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
-            }
-            else { // 비밀번호가 같지 않은 경우
-                redirectAttributes.addFlashAttribute("msg", "[오류]비밀번호가 잘못되었습니다.");
-//                return "redirect:/";
-                return null;
-            }
-            
-        }
-        else { // 아이디가 존재하지 않을 경우
-            redirectAttributes.addFlashAttribute("msg", "[오류]아이디가 잘못되었습니다.");
-//          return "redirect:/";
-           	return null;
-        }
-    }
+	public ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto memberDto) {
+		logger.debug("login user : {}", memberDto);
+		
+		System.out.println("** memberDto : " + memberDto); // 폼에서 입력된 아이디랑 비밀번호만 값이 들어있음
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			MemberDto loginUser = memberService.login(memberDto);
+			System.out.println("loginUser : " + loginUser);
+			
+			if(loginUser != null) { // 아이디가 존재할 경우
+				String userPwd = memberDto.getUserPwd(); // 사용자가 입력한 비밀번호
+		        System.out.println("사용자가 입력한 비밀번호 : " + userPwd);
+		        String encryptedPwd = loginUser.getUserPwd(); // 디비에 저장되어 있는 암호화된 비밀번호
+		        System.out.println("디비에 저장되어 있는 암호화된 비밀번호 : " + encryptedPwd);
+		          
+		        // 사용자가 입력한 패스워드(userPwd)와 디비에 저장되어 있는 암호화된 비밀번호(encryptedPw) 비교
+		        boolean checkpw = BCrypt.checkpw(userPwd, encryptedPwd);
+		        System.out.println("사용자가 입력한 패스워드와 암호화된 비밀번호가 같은가? : " + checkpw);
+				
+				if(checkpw) { // 비밀번호가 같은 경우 (로그인 정보 인증 완료)
+					String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
+					String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
+					System.out.println("발급받은 accessToken : " + accessToken);
+					System.out.println("발급받은 refreshToken : " + refreshToken);
+					
+					logger.debug("access token : {}", accessToken);
+					logger.debug("refresh token : {}", refreshToken);
+					
+//					발급받은 refresh token을 DB에 저장.
+					memberService.saveRefreshToken(loginUser.getUserId(), refreshToken);
+					System.out.println("발급받은 refreshToken DB에 저장 완료!");
+					
+//					JSON으로 token 전달.
+					resultMap.put("access-token", accessToken);
+					resultMap.put("refresh-token", refreshToken);
+					
+					status = HttpStatus.CREATED;
+				} else { // 비밀번호가 같지 않은 경우
+					resultMap.put("message", "비밀번호를 확인해주세요.");
+					status = HttpStatus.UNAUTHORIZED;
+				}
+				
+			} else { // 아이디가 존재하지 않을 경우
+				resultMap.put("message", "아이디를 확인해주세요.");
+				status = HttpStatus.UNAUTHORIZED;
+			} 
+			
+		} catch (Exception e) {
+			logger.debug("로그인 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+    
+	@GetMapping("/info/{userId}")
+	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userId") String userId, HttpServletRequest request) {
+//		logger.debug("userId : {} ", userId);
+		
+		System.out.println("사용자 정보 얻으러 왔다!!!");
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		if (jwtUtil.checkToken(request.getHeader("Authorization"))) {
+			logger.info("사용 가능한 토큰!!!");
+			try {
+//				로그인 사용자 정보.
+				MemberDto memberDto = memberService.userInfo(userId);
+				resultMap.put("userInfo", memberDto);
+				status = HttpStatus.OK;
+			} catch (Exception e) {
+				logger.error("정보조회 실패 : {}", e);
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		} else {
+			logger.error("사용 불가능 토큰!!!");
+			status = HttpStatus.UNAUTHORIZED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@GetMapping("/logout/{userId}")
+	public ResponseEntity<?> removeToken(@PathVariable ("userId") String userId) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			memberService.deleRefreshToken(userId);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error("로그아웃 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+
+	}
+
+	@PostMapping("/refresh")
+	public ResponseEntity<?> refreshToken(@RequestBody MemberDto memberDto, HttpServletRequest request) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		String token = request.getHeader("refreshToken");
+		logger.debug("token : {}, memberDto : {}", token, memberDto);
+		if (jwtUtil.checkToken(token)) {
+			if (token.equals(memberService.getRefreshToken(memberDto.getUserId()))) {
+				String accessToken = jwtUtil.createAccessToken(memberDto.getUserId());
+				logger.debug("token : {}", accessToken);
+				logger.debug("정상적으로 액세스토큰 재발급!!!");
+				resultMap.put("access-token", accessToken);
+				status = HttpStatus.CREATED;
+			}
+		} else {
+			logger.debug("리프레쉬토큰도 사용불가!!!!!!!");
+			status = HttpStatus.UNAUTHORIZED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+    
     
     
     
