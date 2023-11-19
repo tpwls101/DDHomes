@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.board.model.ImgInfoDto;
+import com.ssafy.home.file.model.ImgInfoDto;
 
 /**
  * 파일 저장 위한 유틸
  */
 @Component
-public class FileStore {
+public class FileUtil {
 
 	// 게시판 이미지 저장 경로(ref: application.properties)
 	@Value("${file.path.board-images}")

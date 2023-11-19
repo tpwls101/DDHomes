@@ -28,9 +28,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
 import com.ssafy.board.model.BoardListDto;
-import com.ssafy.board.model.ImgInfoDto;
 import com.ssafy.board.model.service.BoardService;
-import com.ssafy.util.FileStore;
+import com.ssafy.home.file.model.ImgInfoDto;
+import com.ssafy.util.FileUtil;
 import com.ssafy.util.PageNavigation;
 import com.ssafy.util.ParameterCheck;
 
@@ -43,7 +43,7 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@Autowired
-	private FileStore fileStore;
+	private FileUtil fileStore;
 	
 	// 게시판 이미지 저장 경로(ref: application.properties)
 	@Value("${file.path.board-images}")
@@ -114,20 +114,6 @@ public class BoardController {
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-//	@PostMapping(value = "/uploadimg", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//	public ResponseEntity<?> uploadImg(@RequestParam("imgInfos") List<MultipartFile> imgInfos) {
-//		try {
-//			List<ImgInfoDto> list = fileStore.storeImgs(imgInfos);
-//			System.out.println(list);
-//			
-//			return new ResponseEntity<Void>(HttpStatus.OK);
-//		} catch(Exception e) {
-//			System.out.println("board uploadImg Controller Error");
-//			e.printStackTrace();
-//			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//	}
 	
 	/**
 	 * 글쓰기 
