@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useMemberStore } from "../../stores/member";
 import { storeToRefs } from "pinia";
@@ -11,14 +11,6 @@ const memberStore = useMemberStore();
 
 const { userInfo } = storeToRefs(memberStore);
 const { getUserInfo, userLogout } = memberStore;
-
-// const userinfo = ref(null);
-
-// onMounted(() => {
-//   console.log(userInfo.value);
-//   userinfo.value = userInfo.value;
-//   console.log(userinfo.value);
-// });
 
 // 마우스 오버 이벤트 관련
 const mouseEventClass = ref("navbar navbar-expand-sm bg-dark navbar-dark");
