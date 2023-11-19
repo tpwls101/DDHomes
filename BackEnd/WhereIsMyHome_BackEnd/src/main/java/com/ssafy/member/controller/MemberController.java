@@ -183,6 +183,7 @@ public class MemberController {
 			try {
 //				로그인 사용자 정보.
 				MemberDto memberDto = memberService.userInfo(userId);
+				System.out.println("userInfo : " + memberDto);
 				resultMap.put("userInfo", memberDto);
 				status = HttpStatus.OK;
 			} catch (Exception e) {

@@ -52,20 +52,19 @@ function commentModify() {
     params,
     ({ data }) => {
       // console.log(data);
-<<<<<<< HEAD
-      location.rel0oad();
-=======
+      // <<<<<<< HEAD
+      location.reload();
       // location.reload();
       // 취소랑 똑같은거 호출하면 등록화면과 리스트 화면이 전환되게 함
       cancelModify();
->>>>>>> 3a67de730a7e3e1779e16999817979c05a832974
+
+      // >>>>>>> 3a67de730a7e3e1779e16999817979c05a832974
     },
     (error) => {
       console.log(error);
     }
   );
 }
-
 
 const emit = defineEmits(["cancelModify"]);
 
@@ -83,9 +82,18 @@ function cancelModify() {
     <p>
       <span class="fw-bold">작성자: {{ param.userId }}</span> <br />
     </p>
-    <textarea v-if="props.comment == null" id="comment-textarea" placeholder="내용을 입력하세요"
-      v-model="param.content"></textarea>
-    <textarea v-else id="comment-textarea" placeholder="내용을 입력하세요" v-model="props.comment.content"></textarea>
+    <textarea
+      v-if="props.comment == null"
+      id="comment-textarea"
+      placeholder="내용을 입력하세요"
+      v-model="param.content"
+    ></textarea>
+    <textarea
+      v-else
+      id="comment-textarea"
+      placeholder="내용을 입력하세요"
+      v-model="props.comment.content"
+    ></textarea>
     <div v-if="props.comment == null" class="comment-btn-container">
       <input id="btn-regist" type="button" value="등록" @click="commentRegist" />
     </div>
@@ -107,7 +115,7 @@ function cancelModify() {
   justify-content: right;
 }
 
-.comment-btn-container>* {
+.comment-btn-container > * {
   margin: 5px;
 }
 

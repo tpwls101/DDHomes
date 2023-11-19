@@ -28,7 +28,7 @@ ALTER TABLE `houseinfo` MODIFY COLUMN `apartmentName` 	VARCHAR(40) AFTER `roadNa
 ALTER TABLE `houseinfo` MODIFY COLUMN `lat` 			VARCHAR(30) AFTER `buildYear`;
 
 -- housedeal 컬럼 순서 변경
-ALTER TABLE `housedeal` MODIFY COLUMN `aptCode`			BIGINT		AFTER `no`;
+ALTER TABLE `housedeal` MODIFY COLUMN `aptCode`	BIGINT AFTER `no`;
 
 -- members 테이블에 token 컬럼 추가
 ALTER TABLE members ADD token VARCHAR(1000) AFTER grade;

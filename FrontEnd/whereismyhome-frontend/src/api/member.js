@@ -11,7 +11,6 @@ function join(memberDto, success, fail) {
   local.post(`${url}/join`, JSON.stringify(memberDto)).then(success).catch(fail); // 객체 -> JSON
 }
 
-
 /** 로그인 */
 // 입력한 로그인 정보가 디비에 저장되어 있는 정보인지 확인
 async function userConfirm(param, success, fail) {
@@ -34,8 +33,6 @@ async function logout(userid, success, fail) {
   await local.get(`${url}/logout/${userid}`).then(success).catch(fail);
 }
 /** */
-
-
 
 // 파라미터를 map으로 전달
 function findId(param, success, fail) {
@@ -65,4 +62,15 @@ function deleteMember(userId, success, fail) {
   console.log("d왜안돼,,,,,,,,,,,,,");
 }
 
-export { join, userConfirm, findById, tokenRegeneration, logout, findId, findPwd, myPage, updateMyPage, deleteMember };
+export {
+  join,
+  userConfirm,
+  findById,
+  tokenRegeneration,
+  logout,
+  findId,
+  findPwd,
+  myPage,
+  updateMyPage,
+  deleteMember,
+};
