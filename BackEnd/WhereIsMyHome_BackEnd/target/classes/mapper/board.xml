@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
 <mapper namespace="com.ssafy.board.model.mapper.BoardMapper">
 	<resultMap type="boardDto" id="article">
 		<result column="articleNo" property="articleNo"/>
@@ -10,15 +11,6 @@
 		<result column="hit" property="hit"/>
 		<result column="boardType" property="boardType"/>
 		<result column="registerTime" property="registerTime"/>
-	</resultMap>
-	
-	<resultMap type="imgInfoDto" id="img">
-		<result column="imginfoNo" property="imginfoNo" />	
-		<result column="forsaleNo" property="forsaleNo" />	
-		<result column="articleNo" property="articleNo" />	
-		<result column="saveFolder" property="saveFolder" />	
-		<result column="originalName" property="originalName" />	
-		<result column="saveName" property="saveName" />	
 	</resultMap>
 	
 	<resultMap type="boardCommentDto" id="comment">
@@ -44,15 +36,6 @@
 		<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
 			select last_insert_id()
 		</selectKey>
-	</insert>
-	
-	<!-- 이미지 등록 -->
-	<insert id="uploadImg" parameterType="boardDto">
-		insert into imginfo (articleNo, saveFolder, originalName, saveName)
-		values
-		<foreach collection="imgInfos" item="imgInfo" separator=" , ">
-			(#{articleNo}, #{imgInfo.saveFolder}, #{imgInfo.originalName}, #{imgInfo.saveName})
-		</foreach>
 	</insert>
 	
 	<!-- 게시물 갯수 구해오기 -->

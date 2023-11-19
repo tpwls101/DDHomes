@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
-import com.ssafy.board.model.ImgInfoDto;
+import com.ssafy.home.file.model.ImgInfoDto;
 import com.ssafy.util.PageNavigation;
 
 public interface BoardService {
