@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.board.model.BoardDto;
-import com.ssafy.board.model.ImgInfoDto;
 import com.ssafy.board.model.mapper.BoardMapper;
+import com.ssafy.home.file.model.ImgInfoDto;
+import com.ssafy.home.file.model.mapper.FileMapper;
 import com.ssafy.util.BoardUtil;
 import com.ssafy.util.PageNavigation;
 import com.ssafy.util.SizeConstant;
@@ -22,6 +23,9 @@ public class BoardServiceImpl implements BoardService {
 	BoardMapper boardMapper;
 	
 	@Autowired
+	FileMapper fileMapper;
+	
+	@Autowired
 	BoardUtil boardUtil;
 	
 	@Override
@@ -31,7 +35,7 @@ public class BoardServiceImpl implements BoardService {
 		// 그걸로 이미지 파일을 테이블에 넣는다.
 		List<ImgInfoDto> imgInfos = boardDto.getImgInfos();
 		if(imgInfos != null && !imgInfos.isEmpty()) {
-			boardMapper.uploadImg(boardDto);
+			fileMapper.uploadBoardImg(boardDto);
 		}
 	}
 
