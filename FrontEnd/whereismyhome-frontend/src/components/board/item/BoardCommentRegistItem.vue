@@ -52,7 +52,6 @@ function commentModify() {
     params,
     ({ data }) => {
       // console.log(data);
-<<<<<<< HEAD
       // <<<<<<< HEAD
       location.reload();
       // location.reload();
@@ -60,11 +59,11 @@ function commentModify() {
       cancelModify();
 
       // >>>>>>> 3a67de730a7e3e1779e16999817979c05a832974
-=======
+      // =======
       // location.reload();
       // 취소랑 똑같은거 호출하면 등록화면과 리스트 화면이 전환되게 함
       cancelModify();
->>>>>>> cd9c2799080d7fa0ed3b68bdf4db05729628af19
+      // >>>>>>> cd9c2799080d7fa0ed3b68bdf4db05729628af19
     },
     (error) => {
       console.log(error);

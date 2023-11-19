@@ -12,6 +12,7 @@ const param = ref({
   userPwd: "",
   emailId: "",
   emailDomain: "",
+  grade: "",
 });
 
 const memberJoin = () => {
@@ -43,12 +44,37 @@ const memberJoin = () => {
       <div class="col-lg-8 col-md-10 col-sm-12">
         <form id="form-join" method="POST" action="">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="basic" id="basic" value="basic" />
+            <input
+              class="form-check-input"
+              type="radio"
+              name="grade"
+              id="basic"
+              value="basic"
+              v-model="param.grade"
+            />
             <label class="form-check-label" for="inlineRadio1">일반회원</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="enter" id="enter" value="enter" />
-            <label class="form-check-label" for="inlineRadio2">정보</label>
+            <input
+              class="form-check-input"
+              type="radio"
+              name="grade"
+              id="enter"
+              value="enter"
+              v-model="param.grade"
+            />
+            <label class="form-check-label" for="inlineRadio2">기업회원</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="grade"
+              id="admin"
+              value="admin"
+              v-model="param.grade"
+            />
+            <label class="form-check-label" for="inlineRadio2">관리자</label>
           </div>
           <div class="mb-3">
             <label for="username" class="form-label">이름 : </label>
@@ -136,4 +162,9 @@ const memberJoin = () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.form-check {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+</style>
