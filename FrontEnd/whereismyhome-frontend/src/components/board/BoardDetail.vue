@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { detailArticle, deleteArticle, listComment } from "@/api/board";
-import { getImg } from "@/api/file";
+import { getBoardImgInfo, getImg } from "@/api/file";
 import BoardCommentItem from "@/components/board/item/BoardCommentItem.vue";
 import BoardCommentRegistItem from "@/components/board/item/BoardCommentRegistItem.vue";
 
@@ -15,24 +15,58 @@ const { articleNo } = route.params;
 const article = ref({});
 // 게시판 댓글들
 const comments = ref([]);
+// 이미지 정보에 대한 파라미터
+const param = ref([]);
+// 이미지 경로
+const imgs = ref([]);
 
 onMounted(() => {
   getArticle();
   getComments();
+  getImage();
 });
 
 // 이미지 불러오기
-// const getImage = () => {
-//   const param = {
-//     saveFolder: "",
-//     originalName: "",
-//     saveName: "",
-//   }
+const getImage = () => {
+  getBoardImgInfo(
+    articleNo,
+    ({ data }) => {
+      param.value = data;
+      // 이미지가 없는 경우
+      if (param.value.length === 0) {
+        console.log("no img");
+        return;
+      }
+      // 이미지가 존재하는 경우
+      else {
+        // 이미지 불러오며 경로 설정
+        for (let i = 0; i < param.value.length; i++) {
+          getImg(
+            param.value[i],
+            ({ data }) => {
+              imgs.value.push(
+                "http://localhost/file/getImg/" +
+                  param.value[i].saveFolder +
+                  "/" +
+                  param.value[i].originalName +
+                  "/" +
+                  param.value[i].saveName
+              );
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
 
-//   // getImg(
-
-//   // )
-// }
+        // console.log(imgs.value);
+      }
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 
 // 게시글 번호로 게시물 얻어오기
 const getArticle = () => {
@@ -40,7 +74,7 @@ const getArticle = () => {
   detailArticle(
     articleNo,
     ({ data }) => {
-      console.log(data);
+      // console.log(data);
       article.value = data;
     },
     (error) => {
@@ -108,8 +142,10 @@ function commentModify(commentNo) {
       <div class="row">
         <div class="col-md-8">
           <div class="clearfix align-content-center">
-            <img class="avatar me-2 float-md-start bg-light p-2"
-              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
+            <img
+              class="avatar me-2 float-md-start bg-light p-2"
+              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
+            />
             <p>
               <span class="fw-bold">{{ article.userId }}</span> <br />
               <span class="text-secondary fw-light">
@@ -120,20 +156,40 @@ function commentModify(commentNo) {
         </div>
         <div class="col-md-4 align-self-center text-end">댓글 : {{ comments.length }}</div>
         <div class="divider mb-3"></div>
-        <!-- <img :src="require(`C:/ddhomes/upload/boardImage/231117/1495b9bd-23cb-4786-875a-b8b7cb786406.png`)" /> -->
+        <div
+          v-for="img in imgs"
+          :key="img.imginfoNo"
+          :img="img"
+          style="text-align: center; margin-bottom: 20px"
+        >
+          <img :src="img" style="width: 500px" />
+        </div>
         <div v-html="article.content"></div>
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
-          <button type="button" id="btn-list" class="btn btn-outline-primary mb-3" @click="boardList(article.boardType)">
+          <button
+            type="button"
+            id="btn-list"
+            class="btn btn-outline-primary mb-3"
+            @click="boardList(article.boardType)"
+          >
             글목록
           </button>
           <!-- <c:if test="${userinfo.userId eq article.userId}"> -->
-          <button type="button" id="btn-mv-modify" class="btn btn-outline-success mb-3 ms-1"
-            @click="modifyArticle(articleNo)">
+          <button
+            type="button"
+            id="btn-mv-modify"
+            class="btn btn-outline-success mb-3 ms-1"
+            @click="modifyArticle(articleNo)"
+          >
             글수정
           </button>
-          <button type="button" id="btn-delete" class="btn btn-outline-danger mb-3 ms-1"
-            @click="articleDelete(articleNo)">
+          <button
+            type="button"
+            id="btn-delete"
+            class="btn btn-outline-danger mb-3 ms-1"
+            @click="articleDelete(articleNo)"
+          >
             글삭제
           </button>
           <!-- </c:if> -->
@@ -146,8 +202,12 @@ function commentModify(commentNo) {
     <BoardCommentRegistItem :articleNo="articleNo"></BoardCommentRegistItem>
     <!-- 댓글 목록 -->
     <hr />
-    <BoardCommentItem v-for="comment in comments" :key="comment.commentNo" :comment="comment"
-      @commentModify="commentModify">
+    <BoardCommentItem
+      v-for="comment in comments"
+      :key="comment.commentNo"
+      :comment="comment"
+      @commentModify="commentModify"
+    >
     </BoardCommentItem>
   </div>
 </template>
