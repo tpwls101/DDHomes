@@ -15,8 +15,8 @@
 	
 	
 	<insert id="join" parameterType="memberDto">
-		insert into members(userId, userPwd, userName, emailId, emailDomain)
-		values (#{userId}, #{userPwd}, #{userName}, #{emailId}, #{emailDomain})
+		insert into members(userId, userPwd, userName, emailId, emailDomain, grade)
+		values (#{userId}, #{userPwd}, #{userName}, #{emailId}, #{emailDomain}, #{grade})
 	</insert>
 	
 	

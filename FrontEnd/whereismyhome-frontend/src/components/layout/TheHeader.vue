@@ -101,7 +101,7 @@ function myPage() {
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
-                <li>
+                <li v-if="userInfo.grade == 'admin'">
                   <a id="write" class="dropdown-item" @click="writeArticle('announcement')"
                     >글쓰기</a
                   >
