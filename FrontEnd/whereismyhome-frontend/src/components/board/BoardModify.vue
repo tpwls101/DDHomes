@@ -71,7 +71,9 @@ const ArticleModify = () => {
 
 // 게시물 목록으로 이동
 function boardList(boardType) {
-  router.push({ name: "board-list", params: { boardType } });
+  if (confirm("목록으로 돌아가면 작성한 글이 모두 사라집니다.\n이동 하시겠습니까?")) {
+    router.push({ name: "board-list", params: { boardType } });
+  }
 }
 </script>
 

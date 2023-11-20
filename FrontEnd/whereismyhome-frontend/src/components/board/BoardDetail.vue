@@ -3,12 +3,16 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { detailArticle, deleteArticle, listComment } from "@/api/board";
 import { getBoardImgInfo, getImg } from "@/api/file";
+import { useMemberStore } from '@/stores/member';
+import { storeToRefs } from "pinia";
 import BoardCommentItem from "@/components/board/item/BoardCommentItem.vue";
 import BoardCommentRegistItem from "@/components/board/item/BoardCommentRegistItem.vue";
 
 const route = useRoute();
 const router = useRouter();
+const memberStore = useMemberStore();
 
+const { userInfo } = storeToRefs(memberStore);
 const { articleNo } = route.params;
 
 // 게시판 상세정보
@@ -108,16 +112,18 @@ function modifyArticle(articleNo) {
 }
 // 게시물 삭제
 function articleDelete(articleNo) {
-  deleteArticle(
-    articleNo,
-    ({ data }) => {
-      console.log(data);
-      boardList(article.value.boardType);
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+  if (confirm("게시물을 삭제합니까?")) {
+    deleteArticle(
+      articleNo,
+      ({ data }) => {
+        console.log(data);
+        boardList(article.value.boardType);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 }
 
 // BoardCommentItem에서 수정버튼 클릭시 발생하는 이벤트 처리
@@ -163,16 +169,14 @@ function commentModify(commentNo) {
           <button type="button" id="btn-list" class="btn btn-outline-primary mb-3" @click="boardList(article.boardType)">
             글목록
           </button>
-          <!-- <c:if test="${userinfo.userId eq article.userId}"> -->
-          <button type="button" id="btn-mv-modify" class="btn btn-outline-success mb-3 ms-1"
-            @click="modifyArticle(articleNo)">
+          <button v-if="userInfo.userId === article.userId" type="button" id="btn-mv-modify"
+            class="btn btn-outline-success mb-3 ms-1" @click="modifyArticle(articleNo)">
             글수정
           </button>
-          <button type="button" id="btn-delete" class="btn btn-outline-danger mb-3 ms-1"
-            @click="articleDelete(articleNo)">
+          <button v-if="userInfo.userId === article.userId" type="button" id="btn-delete"
+            class="btn btn-outline-danger mb-3 ms-1" @click="articleDelete(articleNo)">
             글삭제
           </button>
-          <!-- </c:if> -->
         </div>
       </div>
     </div>

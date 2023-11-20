@@ -45,6 +45,7 @@ function imgDeleteBtnClick(delFilename) {
       filenames.value.push(fileArray[i].name);
     }
   }
+  filenames.value.reverse();
 
   fileArray.forEach(file => {
     dataTransfer.items.add(file);
