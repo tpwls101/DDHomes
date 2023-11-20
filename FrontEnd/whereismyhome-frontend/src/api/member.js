@@ -50,9 +50,9 @@ function findPwd(param, success, fail) {
   local.get(`${url}/findPwd`, { params: param }).then(success).catch(fail);
 }
 
-function myPage(success, fail) {
-  local.get(`${url}/myPage`).then(success).catch(fail);
-}
+// function myPage(success, fail) {
+//   local.get(`${url}/myPage`).then(success).catch(fail);
+// }
 
 // 파라미터를 dto로 전달
 function updateMyPage(memberDto, success, fail) {
@@ -75,7 +75,7 @@ export {
   idCheck,
   findId,
   findPwd,
-  myPage,
+  // myPage,
   updateMyPage,
   deleteMember,
 };
