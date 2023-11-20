@@ -104,7 +104,7 @@ function boardList(boardType) {
           <label for="content" class="form-label">내용 : </label>
           <textarea class="form-control" id="content" name="content" rows="7" v-model="boardDto.content"></textarea>
         </div>
-        <FileUpload></FileUpload>
+        <FileUpload :articleNo="articleNo"></FileUpload>
         <div class="col-auto text-center">
           <button type="button" id="btn-modify" class="btn btn-outline-primary mb-3" @click="ArticleModify">
             글수정

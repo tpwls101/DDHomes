@@ -1,9 +1,28 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { getBoardImgInfo } from "@/api/file";
 import FileUploadedItem from '@/components/common/FileUploadedItem.vue';
 
 // 사용자가 업로드한 파일명
 const filenames = ref([]);
+
+const props = defineProps({ articleNo: String });
+
+onMounted(() => {
+  // 업로드된 이미지 정보 가져오기
+  getBoardImgInfo(
+    props.articleNo,
+    ({ data }) => {
+      for (let i = 0; i < data.length; i++) {
+        filenames.value.push(data[i].originalName);
+      }
+    },
+    (error) => {
+      console.log(error);
+    }
+  )
+});
+
 
 // 사용자가 파일 업로드시 파일 체크
 function changeFile() {
