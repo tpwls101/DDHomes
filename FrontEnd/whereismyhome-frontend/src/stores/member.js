@@ -22,7 +22,6 @@ export const useMemberStore = defineStore(
       await userConfirm(
         loginUser,
         (response) => {
-          console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
           console.log("login ok!!!!", response.status); // 201
           console.log("login ok!!!!", httpStatusCode.CREATE); // 201
           if (response.status === httpStatusCode.CREATE) {

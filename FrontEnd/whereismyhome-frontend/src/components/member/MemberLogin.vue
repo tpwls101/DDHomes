@@ -10,13 +10,16 @@ const memberStore = useMemberStore();
 
 const { isLogin } = storeToRefs(memberStore);
 const { userLogin, getUserInfo } = memberStore;
-// const { changeMenuState } = useMenuStore();
 
 // 사용자가 입력한 로그인 정보
 const loginUser = ref({
   userId: "",
   userPwd: "",
 });
+
+const userPwdType = ref("password"); // 비밀번호 타입(password/text)
+const checkbox = ref(false); // 비밀번호 보이기 체크박스 선택 여부
+const text = ref(""); // 비밀번호 보이기/감추기 텍스트
 
 // 로그인 버튼 클릭 시 실행되는 함수
 const login = async () => {
@@ -28,6 +31,18 @@ const login = async () => {
   if (isLogin) {
     console.log("로그인 성공!!!");
     getUserInfo(token); // accessToken을 가지고 사용자 정보 가져오기
+  }
+};
+
+// 비밀번호 보이기/감추기
+const showUserPwd = () => {
+  // console.log("비밀번호 보이기!!");
+  if (!checkbox) {
+    userPwdType.value = "password";
+    text.value = "비밀번호 보이기";
+  } else {
+    userPwdType.value = "text";
+    text.value = "비밀번호 감추기";
   }
 };
 
@@ -70,9 +85,14 @@ const findPwd = () => {
                 <td>비밀번호</td>
                 <td>
                   <input type="password" name="userPwd" id="userPwd" v-model="loginUser.userPwd" />
-                  <input type="checkbox" name="isShow" id="isShow" /><span id="showUserPwd"
-                    >비밀번호 보이기</span
-                  >
+                  <input
+                    type="checkbox"
+                    name="isShow"
+                    id="isShow"
+                    @change="showUserPwd"
+                    v-model="checkbox"
+                  />
+                  <span id="showUserPwd" v-html="text">비밀번호 보이기</span>
                 </td>
               </tr>
             </table>
@@ -122,5 +142,9 @@ const findPwd = () => {
 <style scoped>
 .close-modal {
   display: none;
+}
+
+#isShow {
+  margin: 5px;
 }
 </style>

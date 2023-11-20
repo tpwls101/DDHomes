@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { join } from "@/api/member";
+import { join, idCheck } from "@/api/member";
 
 const router = useRouter();
 
@@ -10,12 +10,41 @@ const param = ref({
   userId: "",
   userName: "",
   userPwd: "",
+  userPwdChk: "",
   emailId: "",
   emailDomain: "",
-  grade: "",
+  grade: "basic",
 });
 
+// 아이디 중복 검사
+const possibleId = ref(false); // 사용할 수 있는지 여부
+const resultDiv = ref(""); // 사용 가능 여부를 보여주는 div
+const resultDivClass = ref("mb-3"); // 사용 가능 여부를 보여주는 div
+
 const memberJoin = () => {
+  if (param.value.userName == "") {
+    alert("이름을 입력해주세요.");
+    return;
+  } else if (param.value.userId == "") {
+    alert("아이디를 입력해주세요.");
+    return;
+  } else if (possibleId.value == false) {
+    alert("아이디 중복 검사를 해주세요.");
+    return;
+  } else if (param.value.userPwd == "") {
+    alert("비밀번호를 입력해주세요.");
+    return;
+  } else if (param.value.userPwdChk == "") {
+    alert("비밀번호를 확인해주세요.");
+    return;
+  } else if (param.value.emailId == "") {
+    alert("이메일을 입력해주세요.");
+    return;
+  } else if (param.value.emailDomain == "") {
+    alert("이메일을 입력해주세요.");
+    return;
+  }
+
   console.log("회원가입 할게요!");
   // axios API 호출
   join(
@@ -30,6 +59,40 @@ const memberJoin = () => {
       alert("[오류] 회원가입이 정상 처리되지 않았습니다.");
     }
   );
+};
+
+const goIdCheck = () => {
+  let checkId = param.value.userId;
+  console.log(checkId);
+  let len = checkId.length;
+  // console.log(len);
+  if (len < 4 || len > 16) {
+    possibleId.value = false;
+    resultDivClass.value = "mb-3 fw-bold text-dark";
+    resultDiv.value = "아이디는 4자이상 16자이하입니다.";
+  } else {
+    idCheck(
+      checkId,
+      ({ data }) => {
+        // console.log("data : " + data);
+        if (data == 0) {
+          // 중복된 아이디가 없을 경우
+          console.log("data : " + data);
+          possibleId.value = true;
+          resultDivClass.value = "mb-3 text-success";
+          resultDiv.value = "<span class='fw-bold'>" + checkId + "</span>은 사용할 수 있습니다.";
+        } else {
+          // 중복된 아이디가 있을 경우
+          possibleId.value = false;
+          resultDivClass.value = "mb-3 text-danger";
+          resultDiv.value = "<span class='fw-bold'>" + checkId + "</span>은 사용할 수 없습니다.";
+        }
+      },
+      (error) => {
+        console.log("fail");
+      }
+    );
+  }
 };
 </script>
 
@@ -50,6 +113,7 @@ const memberJoin = () => {
               name="grade"
               id="basic"
               value="basic"
+              checked="true"
               v-model="param.grade"
             />
             <label class="form-check-label" for="inlineRadio1">일반회원</label>
@@ -96,9 +160,11 @@ const memberJoin = () => {
               name="userId"
               placeholder="아이디..."
               v-model="param.userId"
+              @keyup="goIdCheck"
             />
           </div>
-          <div id="result-view" class="mb-3"></div>
+          <!-- 아이디 중복 검사 결과 -->
+          <div id="result-view" :class="resultDivClass" v-html="resultDiv"></div>
           <div class="mb-3">
             <label for="userpwd" class="form-label">비밀번호 : </label>
             <input
@@ -117,6 +183,7 @@ const memberJoin = () => {
               class="form-control"
               id="pwdcheck"
               placeholder="비밀번호확인..."
+              v-model="param.userPwdChk"
             />
           </div>
           <div class="mb-3">
