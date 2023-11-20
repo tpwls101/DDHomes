@@ -1,31 +1,45 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { getBoardImgInfo } from "@/api/file";
-import FileUploadedItem from '@/components/common/FileUploadedItem.vue';
-
-// 사용자가 업로드한 파일명
-const filenames = ref([]);
+import { getBoardImgInfo, deleteImg } from "@/api/file";
+import FileUploadedItem from "@/components/common/FileUploadedItem.vue";
 
 const props = defineProps({ articleNo: String });
+
+// 파일 목록
+const files = ref();
+// 사용자가 업로드한 파일명
+const filenames = ref([]);
+// 이미 업로드된 파일명(수정시 사용)
+const uploadedFileNames = ref([]);
+
+// 글 수정인 경우 true
+const isModify = ref(false);
 
 onMounted(() => {
   // 업로드된 이미지 정보 가져오기
   getBoardImgInfo(
     props.articleNo,
     ({ data }) => {
+      files.value = data;
+      console.log(files.value);
       for (let i = 0; i < data.length; i++) {
-        filenames.value.push(data[i].originalName);
+        uploadedFileNames.value.push(data[i].originalName);
+      }
+
+      // 등록된 파일이 없는데 이미지 목록이 있다면 수정페이지의 첫 진입인 경우이다.
+      if (uploadedFileNames.length != 0) {
+        isModify.value = true;
       }
     },
     (error) => {
       console.log(error);
     }
-  )
+  );
 });
-
 
 // 사용자가 파일 업로드시 파일 체크
 function changeFile() {
+  console.log(document.querySelector("#upload-img").files);
   filenames.value = [];
   const { files } = event.target;
   // 파일 첨부하지 않고 취소 누른 경우 에러 발생 방지
@@ -36,7 +50,7 @@ function changeFile() {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const fileType = file.type;
-    if (!fileType.includes('image')) {
+    if (!fileType.includes("image")) {
       alert("이미지(JPG, JPEG, PNG)를 업로드 해 주세요.");
       filenames.value = [];
       break;
@@ -59,30 +73,69 @@ function imgDeleteBtnClick(delFilename) {
     if (fileArray[i].name === delFilename) {
       fileArray.splice(i, 1);
       // break;
-    }
-    else {
+    } else {
       filenames.value.push(fileArray[i].name);
     }
   }
   filenames.value.reverse();
 
-  fileArray.forEach(file => {
+  fileArray.forEach((file) => {
     dataTransfer.items.add(file);
   });
   document.querySelector("#upload-img").files = dataTransfer.files;
 }
 
+// 등록된 이미지 삭제 버튼 클릭 시
+function uploadedImgDeleteBtnClick(delFilename) {
+  if (confirm(delFilename + " 이미지를 삭제하시겠습니까?")) {
+    for (let i = 0; i < files.value.length; i++) {
+      if (files.value[i].originalName === delFilename) {
+        deleteImg(
+          files.value[i],
+          ({ data }) => {
+            console.log(data);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    }
+  }
+}
 </script>
 
 <template>
   <div>
     <div class="mb-3">
-      <input type="file" accept="image/*" class="form-control border" id="upload-img" name="upload-img"
-        multiple="multiple" @change="changeFile">
+      <input
+        type="file"
+        accept="image/*"
+        class="form-control border"
+        id="upload-img"
+        name="upload-img"
+        multiple="multiple"
+        @change="changeFile"
+      />
     </div>
-    <p>첨부된 이미지</p>
-    <FileUploadedItem v-for="filename in filenames" :key="filename" :filename="filename"
-      @imgDeleteBtnClick="imgDeleteBtnClick"></FileUploadedItem>
+    <div>
+      <p>첨부한 이미지</p>
+      <FileUploadedItem
+        v-for="filename in filenames"
+        :key="filename"
+        :filename="filename"
+        @imgDeleteBtnClick="imgDeleteBtnClick"
+      ></FileUploadedItem>
+    </div>
+    <div v-if="isModify">
+      <p>등록된 이미지</p>
+      <FileUploadedItem
+        v-for="filename in uploadedFileNames"
+        :key="filename"
+        :filename="filename"
+        @imgDeleteBtnClick="uploadedImgDeleteBtnClick"
+      ></FileUploadedItem>
+    </div>
   </div>
 </template>
 
