@@ -2,12 +2,23 @@
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { registArticle } from "@/api/board";
+import { useMemberStore } from "../../stores/member";
+import { storeToRefs } from "pinia";
+
 
 const router = useRouter();
 const route = useRoute();
+const memberStore = useMemberStore();
+
+const { userInfo } = storeToRefs(memberStore);
 
 onMounted(() => {
+  // 게시물 타입 설정
   boardDto.value.boardType = route.params.boardType;
+  // 게시자 아이디 설정
+  if (userInfo.value != null) {
+    boardDto.value.userId = userInfo.value.userId;
+  }
 });
 
 // 파라미터로 넘길 반응형 데이터
@@ -77,7 +88,7 @@ const write = () => {
     params,
     ({ data }) => {
       // console.log(data);
-      // 게시물 리스트로 이동
+      // 리스트로 이동
       let boardType = boardDto.value.boardType;
       router.push({ name: "board-list", params: { boardType } });
     },
@@ -129,11 +140,8 @@ function imgUpload() {
           <label class="form-check-label" for="inlineRadio2">정보</label>
         </div>
 
-        <!-- 아래 userId는 로그인 기능 구현 시 바꿀것!!!!!!!!!!!!!!!!!!!!!!1 -->
         <div class="mb-3">
-          <label for="userId" class="form-label">작성자 : </label>
-          <input type="text" class="form-control" id="userId" name="userId" placeholder="작성자..."
-            v-model="boardDto.userId" />
+          <p>작성자 : {{ boardDto.userId }}</p>
         </div>
 
         <div class="mb-3">

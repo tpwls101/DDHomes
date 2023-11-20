@@ -49,7 +49,7 @@ function modifyArticle(boardDto, success, fail) {
 
 function deleteArticle(articleNo, success, fail) {
   // int를 Path Variable로 파라미터 받음
-  // console.log(articleNo);
+  console.log(articleNo);
   local.delete(`${url}/delete/${articleNo}`).then(success).catch(fail);
 }
 
