@@ -30,9 +30,6 @@ ALTER TABLE `houseinfo` MODIFY COLUMN `lat` 			VARCHAR(30) AFTER `buildYear`;
 -- housedeal 컬럼 순서 변경
 ALTER TABLE `housedeal` MODIFY COLUMN `aptCode`	BIGINT AFTER `no`;
 
--- members 테이블에 token 컬럼 추가
-ALTER TABLE members ADD token VARCHAR(1000) AFTER grade;
-
 /* ================ 테이블 추가 ================ */
 -- member 테이블 추가
 CREATE TABLE IF NOT EXISTS `members` (
@@ -44,6 +41,12 @@ CREATE TABLE IF NOT EXISTS `members` (
 	`joinDate` 		TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`grade` 		VARCHAR(20) 	DEFAULT 'basic'
 );
+-- members 테이블에 token 컬럼 추가
+ALTER TABLE members ADD token VARCHAR(1000) AFTER grade;
+
+-- members 테이블 제약사항 변경
+alter table members
+modify grade varchar(20) not null;
 
 -- board 테이블 추가
 CREATE TABLE IF NOT EXISTS `board` (
@@ -107,11 +110,15 @@ references members (`userId`);
 -- comment 테이블 제약사항 추가
 alter table `comment`
 add foreign key (`articleNo`)
-references board (`articleNo`);
+references board (`articleNo`)
+on update no action
+on delete cascade;
 
 alter table `comment`
 add foreign key (`userId`)
-references members (`userId`);
+references members (`userId`)
+on update no action
+on delete cascade;
 
 -- forsale 테이블 제약사항 추가
 alter table `forsale`
@@ -120,25 +127,37 @@ references houseinfo (`aptCode`);
 
 alter table `forsale`
 add foreign key (`userId`)
-references members (`userId`);
+references members (`userId`)
+on update no action
+on delete cascade;
 
 -- favorite 테이블 제약사항 추가
 alter table `favorite`
 add foreign key (`userId`)
-references members (`userId`);
+references members (`userId`)
+on update no action
+on delete cascade;
 
 alter table `favorite`
 add foreign key (`forsaleNo`)
-references forsale (`forsaleNo`);
+references forsale (`forsaleNo`)
+on update no action
+on delete cascade;
 
 -- imginfo 테이블 제약사항 추가
 alter table `imginfo`
-add foreign key (`forsaleNo`)
-references forsale (`forsaleNo`);
+add constraint 
+foreign key (`forsaleNo`)
+references forsale (`forsaleNo`)
+on update no action
+on delete cascade;
 
 alter table `imginfo`
-add foreign key (`articleNo`)
-references board (`articleNo`);
+add constraint
+foreign key (`articleNo`)
+references board (`articleNo`)
+on update no action
+on delete cascade;
 
 
 
