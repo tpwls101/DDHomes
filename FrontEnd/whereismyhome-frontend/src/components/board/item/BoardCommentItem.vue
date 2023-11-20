@@ -1,7 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import { likeComment, deleteComment } from "@/api/board";
+import { useMemberStore } from '@/stores/member';
+import { storeToRefs } from "pinia";
 import BoardCommentRegistItem from "@/components/board/item/BoardCommentRegistItem.vue";
+
+const memberStore = useMemberStore();
+
+const { userInfo } = storeToRefs(memberStore);
 
 const props = defineProps({ comment: Object });
 const likeId = ref("like-no-click");
@@ -84,7 +90,7 @@ function cancelModify(commentNo) {
       </p>
       <p>{{ comment.content }}</p>
     </div>
-    <div class="comment-btn-container">
+    <div v-if="userInfo.userId === comment.userId" class="comment-btn-container">
       <input type="button" value="수정" @click="commentModify" />
       <input type="button" value="삭제" @click="commentDelete(comment.commentNo)" />
     </div>

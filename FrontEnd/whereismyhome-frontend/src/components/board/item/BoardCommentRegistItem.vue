@@ -1,10 +1,14 @@
 <script setup>
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { registComment, modifyComment } from "@/api/board";
+import { useMemberStore } from '@/stores/member';
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
-const router = useRouter();
+const memberStore = useMemberStore();
+
+const { userInfo } = storeToRefs(memberStore);
 
 // 댓글이 작성될 게시물 번호
 const { articleNo } = route.params;
@@ -14,8 +18,7 @@ const props = defineProps({ comment: Object });
 
 const param = ref({
   articleNo: articleNo,
-  // 로그인한 유저로 변경 필요!!!!!!!!!!!!!!!!!!
-  userId: "ssafy",
+  userId: userInfo.value.userId,
   content: "",
 });
 
@@ -78,18 +81,9 @@ function cancelModify() {
     <p>
       <span class="fw-bold">작성자: {{ param.userId }}</span> <br />
     </p>
-    <textarea
-      v-if="props.comment == null"
-      id="comment-textarea"
-      placeholder="내용을 입력하세요"
-      v-model="param.content"
-    ></textarea>
-    <textarea
-      v-else
-      id="comment-textarea"
-      placeholder="내용을 입력하세요"
-      v-model="props.comment.content"
-    ></textarea>
+    <textarea v-if="props.comment == null" id="comment-textarea" placeholder="내용을 입력하세요"
+      v-model="param.content"></textarea>
+    <textarea v-else id="comment-textarea" placeholder="내용을 입력하세요" v-model="props.comment.content"></textarea>
     <div v-if="props.comment == null" class="comment-btn-container">
       <input id="btn-regist" type="button" value="등록" @click="commentRegist" />
     </div>
@@ -111,7 +105,7 @@ function cancelModify() {
   justify-content: right;
 }
 
-.comment-btn-container > * {
+.comment-btn-container>* {
   margin: 5px;
 }
 
