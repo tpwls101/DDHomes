@@ -24,6 +24,7 @@ public class FileUtil {
 	@Value("${file.path.board-images}")
 	private String uploadImagePath;
 	
+	// 이미지 저장 및 dto변환
 	public ImgInfoDto storeImg(MultipartFile multipartFile) throws IOException {
 		if(multipartFile.isEmpty()) {
 			return null;
@@ -50,6 +51,7 @@ public class FileUtil {
 		return imgInfoDto;
 	}
 	
+	// 이미지 저장 및 dto변환
 	public List<ImgInfoDto> storeImgs(List<MultipartFile> multipartFiles) throws IOException {
 		List<ImgInfoDto> fileInfos = new ArrayList<ImgInfoDto>();
 		for(MultipartFile multipartFile : multipartFiles) {
@@ -59,6 +61,17 @@ public class FileUtil {
 		}
 		
 		return fileInfos;
+	}
+	
+	// 파일 삭제
+	public void deleteImg(List<ImgInfoDto> imgInfos) {
+		for(ImgInfoDto imgInfo : imgInfos) {
+			File file = new File(uploadImagePath + File.separator + imgInfo.getSaveFolder() + File.separator + imgInfo.getSaveName());
+			if(file.exists()) {
+				file.delete();
+			}
+		}
+		
 	}
 	
 //	private String extractExt(String originalFilename) {

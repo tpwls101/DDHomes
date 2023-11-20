@@ -12,6 +12,6 @@ import com.ssafy.home.file.model.ImgInfoDto;
 public interface FileMapper {
 
 	List<ImgInfoDto> getBoardImgInfo(int articleNo) throws SQLException;
-	int uploadBoardImg(BoardDto boardDto) throws SQLException;
+	int uploadBoardImg(List<ImgInfoDto> imgInfos) throws SQLException;
 	
 }

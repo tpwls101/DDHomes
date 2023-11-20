@@ -35,7 +35,11 @@ public class BoardServiceImpl implements BoardService {
 		// 그걸로 이미지 파일을 테이블에 넣는다.
 		List<ImgInfoDto> imgInfos = boardDto.getImgInfos();
 		if(imgInfos != null && !imgInfos.isEmpty()) {
-			fileMapper.uploadBoardImg(boardDto);
+			for(int i = 0; i < imgInfos.size(); i++) {
+				imgInfos.get(i).setArticleNo(boardDto.getArticleNo());
+			}
+			System.out.println(imgInfos);
+			fileMapper.uploadBoardImg(imgInfos);
 		}
 	}
 
