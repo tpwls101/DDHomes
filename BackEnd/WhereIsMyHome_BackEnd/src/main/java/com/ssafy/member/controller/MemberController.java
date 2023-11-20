@@ -325,8 +325,10 @@ public class MemberController {
     @GetMapping("/{checkId}")
     @ResponseBody
     public String idCheck(@PathVariable("checkId") String userId) throws Exception {
-        logger.debug("idCheck userId : {}", userId);
+        System.out.println("아이디 중복 검사 가보자고");
+    	logger.debug("idCheck userId : {}", userId);
         int cnt = memberService.idCheck(userId);
+        System.out.println("cnt : " + cnt);
         return cnt + "";
     }
     

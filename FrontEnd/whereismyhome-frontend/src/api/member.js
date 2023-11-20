@@ -34,6 +34,11 @@ async function logout(userid, success, fail) {
 }
 /** */
 
+
+function idCheck(checkId, success, fail) {
+  local.get(`${url}/${checkId}`).then(success).catch(fail);
+}
+
 // 파라미터를 map으로 전달
 function findId(param, success, fail) {
   // console.log(param);
@@ -59,7 +64,6 @@ function updateMyPage(memberDto, success, fail) {
 function deleteMember(userId, success, fail) {
   console.log("userId : " + userId);
   local.delete(`${url}/deleteMember/${userId}`).then(success).catch(fail);
-  console.log("d왜안돼,,,,,,,,,,,,,");
 }
 
 export {
@@ -68,6 +72,7 @@ export {
   findById,
   tokenRegeneration,
   logout,
+  idCheck,
   findId,
   findPwd,
   myPage,
