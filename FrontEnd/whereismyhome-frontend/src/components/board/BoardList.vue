@@ -2,13 +2,17 @@
 import { ref, watch, onUpdated, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { listArticle } from "@/api/board";
+import { useMemberStore } from '../../stores/member';
+import { storeToRefs } from "pinia";
 import PageNavigation from "@/components/common/PageNavigation.vue";
 import VSelect from "@/components/common/VSelect.vue";
 import BoardListItem from "@/components/board/item/BoardListItem.vue";
 
 const router = useRouter();
 const route = useRoute();
+const memberStore = useMemberStore();
 
+const { userInfo } = storeToRefs(memberStore);
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 
 // 게시판 목록
@@ -103,13 +107,11 @@ function boardWrite() {
     </div>
     <div class="col-lg-8 col-md-10 col-sm-12">
       <div class="row align-self-center mb-2">
-        <!-- <c:if test="${userinfo.grade eq 'admin'}"> -->
-        <div class="col-md-2 text-start">
+        <div v-if="userInfo != null" class="col-md-2 text-start">
           <button type="button" id="btn-board-write" class="btn btn-outline-primary btn-sm" @click="boardWrite">
             글쓰기
           </button>
         </div>
-        <!-- </c:if> -->
       </div>
       <table class="table table-hover">
         <thead>

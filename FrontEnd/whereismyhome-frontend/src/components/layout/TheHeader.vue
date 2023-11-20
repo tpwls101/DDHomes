@@ -28,7 +28,16 @@ function doMouseLeave() {
 
 // 게시판 이동
 function boardList(boardType) {
-  router.push({ name: "board-list", params: { boardType } });
+  if (boardType === "information") {
+    if (userInfo.value == null) {
+      alert("로그인 후 이용해 주세요!");
+    } else {
+      router.push({ name: "board-list", params: { boardType } });
+    }
+  }
+  else {
+    router.push({ name: "board-list", params: { boardType } });
+  }
 }
 
 // 게시물 작성 이동
@@ -73,11 +82,9 @@ function myPage() {
         <!-- board start-------------------------------------------------------------------------------- -->
         <ul class="navbar-nav ms-5 me-auto">
           <li class="nav-item">
-            <!-- <a class="nav-link" href="/board/board-list">공지사항</a> -->
             <a class="nav-link" @click="boardList('announcement')">공지사항</a>
           </li>
           <li class="nav-item">
-            <!-- <a class="nav-link" href="/board/board-list">게시판</a> -->
             <a class="nav-link" @click="boardList('information')">게시판</a>
           </li>
         </ul>
@@ -87,12 +94,8 @@ function myPage() {
         <ul class="navbar-nav me-2" v-if="userInfo != null">
           <li id="nav-myPage" class="nav-item">
             <div class="dropdown dropstart">
-              <button
-                class="nav-link btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <button class="nav-link btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <img id="user-img" src="@/assets/user.png" />
               </button>
               <ul class="dropdown-menu">
@@ -103,9 +106,7 @@ function myPage() {
                   <hr class="dropdown-divider" />
                 </li>
                 <li v-if="userInfo.grade == 'admin'">
-                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')"
-                    >글쓰기</a
-                  >
+                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')">글쓰기</a>
                 </li>
                 <li>
                   <a id="myPage" class="dropdown-item" @click="myPage()">마이페이지</a>
