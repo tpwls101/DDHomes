@@ -82,11 +82,6 @@ public class FileController {
 		
 		try {
 			Path filePath = Paths.get(file);
-//			Resource resource = new InputStreamResource(Files.newInputStream(filePath));
-			
-//			HttpHeaders headers = new HttpHeaders();
-//			headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(originalName, "UTF-8").replaceAll("//+", "%20")).build());
-//			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			
 			Resource resource = new FileSystemResource(file);
 			HttpHeaders headers = new HttpHeaders();
