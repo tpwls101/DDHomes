@@ -63,6 +63,11 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/apt",
+      name: "apt",
+      component: () => import("@/views/TheAptListView.vue"),
+    }
   ],
 });
 
