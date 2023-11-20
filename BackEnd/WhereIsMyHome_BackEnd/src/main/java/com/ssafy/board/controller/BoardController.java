@@ -43,7 +43,7 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@Autowired
-	private FileUtil fileStore;
+	private FileUtil fileUtil;
 	
 	// 게시판 이미지 저장 경로(ref: application.properties)
 	@Value("${file.path.board-images}")
@@ -99,7 +99,7 @@ public class BoardController {
 			List<MultipartFile> multipartFiles = formData.getFiles("imgInfos");
 			
 			// 파일들 저장 및 dto 리스트로 변환
-			List<ImgInfoDto> imgInfos = fileStore.storeImgs(multipartFiles);
+			List<ImgInfoDto> imgInfos = fileUtil.storeImgs(multipartFiles);
 			
 			// dto에 파일 dto 리스트 추가
 			boardDto.setImgInfos(imgInfos);
