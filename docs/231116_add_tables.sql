@@ -44,6 +44,10 @@ CREATE TABLE IF NOT EXISTS `members` (
 -- members 테이블에 token 컬럼 추가
 ALTER TABLE members ADD token VARCHAR(1000) AFTER grade;
 
+-- members 테이블 제약사항 변경
+alter table members
+modify grade varchar(20) not null;
+
 -- board 테이블 추가
 CREATE TABLE IF NOT EXISTS `board` (
 	`articleNo` 	INT 			AUTO_INCREMENT PRIMARY KEY,

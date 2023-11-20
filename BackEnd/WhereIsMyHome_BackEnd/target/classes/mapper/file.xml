@@ -14,11 +14,11 @@
 	</resultMap>
 
 	<!-- 이미지 등록 -->
-	<insert id="uploadBoardImg" parameterType="boardDto">
+	<insert id="uploadBoardImg" parameterType="java.util.List">
 		insert into imginfo (articleNo, saveFolder, originalName, saveName)
 		values
-		<foreach collection="imgInfos" item="imgInfo" separator=" , ">
-			(#{articleNo}, #{imgInfo.saveFolder}, #{imgInfo.originalName}, #{imgInfo.saveName})
+		<foreach collection="imgInfos" item="imgInfo" separator=", ">
+			(#{imgInfo.articleNo}, #{imgInfo.saveFolder}, #{imgInfo.originalName}, #{imgInfo.saveName})
 		</foreach>
 	</insert>
 	

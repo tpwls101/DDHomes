@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +29,7 @@ import com.ssafy.board.model.BoardDto;
 import com.ssafy.board.model.BoardListDto;
 import com.ssafy.board.model.service.BoardService;
 import com.ssafy.home.file.model.ImgInfoDto;
+import com.ssafy.home.file.model.service.FileService;
 import com.ssafy.util.FileUtil;
 import com.ssafy.util.PageNavigation;
 import com.ssafy.util.ParameterCheck;
@@ -43,11 +43,10 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@Autowired
-	private FileUtil fileUtil;
+	private FileService fileService;
 	
-	// 게시판 이미지 저장 경로(ref: application.properties)
-	@Value("${file.path.board-images}")
-	private String uploadImagePath;
+	@Autowired
+	private FileUtil fileUtil;
 	
 	/**
 	 * 글목록 가져오기
@@ -203,6 +202,13 @@ public class BoardController {
 	public ResponseEntity<?> delete(@PathVariable int articleNo) {
 		System.out.println(articleNo);
 		try {
+			// 이미지 제거
+			List<ImgInfoDto> imgInfos = fileService.getBoardImgInfo(articleNo);
+			if(imgInfos != null && !imgInfos.isEmpty()) {
+				fileUtil.deleteImg(imgInfos);
+			}
+			
+			// 게시물 제거
 			boardService.deleteArticle(articleNo);
 			return new ResponseEntity<BoardDto>(HttpStatus.OK);
 		} catch (Exception e) {
