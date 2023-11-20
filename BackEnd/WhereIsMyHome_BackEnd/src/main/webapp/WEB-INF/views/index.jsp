@@ -54,7 +54,7 @@
                         </div> -->
             <div class="form-group col-md-2">
               <button type="button" id="list-btn" class="btn btn-outline-primary">
-                아파트매매정보
+                	아파트매매정보
               </button>
             </div>
           </div>

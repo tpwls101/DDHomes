@@ -1,6 +1,7 @@
 package com.ssafy.apt.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,18 +28,38 @@ public class AptController {
 	@Autowired
 	AptService aptService;
 	
+//	@GetMapping("/getSelector")
+//	@ResponseBody
+//	public String getSelector(String selectorId, String selectedValue) {
+//		String jsonStr = null;
+//		try {
+//			jsonStr = aptService.getSelectorItems(selectorId, selectedValue);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return jsonStr;
+//	}
+	
 	@GetMapping("/getSelector")
 	@ResponseBody
-	public String getSelector(String selectorId, String selectedValue) {
+	public String getSelector(@RequestParam Map<String, String> map) {
+		// selectorId: 설정할 셀렉터 id 속성
+		// previousSelectedValue: 이전 셀렉터 선택값
+		System.out.println("넘어온 parameter 확인 : " + map.toString());
+		
 		String jsonStr = null;
 		try {
-			jsonStr = aptService.getSelectorItems(selectorId, selectedValue);
+			jsonStr = aptService.getSelectorItems(map);
+			System.out.println(jsonStr);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return jsonStr;
 	}
+	
+	
 	
 	@GetMapping("/info")
 	public String list(String selectedValue, Model model) {

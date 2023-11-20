@@ -27,8 +27,8 @@
 
 	<!-- 
 	selector의 item 얻기
-	map -> selector: 얻어올 셀렉터의 컬럼이름
-		-> selectedValue: 이전에 선택한 셀렉터의 value
+	param -> selector: 얻어올 셀렉터의 컬럼이름
+		-> previousSelectedValue: 이전에 선택한 셀렉터의 value
 	 -->
 	<select id="getSelectorItems" parameterType="map" resultType="map">
 		select dongCode, ${selector}
@@ -38,13 +38,13 @@
 				where gugunName is null
 			</when>
 			<when test="selector == 'gugunName'">
-				where dongCode like concat(#{selectedValue}, '%')
+				where dongCode like concat(#{previousSelectedValue}, '%')
 				and gugunName is not null
 				and dongName is null
 				order by gugunName
 			</when>
 			<when test="selector == 'dongName'">
-				where dongCode like concat(#{selectedValue}, '%')
+				where dongCode like concat(#{previousSelectedValue}, '%')
 				and dongName is not null
 				order by dongName
 			</when>
