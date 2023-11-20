@@ -183,11 +183,11 @@ function commentModify(commentNo) {
     <hr />
     <hr />
     <!-- 댓글 등록 -->
-    <BoardCommentRegistItem :articleNo="articleNo"></BoardCommentRegistItem>
+    <BoardCommentRegistItem :articleNo="articleNo" @clickRegistButton="getComments"></BoardCommentRegistItem>
     <!-- 댓글 목록 -->
     <hr />
     <BoardCommentItem v-for="comment in comments" :key="comment.commentNo" :comment="comment"
-      @commentModify="commentModify">
+      @commentModify="commentModify" @clickDeleteButton="getComments">
     </BoardCommentItem>
   </div>
 </template>

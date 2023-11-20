@@ -47,21 +47,8 @@ function likeBtnClick() {
   );
 }
 
-// 삭제 버튼 클릭 시
-function commentDelete(commentNo) {
-  deleteComment(
-    commentNo,
-    ({ data }) => {
-      console.log(data);
-      location.reload();
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
-}
-
-const emit = defineEmits(["commentModify"]);
+const emit = defineEmits(["commentModify", "clickDeleteButton"]);
+const original = ref(props.comment.content);
 
 // 수정버튼 클릭시 emit으로 BoardDetail에게 commentNo 넘겨줌
 function commentModify() {
@@ -70,8 +57,31 @@ function commentModify() {
 
 // BoardCommentRegistItem에서 수정 취소 버튼 클릭 시(emit)
 function cancelModify(commentNo) {
+  props.comment.content = original.value;
   document.querySelector("#comment" + commentNo).classList.remove("comment-hidden");
   document.querySelector("#regist" + commentNo).classList.add("comment-hidden");
+}
+
+// 삭제 버튼 클릭 시
+function commentDelete(commentNo) {
+  if (confirm("댓글을 삭제하시겠습니까?")) {
+    deleteComment(
+      commentNo,
+      ({ data }) => {
+        console.log(data);
+        // location.reload();
+        clickDeleteButton();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+}
+
+// 삭제버튼 클릭시 목록 다시 불러오게 하기
+function clickDeleteButton() {
+  emit("clickDeleteButton");
 }
 </script>
 
