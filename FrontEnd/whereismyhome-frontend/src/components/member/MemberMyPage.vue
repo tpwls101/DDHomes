@@ -1,12 +1,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { myPage, updateMyPage, deleteMember } from "@/api/member";
+import { storeToRefs } from "pinia";
+import { updateMyPage, deleteMember } from "@/api/member";
+import { useMemberStore } from "@/stores/member";
 
 const router = useRouter();
+const memberStore = useMemberStore();
 
-// memberDto 정보를 저장할 변수
-const memberDto = ref({});
+const { userInfo } = storeToRefs(memberStore);
+const { userLogout } = memberStore;
+
+// const memberDto = ref({});
 
 onMounted(() => {
   getMyPage();
@@ -15,21 +20,26 @@ onMounted(() => {
 // 주의사항 : 메서드 이름과 axios API의 이름이 동일하면 에러!!
 // 마이페이지 호출
 const getMyPage = () => {
-  console.log("서버에서 마이페이지 정보 얻어오자!");
-  // console.log(memberDto);
+  console.log(userInfo.value);
 
+  if (userInfo.value == null) {
+    alert("접근할 수 없는 페이지입니다.");
+    router.push({ name: "main" });
+  }
+
+  console.log("서버에서 마이페이지 정보 얻어오자!");
   // axios API 호출
-  myPage(
-    //param.value,
-    ({ data }) => {
-      memberDto.value = data;
-      console.log(memberDto.value);
-      console.log("success");
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+  // myPage(
+  //   //param.value,
+  //   ({ data }) => {
+  //     memberDto.value = data;
+  //     console.log(memberDto.value);
+  //     console.log("success");
+  //   },
+  //   (error) => {
+  //     console.log(error);
+  //   }
+  // );
 };
 
 // 마이페이지 - 회원 정보 수정
@@ -37,9 +47,9 @@ const modifyMyPage = () => {
   console.log("마이페이지에서 회원 정보 수정할게요!");
   // axios API 호출
   updateMyPage(
-    memberDto.value,
+    userInfo.value,
     ({ data }) => {
-      console.log(memberDto.value);
+      console.log(userInfo.value);
       console.log("success");
       alert("[성공] 회원 정보가 성공적으로 수정되었습니다.");
       router.push({ name: "member-mypage" });
@@ -58,10 +68,12 @@ const memberDelete = () => {
   confirm("탈퇴하시겠습니까?");
   // axios API 호출
   deleteMember(
-    memberDto.value.userId,
+    userInfo.value.userId,
     ({ data }) => {
       console.log("success");
       alert("[성공] 회원 탈퇴가 완료되었습니다.");
+      // userInfo, access/refresh Token, memberStore의 데이터 삭제하기 위해 로그아웃 진행
+      userLogout();
       router.push({ name: "main" });
     },
     (error) => {
@@ -74,7 +86,7 @@ const memberDelete = () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" v-if="userInfo != null">
     <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10 col-sm-12">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
@@ -85,7 +97,7 @@ const memberDelete = () => {
       <div class="col-lg-8 col-md-10 col-sm-12">
         <form id="form-update" method="POST" action="">
           <div>
-            <label for="grade" class="form-label">현재 등급 : {{ memberDto.grade }}</label>
+            <label for="grade" class="form-label">현재 등급 : {{ userInfo.grade }}</label>
           </div>
           <div class="mb-3">
             <label for="userid" class="form-label">아이디 : </label>
@@ -95,7 +107,7 @@ const memberDelete = () => {
               id="userid"
               name="userId"
               placeholder="아이디..."
-              v-model="memberDto.userId"
+              v-model="userInfo.userId"
               readonly="readonly"
             />
           </div>
@@ -106,7 +118,7 @@ const memberDelete = () => {
               class="form-control"
               id="username"
               name="userName"
-              v-model="memberDto.userName"
+              v-model="userInfo.userName"
             />
           </div>
           <div class="mb-3">
@@ -139,7 +151,7 @@ const memberDelete = () => {
                 id="emailid"
                 name="emailId"
                 placeholder="이메일아이디"
-                v-model="memberDto.emailId"
+                v-model="userInfo.emailId"
               />
               <span class="input-group-text">@</span>
               <select
@@ -147,7 +159,7 @@ const memberDelete = () => {
                 id="emaildomain"
                 name="emailDomain"
                 aria-label="이메일 도메인 선택"
-                v-model="memberDto.emailDomain"
+                v-model="userInfo.emailDomain"
               >
                 <option value="">선택</option>
                 <option value="ssafy.com">싸피</option>

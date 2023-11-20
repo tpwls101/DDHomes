@@ -45,6 +45,7 @@ function join() {
 function logout() {
   console.log(userInfo.value.userId + "님 로그아웃 하실게여");
   userLogout(userInfo.value.userId);
+  router.push({ name: "main" });
 }
 
 // 마이페이지 이동

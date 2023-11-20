@@ -19,7 +19,7 @@ const loginUser = ref({
 
 const userPwdType = ref("password"); // 비밀번호 타입(password/text)
 const checkbox = ref(false); // 비밀번호 보이기 체크박스 선택 여부
-const text = ref(""); // 비밀번호 보이기/감추기 텍스트
+const text = ref("비밀번호 보이기"); // 비밀번호 보이기/감추기 텍스트
 
 // 로그인 버튼 클릭 시 실행되는 함수
 const login = async () => {
@@ -28,16 +28,19 @@ const login = async () => {
   let token = sessionStorage.getItem("accessToken"); // accessToken
   console.log("1. session storage에 담긴 accessToken : ", token);
   console.log("isLogin: ", isLogin);
-  if (isLogin) {
+  if (isLogin.value) {
     console.log("로그인 성공!!!");
     getUserInfo(token); // accessToken을 가지고 사용자 정보 가져오기
+  } else {
+    // 로그인 실패 시 모달창의 입력폼 초기화
+    loginUser.value.userId = "";
+    loginUser.value.userPwd = "";
   }
 };
 
 // 비밀번호 보이기/감추기
 const showUserPwd = () => {
-  // console.log("비밀번호 보이기!!");
-  if (!checkbox) {
+  if (!checkbox.value) {
     userPwdType.value = "password";
     text.value = "비밀번호 보이기";
   } else {
@@ -84,7 +87,12 @@ const findPwd = () => {
               <tr>
                 <td>비밀번호</td>
                 <td>
-                  <input type="password" name="userPwd" id="userPwd" v-model="loginUser.userPwd" />
+                  <input
+                    :type="userPwdType"
+                    name="userPwd"
+                    id="userPwd"
+                    v-model="loginUser.userPwd"
+                  />
                   <input
                     type="checkbox"
                     name="isShow"
@@ -92,7 +100,7 @@ const findPwd = () => {
                     @change="showUserPwd"
                     v-model="checkbox"
                   />
-                  <span id="showUserPwd" v-html="text">비밀번호 보이기</span>
+                  <span id="showUserPwd">{{ text }}</span>
                 </td>
               </tr>
             </table>

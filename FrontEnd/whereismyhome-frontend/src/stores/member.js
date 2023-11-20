@@ -46,6 +46,7 @@ export const useMemberStore = defineStore(
         },
         (error) => {
           console.error(error);
+          alert("[로그인 실패] 회원 정보가 없습니다. 회원가입 후 이용해주세요.");
         }
       );
     };
