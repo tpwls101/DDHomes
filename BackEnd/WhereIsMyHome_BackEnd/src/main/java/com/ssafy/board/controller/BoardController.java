@@ -43,7 +43,7 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@Autowired
-	private FileUtil fileStore;
+	private FileUtil fileStore; 
 	
 	// 게시판 이미지 저장 경로(ref: application.properties)
 	@Value("${file.path.board-images}")
