@@ -1,5 +1,11 @@
 <script setup>
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+
+const aptInfo = () => {
+  router.push({ name: "apt" });
+};
 </script>
 
 <template>
@@ -30,7 +36,7 @@
       </select>
     </div> -->
     <div class="form-group col-md-2">
-      <button type="button" id="list-btn" class="btn btn-outline-primary">
+      <button type="button" id="list-btn" class="btn btn-outline-primary" @click="aptInfo">
         아파트매매정보
       </button>
     </div>
