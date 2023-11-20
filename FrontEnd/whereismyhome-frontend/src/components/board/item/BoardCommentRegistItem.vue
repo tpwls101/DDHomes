@@ -1,14 +1,14 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { registComment, modifyComment } from "@/api/board";
-import { useMemberStore } from '@/stores/member';
+import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const memberStore = useMemberStore();
 
-const { userInfo } = storeToRefs(memberStore);
+const { userInfo, isLogin } = storeToRefs(memberStore);
 
 // 댓글이 작성될 게시물 번호
 const { articleNo } = route.params;
@@ -16,15 +16,32 @@ const { articleNo } = route.params;
 // 댓글 수정인 경우 받아온다
 const props = defineProps({ comment: Object });
 
-const param = ref({
-  articleNo: articleNo,
-  userId: userInfo.value.userId,
-  content: "",
+// 댓글 textarea 기본값
+const textAreaPlaceholder = ref("내용을 입력하세요");
+
+// 댓글 등록, 수정 시 사용할 파라미터
+const param = ref({});
+
+onMounted(() => {
+  if (userInfo.value == null) {
+    textAreaPlaceholder.value = "댓글기능을 사용하려면 로그인 하세요!";
+  } else {
+    param.value = {
+      articleNo: articleNo,
+      userId: userInfo.value.userId,
+      content: "",
+    };
+  }
 });
 
 // 댓글 등록버튼 클릭 시
 function commentRegist() {
   // console.log(param.value);
+  if (!isLogin.value) {
+    alert("댓글 기능을 사용하려면 로그인 하세요!");
+    return;
+  }
+
   if (param.value.content === "") {
     alert("[오류] 댓글을 입력해 주세요!");
     return;
@@ -58,7 +75,9 @@ function commentModify() {
       // console.log(data);
       // location.reload();
       // 수정 완료 후 컴포넌트 전환
-      document.querySelector("#comment" + props.comment.commentNo).classList.remove("comment-hidden");
+      document
+        .querySelector("#comment" + props.comment.commentNo)
+        .classList.remove("comment-hidden");
       document.querySelector("#regist" + props.comment.commentNo).classList.add("comment-hidden");
     },
     (error) => {
@@ -78,17 +97,27 @@ function cancelModify() {
 function clickRegistButton() {
   emit("clickRegistButton");
 }
-
 </script>
 
 <template>
   <div class="comment-item-container">
     <p>
-      <span class="fw-bold">작성자: {{ param.userId }}</span> <br />
+      <span v-if="isLogin" class="fw-bold">작성자: {{ param.userId }}</span> <br />
     </p>
-    <textarea v-if="props.comment == null" id="comment-textarea" placeholder="내용을 입력하세요"
-      v-model="param.content"></textarea>
-    <textarea v-else id="comment-textarea" placeholder="내용을 입력하세요" v-model="props.comment.content"></textarea>
+    <textarea
+      v-if="props.comment == null"
+      id="comment-textarea"
+      :placeholder="textAreaPlaceholder"
+      v-model="param.content"
+      :readonly="!isLogin"
+    ></textarea>
+    <textarea
+      v-else
+      id="comment-textarea"
+      placeholder="textAreaPlaceholder"
+      v-model="props.comment.content"
+      :readonly="!isLogin"
+    ></textarea>
     <div v-if="props.comment == null" class="comment-btn-container">
       <input id="btn-regist" type="button" value="등록" @click="commentRegist" />
     </div>
@@ -110,7 +139,7 @@ function clickRegistButton() {
   justify-content: right;
 }
 
-.comment-btn-container>* {
+.comment-btn-container > * {
   margin: 5px;
 }
 

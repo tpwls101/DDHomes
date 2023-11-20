@@ -19,4 +19,9 @@ public class FileServiceImpl implements FileService {
 		return fileMapper.getBoardImgInfo(articleNo);
 	}
 
+	@Override
+	public void deleteImg(int imginfoNo) throws Exception {
+		fileMapper.deleteImg(imginfoNo);
+	}
+
 }

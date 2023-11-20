@@ -15,4 +15,9 @@ function getBoardImgInfo(articleNo, success, fail) {
   local.get(`${url}/getBoardImgInfo/${articleNo}`).then(success).catch(fail);
 }
 
-export { getBoardImgInfo, getImg };
+function deleteImg(imgInfoDto, success, fail) {
+  console.log(JSON.stringify(imgInfoDto));
+  local.delete(`${url}/deleteImg`, JSON.stringify(imgInfoDto)).then(success).catch(fail);
+}
+
+export { getImg, getBoardImgInfo, deleteImg };
