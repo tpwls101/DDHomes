@@ -35,7 +35,8 @@ function commentRegist() {
     ({ data }) => {
       // console.log(data);
       param.value.content = "";
-      location.reload();
+      // location.reload();
+      clickRegistButton();
     },
     (error) => {
       console.log(error);
@@ -56,8 +57,9 @@ function commentModify() {
     ({ data }) => {
       // console.log(data);
       // location.reload();
-      // 취소랑 똑같은거 호출하면 등록화면과 리스트 화면이 전환되게 함
-      cancelModify();
+      // 수정 완료 후 컴포넌트 전환
+      document.querySelector("#comment" + props.comment.commentNo).classList.remove("comment-hidden");
+      document.querySelector("#regist" + props.comment.commentNo).classList.add("comment-hidden");
     },
     (error) => {
       console.log(error);
@@ -65,18 +67,21 @@ function commentModify() {
   );
 }
 
-const emit = defineEmits(["cancelModify"]);
+const emit = defineEmits(["cancelModify", "clickRegistButton"]);
 
 // 댓글 수정 취소시 해당 댓글의 번호를 넘겨줌
 function cancelModify() {
   emit("cancelModify", props.comment.commentNo);
 }
 
-// console.log(props.comment.commentNo);
+// 댓글 등록시 댓글 목록 다시 불러오게 하기
+function clickRegistButton() {
+  emit("clickRegistButton");
+}
+
 </script>
 
 <template>
-  <!-- <h1>{{ props.comment.commentNo }}</h1> -->
   <div class="comment-item-container">
     <p>
       <span class="fw-bold">작성자: {{ param.userId }}</span> <br />
