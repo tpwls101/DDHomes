@@ -478,16 +478,10 @@ public class MemberController {
     @PutMapping("/updateMember")
     public ResponseEntity<?> updateMember(@RequestBody MemberDto memberDto, HttpSession session) {
     	String userPwd = memberDto.getUserPwd(); // 사용자가 수정하기 위해 입력한 패스워드
+    	System.out.println("사용자가 수정하기 위해 입력한 패스워드 : " + userPwd);
         String encryptedPwd = BCrypt.hashpw(userPwd, BCrypt.gensalt()); // 사용자가 입력한 패스워드 암호화
-        memberDto.setUserPwd(encryptedPwd);
-        
-        // 세션 정보 수정
-        // 세션에 값 없어서 NullPointerException 발생 -> 일단 주석 처리
-//        MemberDto userinfo = (MemberDto)session.getAttribute("userinfo");
-//        memberDto.setJoinDate(userinfo.getJoinDate());
-//        memberDto.setGrade(userinfo.getGrade());
-//        session.setAttribute("userinfo", memberDto);
-        
+        System.out.println("사용자가 입력한 패스워드 암호화 : " + encryptedPwd);
+        memberDto.setUserPwd(encryptedPwd);        
         System.out.println("업데이트 할 memberDto : " + memberDto);
         
         int cnt = memberService.updateMember(memberDto);
