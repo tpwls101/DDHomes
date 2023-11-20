@@ -427,22 +427,24 @@ public class MemberController {
 //    	return "index";
 //    }
     
-    @GetMapping("/myPage")
-    public ResponseEntity<MemberDto> myPage(HttpSession session) {
-    	System.out.println("마이페이지 호출");
-    	
-    	MemberDto memberDto = new MemberDto();
-    	memberDto.setUserId("ssafy");
-    	memberDto.setUserName("김싸피");
-    	memberDto.setUserPwd("1234");
-    	memberDto.setEmailId("ssafy");
-    	memberDto.setEmailDomain("ssafy.com");
-    	memberDto.setJoinDate("2023-11-10 12:00:00");
-    	memberDto.setGrade("basic");
-    	
-    	System.out.println(new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK));
-    	return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
-    }
+    
+    // 없어도 됨!!!
+//    @GetMapping("/myPage")
+//    public ResponseEntity<MemberDto> myPage(HttpSession session) {
+//    	System.out.println("마이페이지 호출");
+//    	
+//    	MemberDto memberDto = new MemberDto();
+//    	memberDto.setUserId("ssafy");
+//    	memberDto.setUserName("김싸피");
+//    	memberDto.setUserPwd("1234");
+//    	memberDto.setEmailId("ssafy");
+//    	memberDto.setEmailDomain("ssafy.com");
+//    	memberDto.setJoinDate("2023-11-10 12:00:00");
+//    	memberDto.setGrade("basic");
+//    	
+//    	System.out.println(new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK));
+//    	return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
+//    }
     
     
     
