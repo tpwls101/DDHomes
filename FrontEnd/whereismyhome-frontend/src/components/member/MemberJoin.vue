@@ -35,7 +35,10 @@ const memberJoin = () => {
     alert("비밀번호를 입력해주세요.");
     return;
   } else if (param.value.userPwdChk == "") {
-    alert("비밀번호를 확인해주세요.");
+    alert("비밀번호 확인을 위해 다시 한 번 입력해주세요.");
+    return;
+  } else if (param.value.userPwd != param.value.userPwdChk) {
+    alert("비밀번호가 같지 않습니다. 다시 입력해주세요.");
     return;
   } else if (param.value.emailId == "") {
     alert("이메일을 입력해주세요.");

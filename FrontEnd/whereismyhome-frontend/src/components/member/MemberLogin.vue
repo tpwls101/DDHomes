@@ -31,6 +31,7 @@ const login = async () => {
   if (isLogin.value) {
     console.log("로그인 성공!!!");
     getUserInfo(token); // accessToken을 가지고 사용자 정보 가져오기
+    router.push({ name: "main" });
   } else {
     // 로그인 실패 시 모달창의 입력폼 초기화
     loginUser.value.userId = "";
