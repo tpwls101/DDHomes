@@ -4,6 +4,7 @@ import { useRouter, useRoute } from "vue-router";
 import { registArticle } from "@/api/board";
 import { useMemberStore } from "../../stores/member";
 import { storeToRefs } from "pinia";
+import FileUpload from '@/components/common/FileUpload.vue';
 
 
 const router = useRouter();
@@ -68,6 +69,7 @@ function isValidInput() {
   return true;
 }
 
+// 글 작성
 const write = () => {
   // 입력 데이터 누락 확인
   if (!isValidInput()) {
@@ -100,24 +102,24 @@ const write = () => {
 };
 
 // 파일 업로드 진행
-function imgUpload() {
-  // 파일 확인
-  const imgInfos = document.querySelector("#upload-img").files;
+// function imgUpload() {
+//   // 파일 확인
+//   const imgInfos = document.querySelector("#upload-img").files;
 
-  // 파일이 존재할 경우 파일 먼저 업로드 진행
-  if (imgInfos.length > 0) {
-    uploadImg(
-      imgInfos,
-      ({ data }) => {
-        console.log(data);
-      },
-      (error) => {
-        alert("[오류] 파일 업로드에 문제가 발생했습니다.");
-        console.log(error);
-      }
-    )
-  }
-}
+//   // 파일이 존재할 경우 파일 먼저 업로드 진행
+//   if (imgInfos.length > 0) {
+//     uploadImg(
+//       imgInfos,
+//       ({ data }) => {
+//         console.log(data);
+//       },
+//       (error) => {
+//         alert("[오류] 파일 업로드에 문제가 발생했습니다.");
+//         console.log(error);
+//       }
+//     )
+//   }
+// }
 </script>
 
 <template>
@@ -153,11 +155,7 @@ function imgUpload() {
           <label for="content" class="form-label">내용 : </label>
           <textarea class="form-control" id="content" name="content" rows="7" v-model="boardDto.content"></textarea>
         </div>
-        <div class="mb-3">
-          <label for="upload-img" class="form-label">파일:</label>
-          <input type="file" accept="image/*" class="form-control border" id="upload-img" name="upload-img"
-            multiple="multiple" @change="changeFile">
-        </div>
+        <FileUpload></FileUpload>
         <div class="col-auto text-center">
           <button type="button" id="btn-register" class="btn btn-outline-primary mb-3" @click="write">
             글작성
@@ -169,4 +167,8 @@ function imgUpload() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#content {
+  resize: none;
+}
+</style>
