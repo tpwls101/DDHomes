@@ -2,6 +2,7 @@
 import { getModifyArticle, modifyArticle } from "@/api/board";
 import { useRouter, useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
+import FileUpload from '@/components/common/FileUpload.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -29,20 +30,29 @@ const getArticle = () => {
   );
 };
 
-// 글 수정
-const ArticleModify = () => {
-  // 입력한 데이터 체크
+// 입력한 데이터 체크
+function isValidInput() {
   if (boardDto.value.userId === "") {
     alert("[오류] 사용자가 확인되지 않습니다. 로그인 해 주세요!");
-    return;
+    return false;
   } else if (boardDto.value.subject === "") {
     alert("[오류] 제목을 입력 해 주세요!");
-    return;
+    return false;
   } else if (boardDto.value.content === "") {
     alert("[오류] 내용을 입력 해 주세요!");
-    return;
+    return false;
   } else if (boardDto.value.boardType === "") {
     alert("[오류] 게시판 종류를 선택해 주세요!");
+    return false;
+  }
+
+  return true;
+}
+
+// 글 수정
+const ArticleModify = () => {
+  if (!isValidInput()) {
+    console.log("not valid");
     return;
   }
 
@@ -92,15 +102,7 @@ function boardList(boardType) {
           <label for="content" class="form-label">내용 : </label>
           <textarea class="form-control" id="content" name="content" rows="7" v-model="boardDto.content"></textarea>
         </div>
-        <div>
-          <p>첨부된 이미지</p>
-          <div class="imginfo">
-            파일1<input class="btn-delete-img" type="button" value="삭제">
-          </div>
-          <div class="imginfo">
-            파일2<input class="btn-delete-img" type="button" value="삭제">
-          </div>
-        </div>
+        <FileUpload></FileUpload>
         <div class="col-auto text-center">
           <button type="button" id="btn-modify" class="btn btn-outline-primary mb-3" @click="ArticleModify">
             글수정
@@ -120,15 +122,5 @@ function boardList(boardType) {
 <style scoped>
 #content {
   resize: none;
-}
-
-.imginfo {
-  border: 1px solid black;
-  height: 32px;
-  margin: 10px;
-}
-
-.btn-delete-img {
-  float: right;
 }
 </style>
