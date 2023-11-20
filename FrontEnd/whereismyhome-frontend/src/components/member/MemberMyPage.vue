@@ -120,6 +120,10 @@ const memberDelete = () => {
     router.push({ name: "member-mypage" });
   }
 };
+
+const goBack = () => {
+  router.push({ name: "main" });
+};
 </script>
 
 <template>
@@ -215,7 +219,12 @@ const memberDelete = () => {
             >
               정보수정
             </button>
-            <button type="button" id="btn-go-back" class="btn btn-outline-success mb-3">
+            <button
+              type="button"
+              id="btn-go-back"
+              class="btn btn-outline-success mb-3"
+              @click="goBack"
+            >
               돌아가기
             </button>
             <button

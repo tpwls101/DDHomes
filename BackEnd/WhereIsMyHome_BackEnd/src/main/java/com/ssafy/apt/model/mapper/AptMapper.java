@@ -12,7 +12,7 @@ import com.ssafy.apt.model.HouseInfoDto;
 @Mapper
 public interface AptMapper {
 	// 동적쿼리 사용, selector item 얻기
-	public List<Map<String, Object>> getSelectorItems(Map<String, String> map) throws SQLException;
+	public List<Map<String, Object>> getSelectorItems(Map<String, String> param) throws SQLException;
 	// 선택한 dongCode로 해당 동의 house info 얻기
 	public List<HouseInfoDto> getHouseInfo(String dongCode) throws SQLException;
 	// 선택한 aptCode로 해당 아파트의 house deal 얻기

@@ -19,10 +19,13 @@ public class AptServiceImpl implements AptService {
 	AptMapper aptMapper;
 
 	@Override
-	public String getSelectorItems(String selectorId, String selectedValue) throws Exception {
+	public String getSelectorItems(Map<String, String> map) throws Exception {
 		// Mapper에게 넘길 파라미터
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> param = new HashMap<String, String>();
+		
 		String selector = "";
+		String selectorId = map.get("selectorId");
+		String previousSelectedValue = map.get("previousSelectedValue");
 		
 		switch(selectorId) {
 		case "sido":
@@ -30,19 +33,19 @@ public class AptServiceImpl implements AptService {
 			break;
 		case "gugun":
 			selector = "gugunName";
-			selectedValue = selectedValue.substring(0, 2);
+			previousSelectedValue = previousSelectedValue.substring(0, 2);
 			break;
 		case "dong":
 			selector = "dongName";
-			selectedValue = selectedValue.substring(0, 4);
+			previousSelectedValue = previousSelectedValue.substring(0, 4);
 			break;
 		}
 		
-		map.put("selector", selector);
-		map.put("selectedValue", selectedValue);
+		param.put("selector", selector);
+		param.put("previousSelectedValue", previousSelectedValue);
 		
 		// DB에서 리스트 받아오기
-		List<Map<String, Object>> list = aptMapper.getSelectorItems(map);
+		List<Map<String, Object>> list = aptMapper.getSelectorItems(param);
 		
 		// json형태의 문자열로 변환
 		ObjectMapper om = new ObjectMapper();
