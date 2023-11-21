@@ -21,9 +21,9 @@ import com.ssafy.home.file.model.ImgInfoDto;
 public class FileUtil {
 
 	// 게시판 이미지 저장 경로(ref: application.properties)
-	@Value("${file.path.board-images}")
+	@Value("${file.path}")
 	private String uploadImagePath;
-	
+
 	// 이미지 저장 및 dto변환
 	public ImgInfoDto storeImg(MultipartFile multipartFile) throws IOException {
 		if(multipartFile.isEmpty()) {
