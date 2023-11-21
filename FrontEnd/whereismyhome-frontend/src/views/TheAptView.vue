@@ -1,9 +1,8 @@
 <script setup>
-import AptMain from '../components/apt/AptMain.vue';
 </script>
 
 <template>
-  <AptMain></AptMain>
+  <router-view></router-view>
 </template>
 
 <style scoped></style>

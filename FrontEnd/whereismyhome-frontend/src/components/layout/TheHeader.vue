@@ -45,6 +45,16 @@ function writeArticle(boardType) {
   router.push({ name: "board-write", params: { boardType } });
 }
 
+// 매물 등록 이동
+function registForsale() {
+  router.push({ name: "forsale-regist" });
+}
+
+// 매물 리스트 이동
+function listForsale() {
+  router.push({ name: "forsale-list" });
+}
+
 // 회원가입 이동
 function join() {
   router.push({ name: "member-join" });
@@ -80,7 +90,7 @@ function myPage() {
           </li>
         </ul>
         <!-- board start-------------------------------------------------------------------------------- -->
-        <ul class="navbar-nav ms-5 me-auto">
+        <ul class="navbar-nav ms-5 me-5">
           <li class="nav-item">
             <a class="nav-link" @click="boardList('announcement')">공지사항</a>
           </li>
@@ -89,6 +99,15 @@ function myPage() {
           </li>
         </ul>
         <!-- board end-------------------------------------------------------------------------------- -->
+
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" @click="registForsale">매물 등록</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click="listForsale">매물 목록</a>
+          </li>
+        </ul>
 
         <!-- userInfo에 로그인 정보가 있을 경우 -->
         <ul class="navbar-nav me-2" v-if="userInfo != null">

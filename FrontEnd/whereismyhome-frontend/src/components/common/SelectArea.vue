@@ -133,7 +133,7 @@ const gugunChanged = () => {
 };
 
 const aptInfo = () => {
-  router.push({ name: "apt" });
+  router.push({ name: "apt-bundle", param: selectedValue.value });
 };
 </script>
 
