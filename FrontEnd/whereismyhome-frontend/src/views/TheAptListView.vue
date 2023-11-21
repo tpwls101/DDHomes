@@ -1,9 +1,13 @@
-<script setup></script>
+<script setup>
+import AptList from "@/components/apt/AptList.vue";
+import AptMap from "@/components/apt/AptMap.vue";
+import AptDetail from "@/components/apt/AptDetail.vue";
+</script>
 
 <template>
-  <div>
-    <h1>아파트매매정보</h1>
-  </div>
+  <div><AptList /></div>
+  <div><AptMap /></div>
+  <div><AptDetail /></div>
 </template>
 
 <style scoped></style>
