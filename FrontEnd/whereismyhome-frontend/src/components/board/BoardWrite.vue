@@ -29,26 +29,6 @@ const boardDto = ref({
   boardType: "",
 });
 
-// 사용자가 파일 업로드시 파일 체크
-function changeFile() {
-  const { files } = event.target;
-  // 파일 첨부하지 않고 취소 누른 경우 에러 발생 방지
-  if (files.length <= 0) {
-    return;
-  }
-
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const fileType = file.type;
-    if (!fileType.includes("image")) {
-      alert("이미지(JPG, JPEG, PNG)를 업로드 해 주세요.");
-      return;
-    }
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-  }
-}
-
 // 입력한 데이터 체크
 function isValidInput() {
   if (boardDto.value.userId === "") {
@@ -131,25 +111,13 @@ const write = () => {
     <div class="col-lg-8 col-md-10 col-sm-12">
       <form id="form-register" method="POST" action="">
         <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="boardType"
-            id="announcement"
-            value="announcement"
-            v-model="boardDto.boardType"
-          />
+          <input class="form-check-input" type="radio" name="boardType" id="announcement" value="announcement"
+            v-model="boardDto.boardType" />
           <label class="form-check-label" for="inlineRadio1">공지사항</label>
         </div>
         <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="boardType"
-            id="information"
-            value="information"
-            v-model="boardDto.boardType"
-          />
+          <input class="form-check-input" type="radio" name="boardType" id="information" value="information"
+            v-model="boardDto.boardType" />
           <label class="form-check-label" for="inlineRadio2">정보</label>
         </div>
 
@@ -159,33 +127,16 @@ const write = () => {
 
         <div class="mb-3">
           <label for="subject" class="form-label">제목 : </label>
-          <input
-            type="text"
-            class="form-control"
-            id="subject"
-            name="subject"
-            placeholder="제목..."
-            v-model="boardDto.subject"
-          />
+          <input type="text" class="form-control" id="subject" name="subject" placeholder="제목..."
+            v-model="boardDto.subject" />
         </div>
         <div class="mb-3">
           <label for="content" class="form-label">내용 : </label>
-          <textarea
-            class="form-control"
-            id="content"
-            name="content"
-            rows="7"
-            v-model="boardDto.content"
-          ></textarea>
+          <textarea class="form-control" id="content" name="content" rows="7" v-model="boardDto.content"></textarea>
         </div>
         <FileUpload></FileUpload>
         <div class="col-auto text-center">
-          <button
-            type="button"
-            id="btn-register"
-            class="btn btn-outline-primary mb-3"
-            @click="write"
-          >
+          <button type="button" id="btn-register" class="btn btn-outline-primary mb-3" @click="write">
             글작성
           </button>
           <!-- <button type="reset" class="btn btn-outline-danger mb-3">초기화</button> -->

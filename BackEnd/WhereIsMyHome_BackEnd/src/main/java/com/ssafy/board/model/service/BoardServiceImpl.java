@@ -109,8 +109,18 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int modifyArticle(BoardDto boardDto) throws Exception{
-		return boardMapper.modifyArticle(boardDto);
+	public void modifyArticle(BoardDto boardDto) throws Exception{
+		boardMapper.modifyArticle(boardDto);
+		// board.xml에서 selectKey해서 articleNo가 채워진다.
+		// 그걸로 이미지 파일을 테이블에 넣는다.
+		List<ImgInfoDto> imgInfos = boardDto.getImgInfos();
+		if (imgInfos != null && !imgInfos.isEmpty()) {
+			for (int i = 0; i < imgInfos.size(); i++) {
+				imgInfos.get(i).setArticleNo(boardDto.getArticleNo());
+			}
+			System.out.println(imgInfos);
+			fileMapper.uploadBoardImg(imgInfos);
+		}
 	}
 
 	@Override

@@ -42,9 +42,22 @@ function getModifyArticle(articleNo, success, fail) {
   local.get(`${url}/modify/${articleNo}`).then(success).catch(fail);
 }
 
-function modifyArticle(boardDto, success, fail) {
-  // dto형태 객체로 파라미터 넘김
-  local.put(`${url}/modify`, JSON.stringify(boardDto)).then(success).catch(fail);
+// function modifyArticle(boardDto, success, fail) {
+//   // dto형태 객체로 파라미터 넘김
+//   local.put(`${url}/modify`, JSON.stringify(boardDto)).then(success).catch(fail);
+// }
+
+function modifyArticle(modifyParams, success, fail) {
+  // 파일 데이터를 FormData로 변경
+  const formData = new FormData();
+  for (let i = 0; i < modifyParams.imgInfos.length; i++) {
+    formData.append("imgInfos", modifyParams.imgInfos[i]);
+  }
+  // dto데이터를 FormData로 변경
+  formData.append("boardDto", JSON.stringify(modifyParams.boardDto));
+
+  // axios
+  file.post(`${url}/modify`, formData).then(success).catch(fail);
 }
 
 function deleteArticle(articleNo, success, fail) {
