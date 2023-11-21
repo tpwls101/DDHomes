@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.apt.model.ForsaleDto;
+import com.ssafy.apt.model.HouseInfoDto;
 
 @Mapper
 public interface ForsaleMapper {
@@ -14,4 +15,6 @@ public interface ForsaleMapper {
 	
 	/** 등록된 매물 리스트 조회 */
 	List<Map<String, String>> forsaleList(String dongCode) throws SQLException;
+	List<HouseInfoDto> searchHouseInfo(Map<String, String> params) throws SQLException;
+	Integer getAvgDealAmount(String aptCode) throws SQLException; 
 }

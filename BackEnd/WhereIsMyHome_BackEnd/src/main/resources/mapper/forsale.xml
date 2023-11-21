@@ -11,6 +11,23 @@
 		<result column="price" property="price"/>
 	</resultMap>
 	
+	<resultMap type="houseInfoDto" id="houseInfo">
+		<result column="aptCode" property="aptCode" />
+		<result column="sigunguCode" property="sigunguCode" />
+		<result column="eubmyundongCode" property="eubmyundongCode" />
+		<result column="dongCode" property="dongCode" />
+		<result column="sidoName" property="sidoName" />
+		<result column="gugunName" property="gugunName" />
+		<result column="dong" property="dong" />
+		<result column="jibun" property="jibun" />
+		<result column="roadName" property="roadName" />
+		<result column="roadNameBonBun" property="roadNameBonBun" />
+		<result column="apartmentName" property="apartmentName" />
+		<result column="buildYear" property="buildYear" />
+		<result column="lat" property="lat" />
+		<result column="lng" property="lng" />
+	</resultMap>
+	
 	<!-- 매물 등록 -->
 	<insert id="registForsale" parameterType="forsaleDto">
 		insert into forsale(aptCode, userId, price)
@@ -28,4 +45,20 @@
 		where dongCode = #{dongCode};
 	</select>
 	
+	<!-- 아파트 동, 이름으로 아파트 정보 검색 -->
+	<select id="searchHouseInfo" parameterType="map" resultMap="houseInfo">
+		select i.aptCode, i.sigunguCode, i.eubmyundongCode, i.dongCode, d.sidoName, d.gugunName, i.dong, i.jibun, i.roadName, i.roadNameBonbun, i.apartmentname, i.buildYear, i.lat, i.lng
+		from houseinfo i join dongcode d
+		on i.dongCode = d.dongCode
+		where i.dong like concat('%', #{dongName}, '%') and
+		i.apartmentName like concat('%', #{apartmentName}, '%')
+	</select>
+	
+	<!-- 아파트 번호로 최근 2년간 거래 가격 평균 검색 -->
+	<!-- 결과값이 null인경우 처리 위해 resultType을 int가 아닌 Integer -->
+	<select id="getAvgDealAmount" parameterType="string" resultType="Integer">
+		select floor(avg(dealAmount) * 1000) as avgDealAmount
+		from housedeal
+		where aptCode = #{aptCode} and dealYear in (date_format(now(), '%Y')-1, date_format(now(), '%Y')-2)
+	</select>
 </mapper>

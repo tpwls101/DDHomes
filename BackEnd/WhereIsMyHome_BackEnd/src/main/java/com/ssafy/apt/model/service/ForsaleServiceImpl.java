@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.apt.model.ForsaleDto;
+import com.ssafy.apt.model.HouseInfoDto;
 import com.ssafy.apt.model.mapper.ForsaleMapper;
 import com.ssafy.home.file.model.ImgInfoDto;
 import com.ssafy.home.file.model.mapper.FileMapper;
@@ -40,6 +41,15 @@ public class ForsaleServiceImpl implements ForsaleService {
 	public List<Map<String, String>> forsaleList(String dongCode) throws Exception {
 		List<Map<String, String>> list = forsaleMapper.forsaleList(dongCode);
 		return list;
+	}
+	
+	public List<HouseInfoDto> searchHouseInfo(Map<String, String> params) throws Exception {
+		return forsaleMapper.searchHouseInfo(params);
+	}
+
+	@Override
+	public Integer getAvgDealAmount(String aptCode) throws Exception {
+		return forsaleMapper.getAvgDealAmount(aptCode);
 	}
 
 }
