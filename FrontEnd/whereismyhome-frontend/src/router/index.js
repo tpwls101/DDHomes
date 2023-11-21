@@ -7,7 +7,7 @@ const router = createRouter({
       path: "/",
       name: "main",
       component: () => import("@/views/TheAptView.vue"),
-      redirect: {name: "apt-main"},
+      redirect: { name: "apt-main" },
       children: [
         {
           path: "main",
@@ -19,7 +19,7 @@ const router = createRouter({
           name: "apt-bundle",
           component: () => import("@/components/apt/AptBundle.vue"),
         },
-      ]
+      ],
     },
     {
       path: "/member",
@@ -79,20 +79,20 @@ const router = createRouter({
     {
       path: "/forsale",
       name: "forsale",
-      component: () => import("@/views/TheForSaleView.vue"),
+      component: () => import("@/views/TheForsaleView.vue"),
       children: [
         {
           path: "regist",
           name: "forsale-regist",
-          component: () => import("@/components/forsale/ForSaleRegist.vue"),
+          component: () => import("@/components/forsale/ForsaleRegist.vue"),
         },
         {
           path: "list",
           name: "forsale-list",
-          component: () => import("@/components/forsale/ForSaleList.vue"),
+          component: () => import("@/components/forsale/ForsaleList.vue"),
         },
-      ]
-    }
+      ],
+    },
   ],
 });
 
