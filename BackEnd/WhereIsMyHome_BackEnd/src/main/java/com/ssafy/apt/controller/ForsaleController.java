@@ -1,11 +1,14 @@
 package com.ssafy.apt.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +18,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.apt.model.ForsaleDto;
+import com.ssafy.apt.model.HouseInfoDto;
 import com.ssafy.apt.model.service.ForsaleService;
+import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.home.file.model.ImgInfoDto;
 import com.ssafy.util.FileUtil;
 
@@ -54,6 +59,21 @@ public class ForsaleController {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch(Exception e) {
 			System.out.println("forsale uploadImg Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	
+	/** 등록된 매물 리스트 조회 */
+	@GetMapping("/forsaleList/{dongCode}")
+	public ResponseEntity<?> list(@PathVariable String dongCode) {
+		try {
+			System.out.println("dongCode : " + dongCode);
+			List<Map<String, String>> list = forsaleService.forsaleList(dongCode);
+			System.out.println(list);
+			return new ResponseEntity<List<Map<String, String>>>(list, HttpStatus.OK);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

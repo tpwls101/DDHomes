@@ -23,8 +23,6 @@ const dongList = ref({}); // 동 option들을 담을 리스트
 const selector = ref(); // sido, gugun, dong
 const selectedValue = ref(""); // 현재 선택된 값의 value
 
-const selectedId = ref(""); // sido, gugun, dong
-
 onMounted(() => {
   selectorSetting();
 });
@@ -53,15 +51,12 @@ const addOption = (selectorId, data) => {
   switch (selectorId) {
     case "sido":
       sidoList.value = data;
-      selectedId.value = selectorId.value;
       break;
     case "gugun":
       gugunList.value = data;
-      selectedId.value = selectorId.value;
       break;
     case "dong":
       dongList.value = data;
-      selectedId.value = selectorId.value;
       break;
   }
 };
@@ -111,70 +106,30 @@ const gugunChanged = () => {
 
 // 아파트매매정보 버튼 클릭 시 호출되는 함수
 const aptInfo = () => {
-  // selector.value = document.querySelector("#dong");
-  // selectedValue.value = selector.value[selector.value.selectedIndex].value;
-  // console.log("현재 선택된 동의 value 값(dongCode) : " + selectedValue.value);
-
-  console.log("dd");
-  // console.log(document.querySelector("#sido"));
-
-  // // 시도/구군/동 모두 선택했을 때
-  // if (document.querySelector("#dong") != null) {
-  //   selector.value = document.querySelector("#dong");
-  //   selectedValue.value = selector.value[selector.value.selectedIndex].value;
-  //   console.log("현재 선택된 동의 value 값(dongCode) : " + selectedValue.value);
-  //   dongCode.value = selectedValue.value;
-  // }
-  // // 시도/구군을 선택했을 때
-  // else if (document.querySelector("#gugun") != null) {
-  //   selector.value = document.querySelector("#gugun");
-  //   selectedValue.value = selector.value[selector.value.selectedIndex].value;
-  //   console.log("현재 선택된 구군의 value 값(dongCode) : " + selectedValue.value);
-  //   dongCode.value = selectedValue.value;
-  // }
-  // // 시도를 선택했을 때
-  // else if (document.querySelector("#sido") != null) {
-  //   selector.value = document.querySelector("#sido");
-  //   selectedValue.value = selector.value[selector.value.selectedIndex].value;
-  //   console.log("현재 선택된 시도의 value 값(dongCode) : " + selectedValue.value);
-  //   dongCode.value = selectedValue.value;
-  // }
-  // // 아무것도 선택하지 않았을 때 -> 전국에 있는 매물 리스트 보여주기
-  // else {
-  //   dongCode.value = "";
+  // if (
+  //   document.querySelector("#sido").value[document.querySelector("#sido").value.selectedIndex].value
+  // ) {
+  //   alert("시도를 선택해주세요.");
+  // } else if (document.querySelector("#gugun") == "") {
+  //   alert("구군을 선택해주세요.");
+  // } else if (document.querySelector("#dong") == "") {
+  //   alert("동을 선택해주세요.");
   // }
 
-  console.log(selectedId.value);
-  // 시도/구군/동 모두 선택했을 때
-  if (selectedId.value == "dong") {
+  if (
+    document.querySelector("#sido").value != "" &&
+    document.querySelector("#gugun").value != "" &&
+    document.querySelector("#dong").value != ""
+  ) {
     selector.value = document.querySelector("#dong");
     selectedValue.value = selector.value[selector.value.selectedIndex].value;
     console.log("현재 선택된 동의 value 값(dongCode) : " + selectedValue.value);
-    dongCode.value = selectedValue.value;
-  }
-  // 시도/구군을 선택했을 때
-  else if (selectedId.value == "gugun") {
-    selector.value = document.querySelector("#gugun");
-    selectedValue.value = selector.value[selector.value.selectedIndex].value;
-    console.log("현재 선택된 구군의 value 값(dongCode) : " + selectedValue.value);
-    dongCode.value = selectedValue.value;
-  }
-  // 시도를 선택했을 때
-  else if (selectedId.value == "sido") {
-    selector.value = document.querySelector("#sido");
-    selectedValue.value = selector.value[selector.value.selectedIndex].value;
-    console.log("현재 선택된 시도의 value 값(dongCode) : " + selectedValue.value);
-    dongCode.value = selectedValue.value;
-  }
-  // 아무것도 선택하지 않았을 때 -> 전국에 있는 매물 리스트 보여주기
-  else {
-    dongCode.value = "";
-  }
 
-  // router.push({ name: "apt-bundle", param: selectedValue.value }); // dongCode를 매개변수로 전달
-  // dongCode를 aptStore에 저장
-  // dongCode.value = selectedValue.value;
-  router.push({ name: "apt-bundle" });
+    // router.push({ name: "apt-bundle", param: selectedValue.value }); // dongCode를 매개변수로 전달
+    // dongCode를 aptStore에 저장
+    dongCode.value = selectedValue.value;
+    router.push({ name: "apt-bundle" });
+  }
 };
 </script>
 

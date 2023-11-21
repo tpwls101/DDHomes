@@ -22,4 +22,10 @@ function registForSale(params, success, fail) {
   file.post(`${url}/regist`, formData).then(success).catch(fail);
 }
 
-export { searchAptName, registForSale };
+// 파라미터로 변수 전달
+function getForsaleList(dongCode, success, fail) {
+  console.log(dongCode);
+  local.get(`${url}/forsaleList/${dongCode}`).then(success).catch(fail);
+}
+
+export { searchAptName, registForSale, getForsaleList };

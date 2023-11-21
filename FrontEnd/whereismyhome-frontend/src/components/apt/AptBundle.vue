@@ -20,19 +20,18 @@ console.log(dongCode);
 </script>
 
 <template>
-  <div>
-    <h1>AptBundle</h1>
-    <div></div>
-    <div>
-      <AptList />
-    </div>
-    <div>
-      <AptMap />
-    </div>
-    <div>
-      <AptDetail />
-    </div>
+  <div class="in-a-row">
+    <AptList />
+    <AptMap />
+    <AptDetail />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.in-a-row {
+  display: flex;
+  flex-direction: row;
+  height: 600px;
+  background-color: blue;
+}
+</style>

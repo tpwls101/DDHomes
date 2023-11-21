@@ -74,6 +74,7 @@ public class AptController {
 		return "apt/info";
 	}
 	
+	
 	@GetMapping("/deal")
 	public String deal(String aptCode, Model model) {
 		try {
