@@ -5,6 +5,8 @@ public class HouseInfoDto {
 	private String sigunguCode;
 	private String eubmyundongCode;
 	private String dongCode;
+	private String sidoName;
+	private String gugunName;
 	private String dong;
 	private String jibun;
 	private String roadName;
@@ -38,6 +40,18 @@ public class HouseInfoDto {
 	}
 	public void setDongCode(String dongCode) {
 		this.dongCode = dongCode;
+	}
+	public String getSidoName() {
+		return sidoName;
+	}
+	public void setSidoName(String sidoName) {
+		this.sidoName = sidoName;
+	}
+	public String getGugunName() {
+		return gugunName;
+	}
+	public void setGugunName(String gugunName) {
+		this.gugunName = gugunName;
 	}
 	public String getDong() {
 		return dong;
@@ -92,9 +106,10 @@ public class HouseInfoDto {
 	@Override
 	public String toString() {
 		return "HouseInfoDto [aptCode=" + aptCode + ", sigunguCode=" + sigunguCode + ", eubmyundongCode="
-				+ eubmyundongCode + ", dongCode=" + dongCode + ", dong=" + dong + ", jibun=" + jibun + ", roadName="
-				+ roadName + ", roadNameBonBun=" + roadNameBonBun + ", apartmentName=" + apartmentName + ", buildYear="
-				+ buildYear + ", lat=" + lat + ", lng=" + lng + "]";
+				+ eubmyundongCode + ", dongCode=" + dongCode + ", sidoName=" + sidoName + ", gugunName=" + gugunName
+				+ ", dong=" + dong + ", jibun=" + jibun + ", roadName=" + roadName + ", roadNameBonBun="
+				+ roadNameBonBun + ", apartmentName=" + apartmentName + ", buildYear=" + buildYear + ", lat=" + lat
+				+ ", lng=" + lng + "]";
 	}
 	
 }

@@ -5,11 +5,11 @@ const file = fileAxios();
 
 const url = "/forsale";
 
-function searchAptName(apartmentName, success, fail) {
-  local.get(`${url}/getBoardImgInfo/${apartmentName}`).then(success).catch(fail);
+function searchAptName(params, success, fail) {
+  local.get(`${url}/search`, { params: params }).then(success).catch(fail);
 }
 
-function registForSale(params, success, fail) {
+function registForsale(params, success, fail) {
   // 파일 데이터를 FormData로 변경
   const formData = new FormData();
   for (let i = 0; i < params.imgInfos.length; i++) {
@@ -22,4 +22,8 @@ function registForSale(params, success, fail) {
   file.post(`${url}/regist`, formData).then(success).catch(fail);
 }
 
-export { searchAptName, registForSale };
+function avgDealAmount(aptCode, success, fail) {
+  local.get(`${url}/avgDealAmount/${aptCode}`).then(success).catch(fail);
+}
+
+export { searchAptName, registForsale, avgDealAmount };
