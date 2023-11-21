@@ -41,7 +41,7 @@ public class FileController {
 	FileUtil fileUtil;
 
 	// 게시판 이미지 저장 경로(ref: application.properties)
-	@Value("${file.path.board-images}")
+	@Value("${file.path}")
 	private String uploadImagePath;
 	
 	

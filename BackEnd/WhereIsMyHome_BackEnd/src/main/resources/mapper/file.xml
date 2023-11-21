@@ -13,12 +13,21 @@
 		<result column="saveName" property="saveName" />	
 	</resultMap>
 
-	<!-- 이미지 등록 -->
+	<!-- 게시판 이미지 등록 -->
 	<insert id="uploadBoardImg" parameterType="java.util.List">
 		insert into imginfo (articleNo, saveFolder, originalName, saveName)
 		values
 		<foreach collection="imgInfos" item="imgInfo" separator=", ">
 			(#{imgInfo.articleNo}, #{imgInfo.saveFolder}, #{imgInfo.originalName}, #{imgInfo.saveName})
+		</foreach>
+	</insert>
+	
+	<!-- 매물 이미지 등록 -->
+	<insert id="uploadBoardForsale" parameterType="java.util.List">
+		insert into imginfo (forsaleNo, saveFolder, originalName, saveName)
+		values
+		<foreach collection="imgInfos" item="imgInfo" separator=", ">
+			(#{imgInfo.forsaleNo}, #{imgInfo.saveFolder}, #{imgInfo.originalName}, #{imgInfo.saveName})
 		</foreach>
 	</insert>
 	
