@@ -15,4 +15,16 @@ function getBoardImgInfo(articleNo, success, fail) {
   local.get(`${url}/getBoardImgInfo/${articleNo}`).then(success).catch(fail);
 }
 
-export { getBoardImgInfo, getImg };
+function deleteImg(imgInfoDto, success, fail) {
+  let param = {
+    imgInfoNo: imgInfoDto.imgInfoNo,
+    forsaleNo: imgInfoDto.forsaleNo,
+    articleNo: imgInfoDto.articleNo,
+    saveFolder: imgInfoDto.saveFolder,
+    originalName: imgInfoDto.originalName,
+    saveName: imgInfoDto.saveName,
+  }
+  local.delete(`${url}/deleteImg`, { params: param }).then(success).catch(fail);
+}
+
+export { getImg, getBoardImgInfo, deleteImg };

@@ -13,5 +13,6 @@ public interface FileMapper {
 
 	List<ImgInfoDto> getBoardImgInfo(int articleNo) throws SQLException;
 	int uploadBoardImg(List<ImgInfoDto> imgInfos) throws SQLException;
+	void deleteImg(int imginfoNo) throws SQLException;
 	
 }

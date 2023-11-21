@@ -61,6 +61,11 @@ export const useMemberStore = defineStore(
         (response) => {
           if (response.status === httpStatusCode.OK) {
             userInfo.value = response.data.userInfo; // 세션을 가져온 느낌?
+<<<<<<< HEAD
+=======
+            // userInfo.value = response.data;
+            // isLogin.value = response.data.isLogin;
+>>>>>>> ae75324ade6721a8d65b2696ea80a8cb919c6c8e
             console.log("3. getUserInfo data >> ", response.data);
           } else {
             console.log("유저 정보 없음!!!!");

@@ -183,17 +183,43 @@ public class BoardController {
 	/**
 	 * 글 수정하기
 	 */
-	@PutMapping("/modify")
-	public ResponseEntity<?> modify(@RequestBody BoardDto boardDto) {
+	@PostMapping("/modify")
+	public ResponseEntity<?> modify(MultipartHttpServletRequest formData) {
 		try {
+			// boardDto(JSON문자열)를 BoardDto객체로 변환(jackson)
+			ObjectMapper objectMapper = new ObjectMapper();
+			BoardDto boardDto = objectMapper.readValue(formData.getParameter("boardDto"), BoardDto.class);
+			// 파일들 받아오기
+			List<MultipartFile> multipartFiles = formData.getFiles("imgInfos");
+			
+			// 파일들 저장 및 dto 리스트로 변환
+			List<ImgInfoDto> imgInfos = fileUtil.storeImgs(multipartFiles);
+			
+			// dto에 파일 dto 리스트 추가
+			boardDto.setImgInfos(imgInfos);
+			
+			// 서비스 호출
 			boardService.modifyArticle(boardDto);
-			return new ResponseEntity<BoardDto>(HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println("board list Controller Error");
+	
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch(Exception e) {
+			System.out.println("board modify Controller Error");
 			e.printStackTrace();
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+//	@PutMapping("/modify")
+//	public ResponseEntity<?> modify(@RequestBody BoardDto boardDto) {
+//		try {
+//			boardService.modifyArticle(boardDto);
+//			return new ResponseEntity<BoardDto>(HttpStatus.OK);
+//		} catch (Exception e) {
+//			System.out.println("board list Controller Error");
+//			e.printStackTrace();
+//			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 	
 	/**
 	 * 글 삭제하기
