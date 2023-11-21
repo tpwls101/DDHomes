@@ -12,14 +12,22 @@ const param = ref({
   previousSelectedValue: "", // 이전 셀렉터 선택값
 });
 
-const list = ref({}); // option들을 담을 리스트
-const selector = ref();
+const sidoList = ref({}); // option들을 담을 리스트
+const gugunList = ref({}); // option들을 담을 리스트
+const dongList = ref({}); // option들을 담을 리스트
 const length = ref(0);
 const opt = ref("");
 
+const selector = ref();
+const selectedValue = ref("");
+
 onMounted(() => {
-  // axios API 호출
+  selectorSetting();
+});
+
+const selectorSetting = () => {
   // select 선택해서 option 값 불러오기
+  // axios API 호출
   setSelector(
     param.value,
     ({ data }) => {
@@ -27,57 +35,101 @@ onMounted(() => {
       console.log(data);
       // data.value = data.value.text();
       addOption(param.value.selectorId, data);
+
+      // list.value = data;
+      // console.log(list.value);
     },
     (error) => {
       console.log("error");
     }
   );
-});
+};
 
 //셀렉터 옵션 설정
 const addOption = (selectorId, data) => {
   console.log("selectorId : " + selectorId);
   console.log("select에 option들을 추가해줍시다!!!");
-  list.value = data;
-  console.log(list.value);
 
   switch (selectorId) {
     case "sido":
-      break;
-
+      sidoList.value = data;
     case "gugun":
-      length.value = list.value.length;
-      console.log("length : " + length.value);
-
-      opt.value = `<select class="form-select bg-secondary text-light" id="gugun">`;
-      opt.value += `<option value="" selected="selected">구군선택</option>`;
-      for (let i = 0; i < length.value; i++) {
-        opt.value += `<option value="` + list[i].dongCode + `">` + list[i].gugunName + `</option>`;
-      }
-      opt.value += `</select>`;
-      console.log("opt : " + opt.value);
-      break;
+      gugunList.value = data;
     case "dong":
-      length.value = list.value.length;
-      console.log("length : " + length.value);
-
-      opt.value = `<select class="form-select bg-secondary text-light" id="dong">`;
-      opt.value += `<option value="" selected="selected">동선택</option>`;
-      for (let i = 0; i < length.value; i++) {
-        opt.value += `<option value="` + list[i].dongCode + `">` + list[i].dongName + `</option>`;
-      }
-      opt.value += `</select>`;
-      console.log("opt : " + opt.value);
-      break;
+      dongList.value = data;
   }
+
+  // list.value = data;
+  // console.log(list.value);
+  // switch (selectorId) {
+  //   case "sido":
+  //     break;
+  //   case "gugun":
+  //     length.value = list.value.length;
+  //     console.log("length : " + length.value);
+  //     opt.value = `<select class="form-select bg-secondary text-light" id="gugun">`;
+  //     opt.value += `<option value="" selected="selected">구군선택</option>`;
+  //     for (let i = 0; i < length.value; i++) {
+  //       opt.value += `<option value="` + list[i].dongCode + `">` + list[i].gugunName + `</option>`;
+  //     }
+  //     opt.value += `</select>`;
+  //     console.log("opt : " + opt.value);
+  //     break;
+  //   case "dong":
+  //     length.value = list.value.length;
+  //     console.log("length : " + length.value);
+  //     opt.value = `<select class="form-select bg-secondary text-light" id="dong">`;
+  //     opt.value += `<option value="" selected="selected">동선택</option>`;
+  //     for (let i = 0; i < length.value; i++) {
+  //       opt.value += `<option value="` + list[i].dongCode + `">` + list[i].dongName + `</option>`;
+  //     }
+  //     opt.value += `</select>`;
+  //     console.log("opt : " + opt.value);
+  //     break;
+  // }
 };
 
+// 앞의 selector 선택하면 뒤에 있는 selector의 옵션은 하나도 없게 한다.
+const initOption = (selectorId) => {
+  const options = document.querySelector("#" + selectorId);
+  options.length = 1;
+};
+
+// 시도 값이 선택되면 구군 정보 얻기
 const sidoChanged = () => {
-  console.log("시도 값 바뀜");
-  previousSelectedValue.value = this[this.selectorId].value;
-  console.log(previousSelectedValue.value);
-  // @@@@@@@@@@@@@@@@@@
-  setSelector(root, "gugun", selectedValue);
+  console.log("시도 선택 : 시도 값 바뀜");
+
+  selector.value = document.getElementById("sido");
+  // console.log(selector.value);
+
+  // selectedValue.value = this[this.selectorIndex].value;
+  selectedValue.value = selector.value.options[selector.value.selectedIndex].value;
+  console.log("현재 선택된 시도의 value 값(dongCode) : " + selectedValue.value);
+
+  param.value.selectorId = "gugun";
+  param.value.previousSelectedValue = selectedValue.value;
+  selectorSetting(param.value);
+
+  initOption("gugun");
+  initOption("dong");
+};
+
+// 구군 값이 선택되면 동 정보 얻기
+const gugunChanged = () => {
+  console.log("구군 선택 : 구군 값 바뀜");
+
+  selector.value = document.getElementById("gugun");
+  // console.log(selector.value);
+
+  // selectedValue.value = this[this.selectorIndex].value;
+  selectedValue.value = selector.value.options[selector.value.selectedIndex].value;
+  console.log("현재 선택된 구군의 value 값(dongCode) : " + selectedValue.value);
+
+  param.value.selectorId = "dong";
+  param.value.previousSelectedValue = selectedValue.value;
+  selectorSetting(param.value);
+
+  initOption("dong");
 };
 
 const aptInfo = () => {
@@ -88,25 +140,31 @@ const aptInfo = () => {
 <template>
   <div class="row col-md-12 justify-content-center mb-2">
     <div class="form-group col-md-2">
-      <select class="form-select bg-secondary text-light" id="sido" @click="sidoChanged">
+      <select class="form-select bg-secondary text-light" id="sido" @change="sidoChanged">
         <option value="" selected="selected">시도선택</option>
-        <option v-for="item in list" :key="item.dongCode" :value="item.dongCode">
+        <option v-for="item in sidoList" :key="item.dongCode" :value="item.dongCode">
           {{ item.sidoName }}
         </option>
       </select>
       <!-- <div v-html="opt"></div> -->
     </div>
     <div class="form-group col-md-2">
-      <select class="form-select bg-secondary text-light" id="gugun">
+      <select class="form-select bg-secondary text-light" id="gugun" @change="gugunChanged">
         <option value="" selected="selected">구군선택</option>
+        <option v-for="item in gugunList" :key="item.dongCode" :value="item.dongCode">
+          {{ item.gugunName }}
+        </option>
       </select>
-      <div v-html="opt"></div>
+      <!-- <div v-html="opt"></div> -->
     </div>
     <div class="form-group col-md-2">
-      <select class="form-select bg-secondary text-light" id="dong">
+      <select class="form-select bg-secondary text-light" id="dong" @change="dongChanged">
         <option value="" selected="selected">동선택</option>
+        <option v-for="item in dongList" :key="item.dongCode" :value="item.dongCode">
+          {{ item.dongName }}
+        </option>
       </select>
-      <div v-html="opt"></div>
+      <!-- <div v-html="opt"></div> -->
     </div>
 
     <!-- <div class="form-group col-md-2">
