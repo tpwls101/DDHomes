@@ -6,13 +6,13 @@ const emit = defineEmits(["imgDeleteBtnClick"]);
 function imgDeleteBtnClick() {
   emit("imgDeleteBtnClick", props.filename);
 }
-
 </script>
 
 <template>
   <div>
     <div class="imginfo">
-      {{ filename }}<input class="btn-delete-img" type="button" value="삭제" @click="imgDeleteBtnClick">
+      {{ filename
+      }}<input class="btn-delete-img" type="button" value="삭제" @click="imgDeleteBtnClick" />
     </div>
   </div>
 </template>

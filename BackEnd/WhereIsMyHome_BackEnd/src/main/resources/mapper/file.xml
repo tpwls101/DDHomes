@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.home.file.model.mapper.FileMapper">
 
 	<resultMap type="imgInfoDto" id="img">
-		<result column="imginfoNo" property="imginfoNo" />	
+		<result column="imgInfoNo" property="imgInfoNo" />	
 		<result column="forsaleNo" property="forsaleNo" />	
 		<result column="articleNo" property="articleNo" />	
 		<result column="saveFolder" property="saveFolder" />	
@@ -24,10 +24,16 @@
 	
 	<!-- Board - imginfo 얻기 -->
 	<select id="getBoardImgInfo" parameterType="int" resultMap="img">
-		select i.articleNo, i.saveFolder, i.originalName, i.saveName
+		select i.imginfoNo, i.articleNo, i.saveFolder, i.originalName, i.saveName
 		from imginfo i join board b
 		on i.articleNo = b.articleNo
-		where i.articleNo = #{articleNo};
+		where i.articleNo = #{articleNo}
 	</select>
+	
+	<!-- 이미지 DB에서 삭제 -->
+	<delete id="deleteImg" parameterType="int">
+		delete from imginfo
+		where imginfoNo = #{imginfoNo}
+	</delete>
 	
 </mapper>

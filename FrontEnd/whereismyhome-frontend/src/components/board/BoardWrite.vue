@@ -4,8 +4,7 @@ import { useRouter, useRoute } from "vue-router";
 import { registArticle } from "@/api/board";
 import { useMemberStore } from "../../stores/member";
 import { storeToRefs } from "pinia";
-import FileUpload from '@/components/common/FileUpload.vue';
-
+import FileUpload from "@/components/common/FileUpload.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -29,26 +28,6 @@ const boardDto = ref({
   content: "",
   boardType: "",
 });
-
-// 사용자가 파일 업로드시 파일 체크
-function changeFile() {
-  const { files } = event.target;
-  // 파일 첨부하지 않고 취소 누른 경우 에러 발생 방지
-  if (files.length <= 0) {
-    return;
-  }
-
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const fileType = file.type;
-    if (!fileType.includes('image')) {
-      alert("이미지(JPG, JPEG, PNG)를 업로드 해 주세요.");
-      return;
-    }
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-  }
-}
 
 // 입력한 데이터 체크
 function isValidInput() {
@@ -160,7 +139,7 @@ const write = () => {
           <button type="button" id="btn-register" class="btn btn-outline-primary mb-3" @click="write">
             글작성
           </button>
-          <button type="reset" class="btn btn-outline-danger mb-3">초기화</button>
+          <!-- <button type="reset" class="btn btn-outline-danger mb-3">초기화</button> -->
         </div>
       </form>
     </div>

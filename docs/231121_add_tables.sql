@@ -87,6 +87,9 @@ CREATE TABLE IF NOT EXISTS `imginfo` (
     `saveName` 		VARCHAR(50) NOT NULL
 );
 
+-- imginfo 테이블 컬럼명 수정(231121)
+alter table imginfo change imginfoNo imgInfoNo int auto_increment;
+
 -- favorite 테이블 추가
 CREATE TABLE IF NOT EXISTS `favorite` (
     `favoriteNo` 	INT 		AUTO_INCREMENT PRIMARY KEY,
