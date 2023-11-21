@@ -15,7 +15,7 @@ public interface BoardService {
 	PageNavigation makePageNavigation(Map<String, String> map) throws Exception;
 	BoardDto getArticle(int articleNo) throws Exception;
 	int updateHit(int articleNo) throws Exception;
-	int modifyArticle(BoardDto boardDto) throws Exception;
+	void modifyArticle(BoardDto boardDto) throws Exception;
 	int deleteArticle(int articleNo) throws Exception;
 	String getBoardType(int articleNo) throws Exception;
 	

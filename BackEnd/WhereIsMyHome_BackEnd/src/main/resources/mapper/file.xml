@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.home.file.model.mapper.FileMapper">
 
 	<resultMap type="imgInfoDto" id="img">
-		<result column="imginfoNo" property="imginfoNo" />	
+		<result column="imgInfoNo" property="imgInfoNo" />	
 		<result column="forsaleNo" property="forsaleNo" />	
 		<result column="articleNo" property="articleNo" />	
 		<result column="saveFolder" property="saveFolder" />	

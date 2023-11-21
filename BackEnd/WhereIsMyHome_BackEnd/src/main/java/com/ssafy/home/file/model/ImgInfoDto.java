@@ -1,7 +1,7 @@
 package com.ssafy.home.file.model;
 
 public class ImgInfoDto {
-	private int imginfoNo;
+	private int imgInfoNo;
 	private int forsaleNo;
 	private int articleNo;
 	private String saveFolder;
@@ -9,11 +9,11 @@ public class ImgInfoDto {
 	private String saveName;
 	
 	
-	public int getImginfoNo() {
-		return imginfoNo;
+	public int getImgInfoNo() {
+		return imgInfoNo;
 	}
-	public void setImginfoNo(int imginfoNo) {
-		this.imginfoNo = imginfoNo;
+	public void setImgInfoNo(int imgInfoNo) {
+		this.imgInfoNo = imgInfoNo;
 	}
 	public int getForsaleNo() {
 		return forsaleNo;
@@ -49,7 +49,7 @@ public class ImgInfoDto {
 	
 	@Override
 	public String toString() {
-		return "ImgInfoDto [imginfoNo=" + imginfoNo + ", forsaleNo=" + forsaleNo + ", articleNo=" + articleNo
+		return "ImgInfoDto [imgInfoNo=" + imgInfoNo + ", forsaleNo=" + forsaleNo + ", articleNo=" + articleNo
 				+ ", saveFolder=" + saveFolder + ", originalName=" + originalName + ", saveName=" + saveName + "]";
 	}
 	

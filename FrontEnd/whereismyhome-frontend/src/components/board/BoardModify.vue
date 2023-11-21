@@ -51,13 +51,22 @@ function isValidInput() {
 
 // 글 수정
 const ArticleModify = () => {
+  // 입력 데이터 누락 확인
   if (!isValidInput()) {
-    console.log("not valid");
     return;
   }
 
+  // 파일 확인
+  const imgInfos = document.querySelector("#upload-img").files;
+
+  // 게시판 등록 위한 boardDto와 파일인 imgInfos를 하나의 파라미터로 등록
+  const modifyParams = {
+    boardDto: boardDto.value,
+    imgInfos: imgInfos,
+  };
+
   modifyArticle(
-    boardDto.value,
+    modifyParams,
     ({ data }) => {
       console.log(data);
       let articleNo = boardDto.articleNo;
