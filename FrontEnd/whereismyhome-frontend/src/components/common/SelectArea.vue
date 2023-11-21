@@ -104,7 +104,7 @@ const aptInfo = () => {
   selectedValue.value = selector.value[selector.value.selectedIndex].value;
   console.log("현재 선택된 동의 value 값(dongCode) : " + selectedValue.value);
 
-  router.push({ name: "apt", param: selectedValue.value });
+  router.push({ name: "apt-bundle", param: selectedValue.value });
 };
 </script>
 
