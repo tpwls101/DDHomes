@@ -51,7 +51,7 @@
 		</choose>
 	</select>
 
-	<!-- 선택한 dongCode로 house info 받기 -->
+	<!-- 선택한 dongCode로 house info 받기 --> 
 	<select id="getHouseInfo" parameterType="string" resultMap="houseInfo">
 		select aptCode, roadName, roadNameBonBun, dongCode, dong, apartmentName, lng, lat
 		from houseinfo

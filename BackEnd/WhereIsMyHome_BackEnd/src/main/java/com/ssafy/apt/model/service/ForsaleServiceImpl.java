@@ -1,6 +1,7 @@
 package com.ssafy.apt.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,12 @@ public class ForsaleServiceImpl implements ForsaleService {
 //			System.out.println(imgInfos);
 			fileMapper.uploadBoardForsale(imgInfos);
 		}
+	}
+
+	@Override
+	public List<Map<String, String>> forsaleList(String dongCode) throws Exception {
+		List<Map<String, String>> list = forsaleMapper.forsaleList(dongCode);
+		return list;
 	}
 
 }
