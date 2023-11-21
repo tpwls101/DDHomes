@@ -1,9 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-// import { initOption, setSelector, addOption } from "@/util/selector-util";
 import { setSelector } from "@/api/apt";
-import { isTemplateNode } from "@vue/compiler-core";
 
 const router = useRouter();
 
@@ -12,14 +10,12 @@ const param = ref({
   previousSelectedValue: "", // 이전 셀렉터 선택값
 });
 
-const sidoList = ref({}); // option들을 담을 리스트
-const gugunList = ref({}); // option들을 담을 리스트
-const dongList = ref({}); // option들을 담을 리스트
-const length = ref(0);
-const opt = ref("");
+const sidoList = ref({}); // 시도 option들을 담을 리스트
+const gugunList = ref({}); // 구군 option들을 담을 리스트
+const dongList = ref({}); // 동 option들을 담을 리스트
 
-const selector = ref();
-const selectedValue = ref("");
+const selector = ref(); // sido, gugun, dong
+const selectedValue = ref(""); // 현재 선택된 값의 value
 
 onMounted(() => {
   selectorSetting();
@@ -33,11 +29,7 @@ const selectorSetting = () => {
     ({ data }) => {
       console.log("success");
       console.log(data);
-      // data.value = data.value.text();
       addOption(param.value.selectorId, data);
-
-      // list.value = data;
-      // console.log(list.value);
     },
     (error) => {
       console.log("error");
@@ -53,40 +45,14 @@ const addOption = (selectorId, data) => {
   switch (selectorId) {
     case "sido":
       sidoList.value = data;
+      break;
     case "gugun":
       gugunList.value = data;
+      break;
     case "dong":
       dongList.value = data;
+      break;
   }
-
-  // list.value = data;
-  // console.log(list.value);
-  // switch (selectorId) {
-  //   case "sido":
-  //     break;
-  //   case "gugun":
-  //     length.value = list.value.length;
-  //     console.log("length : " + length.value);
-  //     opt.value = `<select class="form-select bg-secondary text-light" id="gugun">`;
-  //     opt.value += `<option value="" selected="selected">구군선택</option>`;
-  //     for (let i = 0; i < length.value; i++) {
-  //       opt.value += `<option value="` + list[i].dongCode + `">` + list[i].gugunName + `</option>`;
-  //     }
-  //     opt.value += `</select>`;
-  //     console.log("opt : " + opt.value);
-  //     break;
-  //   case "dong":
-  //     length.value = list.value.length;
-  //     console.log("length : " + length.value);
-  //     opt.value = `<select class="form-select bg-secondary text-light" id="dong">`;
-  //     opt.value += `<option value="" selected="selected">동선택</option>`;
-  //     for (let i = 0; i < length.value; i++) {
-  //       opt.value += `<option value="` + list[i].dongCode + `">` + list[i].dongName + `</option>`;
-  //     }
-  //     opt.value += `</select>`;
-  //     console.log("opt : " + opt.value);
-  //     break;
-  // }
 };
 
 // 앞의 selector 선택하면 뒤에 있는 selector의 옵션은 하나도 없게 한다.
@@ -132,8 +98,13 @@ const gugunChanged = () => {
   initOption("dong");
 };
 
+// 아파트매매정보 버튼 클릭 시 호출되는 함수
 const aptInfo = () => {
-  router.push({ name: "apt" });
+  selector.value = document.querySelector("#dong");
+  selectedValue.value = selector.value[selector.value.selectedIndex].value;
+  console.log("현재 선택된 동의 value 값(dongCode) : " + selectedValue.value);
+
+  router.push({ name: "apt", param: selectedValue.value });
 };
 </script>
 
@@ -146,7 +117,6 @@ const aptInfo = () => {
           {{ item.sidoName }}
         </option>
       </select>
-      <!-- <div v-html="opt"></div> -->
     </div>
     <div class="form-group col-md-2">
       <select class="form-select bg-secondary text-light" id="gugun" @change="gugunChanged">
@@ -155,7 +125,6 @@ const aptInfo = () => {
           {{ item.gugunName }}
         </option>
       </select>
-      <!-- <div v-html="opt"></div> -->
     </div>
     <div class="form-group col-md-2">
       <select class="form-select bg-secondary text-light" id="dong" @change="dongChanged">
@@ -164,7 +133,6 @@ const aptInfo = () => {
           {{ item.dongName }}
         </option>
       </select>
-      <!-- <div v-html="opt"></div> -->
     </div>
 
     <!-- <div class="form-group col-md-2">

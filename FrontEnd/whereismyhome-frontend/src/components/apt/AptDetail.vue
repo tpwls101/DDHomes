@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div></div>
+  <div>상세조회</div>
 </template>
 
 <style scoped></style>

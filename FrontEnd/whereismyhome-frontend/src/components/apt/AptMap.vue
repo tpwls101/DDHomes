@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div></div>
+  <div>지도</div>
 </template>
 
 <style scoped></style>
