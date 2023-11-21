@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -77,5 +79,41 @@ public class ForsaleController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	/**
+	 * 아파트 검색 - 아파트 이름으로 HouseInfoDto 불러옴
+	 */
+	@GetMapping("/search")
+	public ResponseEntity<?> search(@RequestParam Map<String, String> params) {
+		try {
+			List<HouseInfoDto> list = forsaleService.searchHouseInfo(params);
+			
+			return new ResponseEntity<List<HouseInfoDto>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("forsale search Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+	 * 아파트 검색 - 아파트 코드로 최근 2년 거래가격 평균 불러옴
+	 */
+	@GetMapping("/avgDealAmount/{aptCode}")
+	public ResponseEntity<?> getAvgDealAmount(@PathVariable String aptCode) {
+		try {
+			Integer avgDealAmount = forsaleService.getAvgDealAmount(aptCode);
+			if(avgDealAmount == null) {
+				avgDealAmount = 0;
+			}
+			
+			return new ResponseEntity<Integer>(avgDealAmount, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("forsale avgDealAmount Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 }
