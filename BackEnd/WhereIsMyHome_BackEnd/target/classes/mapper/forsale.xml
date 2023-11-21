@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.apt.model.mapper.ForsaleMapper">
+
+	<resultMap type="forsaleDto" id="forsale">
+		<result column="forsaleNo" property="forsaleNo"/>
+		<result column="aptCode" property="aptCode"/>
+		<result column="userId" property="userId"/>
+		<result column="price" property="price"/>
+	</resultMap>
+	
+	<!-- 매물 등록 -->
+	<insert id="registForsale" parameterType="forsaleDto">
+		insert into forsale(aptCode, userId, price)
+		values(#{aptCode}, #{userId}, #{price})
+		<selectKey resultType="int" keyProperty="forsaleNo" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+</mapper>

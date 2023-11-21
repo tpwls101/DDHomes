@@ -1,10 +1,16 @@
 package com.ssafy.apt.model;
 
+import java.util.List;
+
+import com.ssafy.home.file.model.ImgInfoDto;
+
 public class ForsaleDto {
+	
 	private int forsaleNo;
 	private String aptCode;
 	private String userId;
-	private String dealAmount;
+	private String price;
+	private List<ImgInfoDto> imgInfos;
 	
 	
 	public int getForsaleNo() {
@@ -25,18 +31,24 @@ public class ForsaleDto {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getDealAmount() {
-		return dealAmount;
+	public String getPrice() {
+		return price;
 	}
-	public void setDealAmount(String dealAmount) {
-		this.dealAmount = dealAmount;
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public List<ImgInfoDto> getImgInfos() {
+		return imgInfos;
+	}
+	public void setImgInfos(List<ImgInfoDto> imgInfos) {
+		this.imgInfos = imgInfos;
 	}
 	
 	
 	@Override
 	public String toString() {
-		return "ForsaleDto [forsaleNo=" + forsaleNo + ", aptCode=" + aptCode + ", userId=" + userId + ", dealAmount="
-				+ dealAmount + "]";
+		return "ForsaleDto [forsaleNo=" + forsaleNo + ", aptCode=" + aptCode + ", userId=" + userId + ", price=" + price
+				+ ", imgInfos=" + imgInfos + "]";
 	}
 	
 }
