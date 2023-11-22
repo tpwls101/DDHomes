@@ -6,31 +6,43 @@ import { getForsaleList } from "@/api/forsale";
 
 const aptStore = useAptStore();
 
-const { dongCode } = storeToRefs(aptStore);
+// const { dongCode } = storeToRefs(aptStore);
 
-// const forsaleList = ref({}); // 등록된 매물 리스트
-// const forsaleList = ref([]); // 등록된 매물 리스트
 const { forsaleList } = storeToRefs(aptStore);
 
-onMounted(() => {
-  let params = {
-    condition: "dongCode",
-    value: dongCode.value,
-  };
+// onMounted(() => {
+//   let params = {
+//     condition: "dongCode",
+//     value: dongCode.value,
+//   };
 
-  getForsaleList(
-    params,
-    ({ data }) => {
-      console.log("success");
-      console.log(data);
-      forsaleList.value = data;
-      console.log(forsaleList.value);
-    },
-    (error) => {
-      console.log("fail");
-    }
-  );
-});
+//   getForsaleList(
+//     params,
+//     ({ data }) => {
+//       console.log("success");
+//       console.log(data);
+//       forsaleList.value = data;
+//       console.log(forsaleList.value);
+//     },
+//     (error) => {
+//       console.log("fail");
+//     }
+//   );
+// });
+// onMounted(() => {
+//   getForsaleList(
+//     dongCode.value,
+//     ({ data }) => {
+//       console.log("success");
+//       console.log(data);
+//       forsaleList.value = data;
+//       console.log(forsaleList.value);
+//     },
+//     (error) => {
+//       console.log("fail");
+//     }
+//   );
+// });
 
 // 매물 리스트에서 매물 선택 시 지도에서 마커를 보여주는 함수
 const showMarker = (aptCode) => {
