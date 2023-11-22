@@ -8,14 +8,21 @@ const aptStore = useAptStore();
 const { forsaleList } = storeToRefs(aptStore);
 const { forsaleNo } = storeToRefs(aptStore);
 
+const showForsaleDetail = ref(true);
+
+const emit = defineEmits(["showForsaleDetail"]);
+
 function showMarker(fn) {
   forsaleNo.value = fn;
   console.log("매물번호 : " + forsaleNo.value);
+
+  // 매물 상세정보를 보이기 위해 이벤트 발생
+  emit("showForsaleDetail", showForsaleDetail.value);
 }
 </script>
 
 <template>
-  <div>
+  <div class="list-container">
     <h4>매물 목록</h4>
     <div
       class="forsale-item"
@@ -46,16 +53,18 @@ function showMarker(fn) {
 </template>
 
 <style scoped>
-div {
+.list-container {
   /* background-color: lightpink; */
   width: 20%;
   height: 100%;
-  /* border-right: 1px solid; */
+  /* border-right: 1px solid lightgrey; */
   margin-left: 0 0;
 }
 
 h4 {
   margin: 5px 10px;
+  padding: 4px 0px 4px 0px; /* 상우하좌*/
+  font-weight: bold;
 }
 
 .forsale-item {

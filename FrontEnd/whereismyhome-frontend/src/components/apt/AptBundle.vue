@@ -11,6 +11,11 @@ const aptStore = useAptStore();
 
 const { dongCode } = storeToRefs(aptStore);
 const { forsaleList } = storeToRefs(aptStore);
+// const { forsaleNo } = storeToRefs(aptStore);
+
+// const forsaleNo = "";
+
+const showForsaleDetail = ref(false);
 
 onMounted(() => {
   // 리스트 호출시 필요한 파라미터 만들기
@@ -34,13 +39,18 @@ onMounted(() => {
     }
   );
 });
+
+function ShowForsaleDetail(sfd) {
+  showForsaleDetail.value = sfd;
+  console.log(showForsaleDetail.value);
+}
 </script>
 
 <template>
   <div class="in-a-row">
-    <AptList />
+    <AptList @show-forsale-detail="ShowForsaleDetail" />
     <AptMap />
-    <AptDetail />
+    <AptDetail v-show="showForsaleDetail == true" />
   </div>
 </template>
 
