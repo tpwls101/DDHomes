@@ -61,6 +61,11 @@
 			<when test="condition == 'enter'">
 				where f.userId = #{value}
 			</when>
+			<when test="condition == 'favorite'">
+				where f.forsaleNo in (	select forsaleNo
+										from favorite
+										where userId = #{value} )
+			</when>
 		</choose>
 		order by f.forsaleNo desc
 	</select>
@@ -94,4 +99,24 @@
 		delete from forsale
 		where forsaleNo = #{forsaleNo}
 	</delete>
+	
+	<!-- 이미 찜이 되어있는지 확인 -->
+	<select id="checkFavorite" parameterType="string" resultType="int">
+		select forsaleNo
+		from favorite
+		where userId = #{userId}
+	</select>
+	
+	<!-- 매물 찜 등록 -->
+	<insert id="favorite" parameterType="map">
+		insert into favorite(userId, forsaleNo)
+		values(#{userId}, #{forsaleNo})
+	</insert>
+	
+	<!-- 찜 삭제 -->
+	<delete id="deleteFavorite" parameterType="map">
+		delete from favorite
+		where userId = #{userId} and forsaleNo = #{forsaleNo}
+	</delete>
+	
 </mapper>

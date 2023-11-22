@@ -156,4 +156,34 @@ public class ForsaleController {
 			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/**
+	 * 매물 찜 등록
+	 */
+	@PostMapping("/favorite")
+	public ResponseEntity<?> favorite(@RequestBody Map<String, String> params) {
+		try {
+			forsaleService.favorite(params);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("forsale favorite Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+	 * 매물 찜 삭제
+	 */
+	@DeleteMapping("/deleteFavorite")
+	public ResponseEntity<?> deleteFavorite(@RequestParam Map<String, String> params) {
+		try {
+			forsaleService.deleteFavorite(params);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("forsale deleteFavorite Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
