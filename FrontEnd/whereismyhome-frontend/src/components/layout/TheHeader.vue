@@ -34,8 +34,7 @@ function boardList(boardType) {
     } else {
       router.push({ name: "board-list", params: { boardType } });
     }
-  }
-  else {
+  } else {
     router.push({ name: "board-list", params: { boardType } });
   }
 }
@@ -53,6 +52,11 @@ function registForsale() {
 // 매물 리스트 이동
 function listForsale() {
   router.push({ name: "forsale-list" });
+}
+
+// 매물 찜목록 이동
+function favorite() {
+  router.push({ name: "forsale-favorite" });
 }
 
 // 회원가입 이동
@@ -109,8 +113,12 @@ function myPage() {
         <ul class="navbar-nav me-2" v-if="userInfo != null">
           <li id="nav-myPage" class="nav-item">
             <div class="dropdown dropstart">
-              <button class="nav-link btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <button
+                class="nav-link btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <img id="user-img" src="@/assets/user.png" />
               </button>
               <ul class="dropdown-menu">
@@ -121,10 +129,15 @@ function myPage() {
                   <hr class="dropdown-divider" />
                 </li>
                 <li v-if="userInfo.grade == 'admin'">
-                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')">글쓰기</a>
+                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')"
+                    >글쓰기</a
+                  >
                 </li>
                 <li v-if="userInfo.grade == 'admin' || userInfo.grade == 'enter'" class="nav-item">
                   <a class="dropdown-item" @click="listForsale">매물 목록</a>
+                </li>
+                <li>
+                  <a id="favorite" class="dropdown-item" @click="favorite">찜 목록</a>
                 </li>
                 <li>
                   <a id="myPage" class="dropdown-item" @click="myPage()">마이페이지</a>

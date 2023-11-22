@@ -91,6 +91,11 @@ const router = createRouter({
           name: "forsale-list",
           component: () => import("@/components/forsale/ForsaleList.vue"),
         },
+        {
+          path: "favorite",
+          name: "forsale-favorite",
+          component: () => import("@/components/forsale/FavoriteList.vue"),
+        },
       ],
     },
   ],

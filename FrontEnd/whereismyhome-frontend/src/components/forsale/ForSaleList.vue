@@ -9,33 +9,37 @@ const memberStore = useMemberStore();
 
 const { userInfo } = storeToRefs(memberStore);
 
-const forsaleList = ref([]); // 등록된 매물 리스트
+// 매물 리스트 구할 때 필요한 파라미터
+const params = ref({});
+
+// 등록된 매물 리스트
+const forsaleList = ref([]);
+
+// 리스트 아이템 호출할 때 필요한 타입
+const type = ref("forsale");
 
 onMounted(() => {
-  let params = {};
-
   // 리스트 불러올 때 파라미터 설정하기
   if (userInfo.value.grade == "enter") {
-    params = {
+    params.value = {
       condition: "enter",
       value: userInfo.value.userId,
     };
   } else {
-    params = {
+    params.value = {
       condition: "",
       value: "",
     };
   }
 
-  loadForsaleList(params);
+  loadForsaleList();
 });
 
 // 리스트 불러오기
-function loadForsaleList(params) {
+function loadForsaleList() {
   getForsaleList(
-    params,
+    params.value,
     ({ data }) => {
-      // console.log(data);
       forsaleList.value = data;
 
       for (let i = 0; i < forsaleList.value.length; i++) {
@@ -78,6 +82,7 @@ function loadForsaleList(params) {
             v-for="forsale in forsaleList"
             :key="forsale.forsaleNo"
             :forsale="forsale"
+            :type="type"
             @reloadForsaleList="loadForsaleList"
           ></FosaleListItem>
         </tbody>

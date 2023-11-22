@@ -23,4 +23,10 @@ public interface ForsaleMapper {
 	void modifyPrice(Map<String, String> params) throws SQLException;
 	/** 매물 삭제 */
 	void deleteForsale(int forsaleNo) throws SQLException;
+	/** 이미 찜이 되어있는지 확인 */
+	int[] checkFavorite(String userId) throws SQLException;
+	/** 매물 찜 등록 */
+	void favorite(Map<String, String> params) throws SQLException;
+	/** 매물 찜 삭제 */
+	void deleteFavorite(Map<String, String> params) throws SQLException;
 }
