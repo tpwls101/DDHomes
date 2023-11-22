@@ -13,7 +13,7 @@ const { dongCode } = storeToRefs(aptStore);
 const { forsaleList } = storeToRefs(aptStore);
 
 console.log(dongCode);
-console.log(forsaleList);
+// console.log(forsaleList);
 
 onMounted(() => {
 
