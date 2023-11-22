@@ -36,15 +36,41 @@ onMounted(() => {
   }
 });
 
+// 숫자 금액 한글로 표현
+function geKoreanNumber(number) {
+  const koreanNumber = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+  const tenUnit = ['', '십', '백', '천'];
+  const tenThousandUnit = ['조', '억', '만', ''];
+  const unit = 10000;
+
+  let answer = '';
+
+  while (number > 0) {
+    const mod = number % unit;
+    const modToArray = mod.toString().split('');
+    const length = modToArray.length - 1;
+
+    const modToKorean = modToArray.reduce((acc, value, index) => {
+      const valueToNumber = +value;
+      if (!valueToNumber) return acc;
+      // 단위가 십 이상인 '일'글자는 출력하지 않는다. ex) 일십 -> 십
+      const numberToKorean = index < length && valueToNumber === 1 ? '' : koreanNumber[valueToNumber];
+      return `${acc}${numberToKorean}${tenUnit[length - index]}`;
+    }, '');
+
+    answer = `${modToKorean}${tenThousandUnit.pop()} ${answer}`;
+    number = Math.floor(number / unit);
+  }
+
+  return answer.replace();
+}
+
 // 가격 입력 시 작동하는 이벤트
 function checkUnit() {
   if (forsaleDto.value.price === "") {
     unitPrice.value = "";
   } else {
-    // console.log(forsaleDto.value.price.length);
-    let temp = forsaleDto.value.price;
-    console.log(temp);
-    unitPrice.value = forsaleDto.value.price + "원";
+    unitPrice.value = geKoreanNumber(forsaleDto.value.price) + "원";
   }
 }
 
@@ -80,7 +106,7 @@ function registForsaleBtnClicked() {
 
   registForsale(
     params,
-    ({ data }) => {},
+    ({ data }) => { },
     (error) => {
       alert("[오류] 매물 등록에 문제가 발생했습니다.");
       console.log(error);
@@ -123,7 +149,7 @@ function selectApt(aptCode) {
       }
       // 거래내역 성공적으로 가져온 경우
       else {
-        avgDealAmounMsg.value = "최근 2년 거래가는 " + data / 10000 + "억원이예요.";
+        avgDealAmounMsg.value = "최근 2년 거래가 평균은 " + data / 10000 + "억원이예요.";
       }
     },
     (error) => {
@@ -134,6 +160,9 @@ function selectApt(aptCode) {
   forsaleDto.value.aptCode = aptCode;
 
   // 선택된 아이템 배경색 바꾸기
+  if (prevSelectedItemId.value === aptCode) {
+    return;
+  }
   for (let i = 0; i < searchResult.value.length; i++) {
     if (searchResult.value[i].aptCode == aptCode) {
       document.getElementById(aptCode).classList.add("selected-item");
@@ -166,27 +195,13 @@ function selectApt(aptCode) {
 
           <div class="mb-3">
             <label for="apt-code" class="form-label">아파트 코드 : </label>
-            <input
-              type="text"
-              class="form-control"
-              id="apt-code"
-              name="apt-code"
-              placeholder="아파트 코드"
-              v-model="forsaleDto.aptCode"
-              readonly="readonly"
-            />
+            <input type="text" class="form-control" id="apt-code" name="apt-code" placeholder="아파트 코드"
+              v-model="forsaleDto.aptCode" readonly="readonly" />
           </div>
           <div class="mb-3">
             <label for="price" class="form-label">가격 : </label>
-            <input
-              type="number"
-              class="form-control"
-              id="price"
-              name="price"
-              placeholder="가격을 입력하세요!"
-              v-model="forsaleDto.price"
-              @keyup="checkUnit"
-            />
+            <input type="number" class="form-control" id="price" name="price" placeholder="가격을 입력하세요!"
+              v-model="forsaleDto.price" @keyup="checkUnit()" />
             <p v-text="avgDealAmounMsg"></p>
             <p v-text="unitPrice"></p>
           </div>
@@ -195,12 +210,7 @@ function selectApt(aptCode) {
             <FileUpload></FileUpload>
           </div>
           <div class="col-auto text-center">
-            <button
-              type="button"
-              id="btn-register"
-              class="btn btn-outline-primary mb-3"
-              @click="registForsaleBtnClicked"
-            >
+            <button type="button" id="btn-register" class="btn btn-outline-primary mb-3" @click="registForsaleBtnClicked">
               매물 등록 요청하기
             </button>
           </div>
@@ -213,46 +223,23 @@ function selectApt(aptCode) {
       <hr />
       <form id="form-search" method="POST" action="" onsubmit="return false;">
         <div class="search-box">
-          <input
-            type="text"
-            class="form-control"
-            id="dongName"
-            name="dongName"
-            placeholder="동 입력"
-            v-model="dongName"
-          />
-          <input
-            type="text"
-            class="form-control"
-            id="apartmentName"
-            name="apartmentName"
-            placeholder="아파트명 입력"
-            v-model="apartmentName"
-          />
+          <input type="text" class="form-control" id="dongName" name="dongName" placeholder="동 입력" v-model="dongName" />
+          <input type="text" class="form-control" id="apartmentName" name="apartmentName" placeholder="아파트명 입력"
+            v-model="apartmentName" />
 
-          <button
-            type="button"
-            class="regist-search-btn btn btn-outline-success"
-            @click="searchAptNameBtnClicked"
-          >
+          <button type="button" class="regist-search-btn btn btn-outline-success" @click="searchAptNameBtnClicked">
             검색
           </button>
         </div>
       </form>
       <div class="search-result-container">
-        <div
-          v-for="item in searchResult"
-          :key="item.aptCode"
-          :id="item.aptCode"
-          class="result-item"
-          @click="selectApt(item.aptCode)"
-        >
+        <div v-for="item in searchResult" :key="item.aptCode" :id="item.aptCode" class="result-item"
+          @click="selectApt(item.aptCode)">
           <p>
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
-                d="M64 48c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16h80V400c0-26.5 21.5-48 48-48s48 21.5 48 48v64h80c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64zM0 64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm88 40c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V104zM232 88h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V104c0-8.8 7.2-16 16-16zM88 232c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V232zm144-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V232c0-8.8 7.2-16 16-16z"
-              />
+                d="M64 48c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16h80V400c0-26.5 21.5-48 48-48s48 21.5 48 48v64h80c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64zM0 64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm88 40c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V104zM232 88h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V104c0-8.8 7.2-16 16-16zM88 232c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V232zm144-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V232c0-8.8 7.2-16 16-16z" />
             </svg>
             아파트명: {{ item.apartmentName }}
           </p>
@@ -318,7 +305,7 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: lightgray;
 }
 
-.result-item > * {
+.result-item>* {
   margin: 0;
 }
 
