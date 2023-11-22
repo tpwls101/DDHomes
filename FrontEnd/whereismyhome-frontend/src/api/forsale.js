@@ -39,4 +39,24 @@ function deleteForsale(forsaleNo, success, fail) {
   local.delete(`${url}/deleteForsale/${forsaleNo}`).then(success).catch(fail);
 }
 
-export { searchAptName, registForsale, avgDealAmount, getForsaleList, modifyPrice, deleteForsale };
+// 매물 찜 등록(userId, forsaleNo)
+function favorite(params, success, fail) {
+  local.post(`${url}/favorite`, JSON.stringify(params)).then(success).catch(fail);
+}
+
+// 찜 삭제(userId, forsaleNo)
+function deleteFavorite(params, success, fail) {
+  console.log(params);
+  local.delete(`${url}/deleteFavorite`, { params: params }).then(success).catch(fail);
+}
+
+export {
+  searchAptName,
+  registForsale,
+  avgDealAmount,
+  getForsaleList,
+  modifyPrice,
+  deleteForsale,
+  favorite,
+  deleteFavorite,
+};
