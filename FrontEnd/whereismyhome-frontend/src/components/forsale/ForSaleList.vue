@@ -12,6 +12,8 @@ const forsaleList = ref([]); // 등록된 매물 리스트
 
 // 수정 버튼 토글
 const isModifyState = ref(false);
+// 수정 매매가
+const modifiedPrice = ref();
 
 onMounted(() => {
   let params = {};
@@ -54,16 +56,21 @@ onMounted(() => {
 });
 
 // 수정 버튼 클릭 시
-function modifyPriceBtnClicked() {
+function modifyPriceBtnClicked(forsaleNo) {
   isModifyState.value = !isModifyState.value;
   // 수정 완료시에만 아래 실행
   if (!isModifyState.value) {
     alert("매매가를 수정합니까?");
+    console.log(forsaleNo);
+    console.log(modifiedPrice.value);
   }
 }
 
 // 취소 버튼 클릭 시
-
+function cancelModifyBtnClicked() {
+  modifiedPrice.value = "";
+  isModifyState.value = !isModifyState.value;
+}
 
 // 삭제 버튼 클릭 시
 
@@ -95,14 +102,16 @@ function modifyPriceBtnClicked() {
             <td scope="col">{{ forsale.apartmentName }}</td>
             <td scope="col">{{ forsale.sidoName }} {{ forsale.gugunName }} {{ forsale.dong }} {{ forsale.jibun }}<br>
               {{ forsale.roadName }} {{ forsale.roadNameBonBun }}</td>
-            <td v-if="isModifyState" scope="col">
-              <input type="number" class="input-price" />
+            <td class="td-price-hidden" scope="col">
+              <input type="number" class="input-price" v-model="modifiedPrice" />
             </td>
-            <td v-else scope="col">{{ forsale.price }}</td>
+            <td class="" scope="col">{{ forsale.price }}</td>
             <td scope="col">{{ forsale.userId }}</td>
             <td scope="col">
-              <button type="button" class="btn btn-sm btn-outline-success" @click="modifyPriceBtnClicked">수정</button>
-              <button v-if="isModifyState" type="button" class="btn btn-sm btn-outline-secondary">취소</button>
+              <button type="button" class="btn btn-sm btn-outline-success"
+                @click="modifyPriceBtnClicked(forsale.forsaleNo)">수정</button>
+              <button v-if="isModifyState" type="button" class="btn btn-sm btn-outline-secondary"
+                @click="cancelModifyBtnClicked">취소</button>
               <button v-else type="button" class="btn btn-sm btn-outline-danger">삭제</button>
             </td>
           </tr>
@@ -122,5 +131,9 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .input-price {
   width: 150px;
+}
+
+.td-price-hidden {
+  display: none;
 }
 </style>
