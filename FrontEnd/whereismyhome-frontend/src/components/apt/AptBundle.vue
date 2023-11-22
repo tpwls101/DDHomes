@@ -13,6 +13,7 @@ const aptStore = useAptStore();
 // const { forsaleList } = storeToRefs(aptStore);
 
 // console.log("AptBundle의 dongCode : " + dongCode.value);
+// console.log(dongCode);
 // console.log(forsaleList);
 
 onMounted(() => {
