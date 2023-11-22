@@ -20,6 +20,7 @@ public class ForsaleDto {
 	private int buildYear;
 	private String lat;
 	private String lng;
+	private boolean isFavorite;
 	private List<ImgInfoDto> imgInfos;
 	
 	
@@ -107,6 +108,12 @@ public class ForsaleDto {
 	public void setLng(String lng) {
 		this.lng = lng;
 	}
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+	public void setFavorite(boolean isFavorite) {
+		this.isFavorite = isFavorite;
+	}
 	public List<ImgInfoDto> getImgInfos() {
 		return imgInfos;
 	}
@@ -120,7 +127,8 @@ public class ForsaleDto {
 		return "ForsaleDto [forsaleNo=" + forsaleNo + ", aptCode=" + aptCode + ", apartmentName=" + apartmentName
 				+ ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", dong=" + dong + ", jibun=" + jibun
 				+ ", roadName=" + roadName + ", roadNameBonBun=" + roadNameBonBun + ", userId=" + userId + ", price="
-				+ price + ", buildYear=" + buildYear + ", lat=" + lat + ", lng=" + lng + ", imgInfos=" + imgInfos + "]";
+				+ price + ", buildYear=" + buildYear + ", lat=" + lat + ", lng=" + lng + ", isFavorite=" + isFavorite
+				+ ", imgInfos=" + imgInfos + "]";
 	}
 	
 }

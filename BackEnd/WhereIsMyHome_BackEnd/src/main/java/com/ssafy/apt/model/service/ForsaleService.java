@@ -19,4 +19,8 @@ public interface ForsaleService {
 	void modifyPrice(Map<String, String> params) throws Exception;
 	/** 매물 삭제 */
 	void deleteForsale(int forsaleNo) throws Exception;
+	/** 매물 찜 등록 */
+	void favorite(Map<String, String> params) throws Exception;
+	/** 매물 찜 삭제 */
+	void deleteFavorite(Map<String, String> params) throws Exception;
 }

@@ -1,5 +1,6 @@
 package com.ssafy.apt.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,20 @@ public class ForsaleServiceImpl implements ForsaleService {
 	@Override
 	public List<ForsaleDto> forsaleList(Map<String, String> params) throws Exception {
 		List<ForsaleDto> list = forsaleMapper.forsaleList(params);
+		
+		if(params.get("userId") != null) {
+			int[] checkFav = forsaleMapper.checkFavorite(params.get("userId"));
+			
+			if(checkFav.length != 0) {
+				for(int i = 0; i < list.size(); i++) {
+					for(int j = 0; j < checkFav.length; j++) {
+						if(list.get(i).getForsaleNo() == checkFav[j]) {
+							list.get(i).setFavorite(true);
+						}
+					}
+				}
+			}
+		}
 		return list;
 	}
 	
@@ -61,6 +76,16 @@ public class ForsaleServiceImpl implements ForsaleService {
 	@Override
 	public void deleteForsale(int forsaleNo) throws Exception {
 		forsaleMapper.deleteForsale(forsaleNo);
+	}
+
+	@Override
+	public void favorite(Map<String, String> params) throws Exception {
+		forsaleMapper.favorite(params);
+	}
+
+	@Override
+	public void deleteFavorite(Map<String, String> params) throws Exception {
+		forsaleMapper.deleteFavorite(params);
 	}
 
 }
