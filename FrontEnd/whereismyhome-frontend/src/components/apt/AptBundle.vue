@@ -9,34 +9,33 @@ import AptDetail from "@/components/apt/AptDetail.vue";
 
 const aptStore = useAptStore();
 
-const { dongCode } = storeToRefs(aptStore);
-const { forsaleList } = storeToRefs(aptStore);
+// const { dongCode } = storeToRefs(aptStore);
+// const { forsaleList } = storeToRefs(aptStore);
 
-console.log(dongCode);
-console.log(forsaleList);
+// console.log("AptBundle의 dongCode : " + dongCode.value);
+// console.log(forsaleList);
 
 onMounted(() => {
-
   // 리스트 호출시 필요한 파라미터 만들기
-  let params = {
-    condition: "dongCode",
-    value: dongCode.value,
-  };
-
-  // 리스트 받아오기
-  getForsaleList(
-    params,
-    ({ data }) => {
-      console.log("success");
-      console.log(data);
-      forsaleList.value = data;
-      console.log(forsaleList.value);
-    },
-    (error) => {
-      console.log("fail");
-    }
-  );
-
+  // let params = {
+  //   condition: "dongCode",
+  //   value: dongCode.value,
+  // };
+  // // 리스트 받아오기
+  // getForsaleList(
+  //   params,
+  //   ({ data }) => {
+  //     console.log("success");
+  //     console.log("data : ");
+  //     console.log(data);
+  //     forsaleList.value = data;
+  //     console.log("AptBundle의 forsaleList");
+  //     console.log(forsaleList.value);
+  //   },
+  //   (error) => {
+  //     console.log("fail");
+  //   }
+  // );
   // getForsaleList(
   //   dongCode.value,
   //   ({ data }) => {
@@ -49,6 +48,8 @@ onMounted(() => {
   //     console.log("fail");
   //   }
   // );
+  // console.log("AptBundle의 forsaleList");
+  // console.log(forsaleList.value);
 });
 </script>
 

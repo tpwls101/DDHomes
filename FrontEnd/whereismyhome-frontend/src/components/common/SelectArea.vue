@@ -4,12 +4,14 @@ import { useRouter } from "vue-router";
 import { setSelector } from "@/api/apt";
 import { useAptStore } from "@/stores/apt";
 import { storeToRefs } from "pinia";
+import { getForsaleList } from "@/api/forsale";
 
 const router = useRouter();
 
 const aptStore = useAptStore();
 
 const { dongCode } = storeToRefs(aptStore);
+const { forsaleList } = storeToRefs(aptStore);
 
 const param = ref({
   selectorId: "sido", // 설정할 셀렉터 id 속성
@@ -128,6 +130,29 @@ const aptInfo = () => {
     // router.push({ name: "apt-bundle", param: selectedValue.value }); // dongCode를 매개변수로 전달
     // dongCode를 aptStore에 저장
     dongCode.value = selectedValue.value;
+
+    // 매물 목록(forsaleList) 가져오기
+    let params = {
+      condition: "dongCode",
+      value: dongCode.value,
+    };
+
+    // 리스트 받아오기
+    getForsaleList(
+      params,
+      ({ data }) => {
+        console.log("success");
+        console.log("data : ");
+        console.log(data);
+        forsaleList.value = data;
+        console.log("SelectArea에서 forsaleList 불러오기!!");
+        console.log(forsaleList.value);
+      },
+      (error) => {
+        console.log("fail");
+      }
+    );
+
     router.push({ name: "apt-bundle" });
   }
 };
