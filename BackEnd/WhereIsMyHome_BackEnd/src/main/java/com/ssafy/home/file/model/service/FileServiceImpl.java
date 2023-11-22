@@ -18,6 +18,11 @@ public class FileServiceImpl implements FileService {
 	public List<ImgInfoDto> getBoardImgInfo(int articleNo) throws Exception {
 		return fileMapper.getBoardImgInfo(articleNo);
 	}
+	
+	@Override
+	public List<ImgInfoDto> getForsaleImgInfo(int forsaleNo) throws Exception {
+		return fileMapper.getForsaleImgInfo(forsaleNo);
+	}
 
 	@Override
 	public void deleteImg(int imginfoNo) throws Exception {

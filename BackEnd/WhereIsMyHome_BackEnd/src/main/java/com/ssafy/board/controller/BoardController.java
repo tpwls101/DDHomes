@@ -226,7 +226,6 @@ public class BoardController {
 	 */
 	@DeleteMapping("/delete/{articleNo}") 
 	public ResponseEntity<?> delete(@PathVariable int articleNo) {
-		System.out.println(articleNo);
 		try {
 			// 이미지 제거
 			List<ImgInfoDto> imgInfos = fileService.getBoardImgInfo(articleNo);
@@ -236,9 +235,9 @@ public class BoardController {
 			
 			// 게시물 제거
 			boardService.deleteArticle(articleNo);
-			return new ResponseEntity<BoardDto>(HttpStatus.OK);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println("board list Controller Error");
+			System.out.println("board delete Controller Error");
 			e.printStackTrace();
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

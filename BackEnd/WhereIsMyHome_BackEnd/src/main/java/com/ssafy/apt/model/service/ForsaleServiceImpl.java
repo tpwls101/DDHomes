@@ -33,7 +33,7 @@ public class ForsaleServiceImpl implements ForsaleService {
 				imgInfos.get(i).setForsaleNo(forsaleDto.getForsaleNo());
 			}
 //			System.out.println(imgInfos);
-			fileMapper.uploadBoardForsale(imgInfos);
+			fileMapper.uploadForsaleImg(imgInfos);
 		}
 	}
 
