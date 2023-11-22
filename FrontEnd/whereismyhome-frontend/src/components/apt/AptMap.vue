@@ -5,55 +5,64 @@ import { storeToRefs } from "pinia";
 
 const aptStore = useAptStore();
 
-// const { forsaleList } = storeToRefs(aptStore);
-// console.log("fdfdfdfdfs");
-// console.log(forsaleList.value);
-
-const forsaleList2 = ref([]);
-
 var map;
 const positions = ref([]);
 const markers = ref([]);
 
+const { forsaleList } = storeToRefs(aptStore);
+
 // autoload=false
 // 비동기 로딩은 당장 페이지에서 필요 없는 지도 관련 스크립트 전체를 미리 로딩하지 않고 필요한 경우에만 로딩하기 위해 사용
 onMounted(() => {
-  const { forsaleList } = storeToRefs(aptStore);
-  forsaleList2.value = forsaleList.value;
+  // forsaleList.value = forsaleList.value;
 
   if (window.kakao && window.kakao.maps) {
     initMap();
   } else {
     const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-    }&libraries=services,clusterer`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+      }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
   }
 });
 
+function checkData() {
+  positions.value = [];
+  console.log("forsaleList  확인");
+  // console.log(forsaleList.value);
+  forsaleList.value.forEach((list) => {
+    let obj = {};
+    obj.latlng = new kakao.maps.LatLng(list.lat, list.lng);
+    obj.title = list.apartmentName;
+
+    positions.value.push(obj);
+  });
+
+  console.log("positions 확인!");
+  console.log(positions.value);
+  loadMarkers();
+}
+
 // 스크립트가 로드되기 전에 watch가 먼저 실행돼서 kakao 객체를 인식 못하므로 0.5초 늦게 실행시켜줬음
 // setTimeout(() => {
 // 매물 위치 세팅
 watch(
-  () => forsaleList2.value,
+  () => forsaleList.value,
   () => {
-    positions.value = [];
-    console.log("forsaleList  확인");
-    // console.log(forsaleList.value);
-    forsaleList2.value.forEach((list) => {
-      let obj = {};
-      obj.latlng = new kakao.maps.LatLng(list.lat, list.lng);
-      obj.title = list.apartmentName;
+    if (window.kakao && window.kakao.maps) {
+      positions.value = [];
+      forsaleList.value.forEach((list) => {
+        let obj = {};
+        obj.latlng = new kakao.maps.LatLng(list.lat, list.lng);
+        obj.title = list.apartmentName;
 
-      positions.value.push(obj);
-    });
+        positions.value.push(obj);
+      });
 
-    console.log("positions 확인!");
-    console.log(positions.value);
-    loadMarkers();
+      loadMarkers();
+    }
   },
   { deep: true }
 );
@@ -79,6 +88,15 @@ const initMap = () => {
     level: 3,
   };
   map = new kakao.maps.Map(container, options);
+
+  positions.value = [];
+  forsaleList.value.forEach((list) => {
+    let obj = {};
+    obj.latlng = new kakao.maps.LatLng(list.lat, list.lng);
+    obj.title = list.apartmentName;
+
+    positions.value.push(obj);
+  });
 
   loadMarkers();
 };
