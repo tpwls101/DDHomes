@@ -5,15 +5,6 @@ import { storeToRefs } from "pinia";
 
 const aptStore = useAptStore();
 
-<<<<<<< HEAD
-const { forsaleList } = storeToRefs(aptStore);
-// console.log("fdfdfdfdfs");
-// console.log(forsaleList.value);
-
-// const forsaleList2 = ref([]);
-
-=======
->>>>>>> b2f4870dfbb5e19d7e0e5c720729db7ae90fb79a
 var map;
 const positions = ref([]);
 const markers = ref([]);
@@ -23,23 +14,21 @@ const { forsaleList } = storeToRefs(aptStore);
 // autoload=false
 // 비동기 로딩은 당장 페이지에서 필요 없는 지도 관련 스크립트 전체를 미리 로딩하지 않고 필요한 경우에만 로딩하기 위해 사용
 onMounted(() => {
-<<<<<<< HEAD
   // const { forsaleList } = storeToRefs(aptStore);
   console.log("AptMap에서 onMounted 중!!! -> forsaleList 확인!");
   console.log(forsaleList.value);
   // forsaleList2.value = forsaleList.value;
   // console.log("forsaleList2");
   // console.log(forsaleList2.value);
-=======
   // forsaleList.value = forsaleList.value;
->>>>>>> b2f4870dfbb5e19d7e0e5c720729db7ae90fb79a
 
   if (window.kakao && window.kakao.maps) {
     initMap();
   } else {
     const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-      }&libraries=services,clusterer`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
+      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+    }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
