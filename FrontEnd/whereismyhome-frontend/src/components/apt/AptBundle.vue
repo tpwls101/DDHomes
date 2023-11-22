@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useAptStore } from "../../stores/apt";
 import { storeToRefs } from "pinia";
 import { getForsaleList } from "@/api/forsale";
@@ -11,7 +11,6 @@ const aptStore = useAptStore();
 
 const { dongCode } = storeToRefs(aptStore);
 const { forsaleList } = storeToRefs(aptStore);
-
 
 onMounted(() => {
   // 리스트 호출시 필요한 파라미터 만들기

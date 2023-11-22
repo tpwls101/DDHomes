@@ -10,6 +10,10 @@ const positions = ref([]);
 const markers = ref([]);
 
 const { forsaleList } = storeToRefs(aptStore);
+const { forsaleNo } = storeToRefs(aptStore);
+
+const lat = ref("");
+const lng = ref("");
 
 // autoload=false
 // 비동기 로딩은 당장 페이지에서 필요 없는 지도 관련 스크립트 전체를 미리 로딩하지 않고 필요한 경우에만 로딩하기 위해 사용
@@ -20,8 +24,9 @@ onMounted(() => {
     initMap();
   } else {
     const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-      }&libraries=services,clusterer`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
+      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+    }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
@@ -53,20 +58,6 @@ watch(
   },
   { deep: true }
 );
-
-// watch(
-//   () => props.selectStation.value,
-//   () => {
-//     // 이동할 위도 경도 위치를 생성합니다
-//     var moveLatLon = new kakao.maps.LatLng(props.selectStation.lat, props.selectStation.lng);
-
-//     // 지도 중심을 부드럽게 이동시킵니다
-//     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-//     map.panTo(moveLatLon);
-//   },
-//   { deep: true }
-// );
-// }, 1000);
 
 const initMap = () => {
   const container = document.getElementById("map");
@@ -117,6 +108,22 @@ const loadMarkers = () => {
 
   map.setBounds(bounds);
 };
+
+// 매물번호를 반응형으로 감시해서 값이 바뀌면 매물을 선택한 것이므로
+// 카카오 lat, lng 설정해서 지도에 해당 매물의 마커 보여주기
+watch(
+  () => forsaleNo.value,
+  () => {
+    for (let i = 0; i < forsaleList.value.length; i++) {
+      if (forsaleList.value[i].forsaleNo == forsaleNo.value) {
+        lat.value = forsaleList.value[i].lat;
+        lng.value = forsaleList.value[i].lng;
+      }
+    }
+    var moveLatLon = new kakao.maps.LatLng(lat.value, lng.value);
+    map.panTo(moveLatLon);
+  }
+);
 </script>
 
 <template>
