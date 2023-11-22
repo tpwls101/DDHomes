@@ -23,13 +23,8 @@ function registForsale(params, success, fail) {
 }
 
 // 파라미터로 변수 전달
-function getForsaleList(dongCode, success, fail) {
-  console.log(dongCode);
-  local.get(`${url}/forsaleList/${dongCode}`).then(success).catch(fail);
-}
-
-function getForsaleListByUserId(userId, success, fail) {
-  local.get(`${url}/forsaleList/${userId}`).then(success).catch(fail);
+function getForsaleList(params, success, fail) {
+  local.get(`${url}/forsaleList`, { params: params }).then(success).catch(fail);
 }
 
 function avgDealAmount(aptCode, success, fail) {

@@ -66,11 +66,10 @@ public class ForsaleController {
 	
 	
 	/** 등록된 매물 리스트 조회 */
-	@GetMapping("/forsaleList/{dongCode}")
-	public ResponseEntity<?> list(@PathVariable String dongCode) {
+	@GetMapping("/forsaleList")
+	public ResponseEntity<?> list(@RequestParam Map<String, String> params) {
 		try {
-			System.out.println("dongCode : " + dongCode);
-			List<ForsaleDto> list = forsaleService.forsaleList(dongCode);
+			List<ForsaleDto> list = forsaleService.forsaleList(params);
 			System.out.println(list);
 			return new ResponseEntity<List<ForsaleDto>>(list, HttpStatus.OK);
 		} catch (Exception e) {

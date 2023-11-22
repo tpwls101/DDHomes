@@ -48,24 +48,22 @@
 	</insert>
 	
 	<!-- 등록된 매물 리스트 조회 -->
-	<select id="forsaleList" parameterType="string" resultMap="forsale">
+	<select id="forsaleList" parameterType="map" resultMap="forsale">
 		select f.forsaleNo, i.aptCode, i.apartmentName, d.sidoName, d.gugunName, i.dong, i.jibun, i.roadName, i.roadNameBonbun, f.userId, f.price, i.buildYear, i.lat, i.lng
 		from forsale f join houseinfo i
 		on f.aptCode = i.aptCode
 		join dongcode d
 		on i.dongCode = d.dongCode
-		where i.dongCode = #{dongCode};
+		<choose>
+			<when test="condition == 'dongCode'">
+				where i.dongCode = #{value}
+			</when>
+			<when test="condition == 'enter'">
+				where f.userId = #{value}
+			</when>
+		</choose>
+		order by f.forsaleNo desc
 	</select>
-
-	<!-- 
-	<select id="forsaleList" parameterType="string" resultType="map">
-		select i.aptCode, i.apartmentName, f.price
-		from houseinfo i join forsale f
-		on i.aptCode = f.aptCode
-		where dongCode = #{dongCode};
-	</select> -->
-	
-	
 	
 	<!-- 아파트 동, 이름으로 아파트 정보 검색 -->
 	<select id="searchHouseInfo" parameterType="map" resultMap="houseInfo">
