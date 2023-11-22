@@ -38,12 +38,15 @@
 	</insert>
 	
 	<!-- 등록된 매물 리스트 조회 -->
+	<!-- 
 	<select id="forsaleList" parameterType="string" resultType="map">
-		select i.apartmentName, f.price
+		select i.aptCode, i.apartmentName, f.price
 		from houseinfo i join forsale f
 		on i.aptCode = f.aptCode
 		where dongCode = #{dongCode};
-	</select>
+	</select> -->
+	
+	
 	
 	<!-- 아파트 동, 이름으로 아파트 정보 검색 -->
 	<select id="searchHouseInfo" parameterType="map" resultMap="houseInfo">

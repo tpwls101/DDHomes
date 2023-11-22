@@ -3,13 +3,13 @@ import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useAptStore } from "../../stores/apt";
 import { getForsaleList } from "@/api/forsale";
-import AptMapVue from "./AptMap.vue";
 
 const aptStore = useAptStore();
 
 const { dongCode } = storeToRefs(aptStore);
 
-const forsaleList = ref([]); // 등록된 매물 리스트
+// const forsaleList = ref([]); // 등록된 매물 리스트
+const { forsaleList } = storeToRefs(aptStore);
 
 onMounted(() => {
   getForsaleList(
@@ -27,7 +27,18 @@ onMounted(() => {
 });
 
 // 매물 리스트에서 매물 선택 시 지도에서 마커를 보여주는 함수
-const showMarker = () => {};
+const showMarker = (aptCode) => {
+  // 매물 정보 받아서 store에 저장하기
+  getForsaleInfo(
+    aptCode.value,
+    ({ data }) => {
+      console.log("success");
+    },
+    (error) => {
+      console.log("fail");
+    }
+  );
+};
 </script>
 
 <template>
@@ -37,7 +48,7 @@ const showMarker = () => {};
       class="forsale-item"
       v-for="list in forsaleList"
       :key="list.apartmentName"
-      @click="showMarker"
+      @click="showMarker(list.aptCode)"
     >
       <p class="list-icon">
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
