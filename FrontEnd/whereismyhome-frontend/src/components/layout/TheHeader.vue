@@ -9,7 +9,7 @@ const router = useRouter();
 
 const memberStore = useMemberStore();
 
-const { userInfo } = storeToRefs(memberStore);
+const { userInfo, isLogin } = storeToRefs(memberStore);
 const { getUserInfo, userLogout } = memberStore;
 
 // 마우스 오버 이벤트 관련
@@ -90,24 +90,20 @@ function myPage() {
           </li>
         </ul>
         <!-- board start-------------------------------------------------------------------------------- -->
-        <ul class="navbar-nav ms-5 me-5">
+        <ul class="navbar-nav ms-5 me-auto">
           <li class="nav-item">
             <a class="nav-link" @click="boardList('announcement')">공지사항</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" @click="boardList('information')">게시판</a>
           </li>
+          <template v-if="userInfo != null">
+            <li v-if="userInfo.grade == 'admin' || userInfo.grade == 'enter'" class="nav-item">
+              <a class="nav-link" @click="registForsale">매물 등록</a>
+            </li>
+          </template>
         </ul>
         <!-- board end-------------------------------------------------------------------------------- -->
-
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" @click="registForsale">매물 등록</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" @click="listForsale">매물 목록</a>
-          </li>
-        </ul>
 
         <!-- userInfo에 로그인 정보가 있을 경우 -->
         <ul class="navbar-nav me-2" v-if="userInfo != null">
@@ -126,6 +122,9 @@ function myPage() {
                 </li>
                 <li v-if="userInfo.grade == 'admin'">
                   <a id="write" class="dropdown-item" @click="writeArticle('announcement')">글쓰기</a>
+                </li>
+                <li v-if="userInfo.grade == 'admin' || userInfo.grade == 'enter'" class="nav-item">
+                  <a class="dropdown-item" @click="listForsale">매물 목록</a>
                 </li>
                 <li>
                   <a id="myPage" class="dropdown-item" @click="myPage()">마이페이지</a>

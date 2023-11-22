@@ -8,7 +8,7 @@ const aptStore = useAptStore();
 
 const { dongCode } = storeToRefs(aptStore);
 
-const forsaleList = ref([]); // 등록된 매물 리스트
+const forsaleList = ref({}); // 등록된 매물 리스트
 
 onMounted(() => {
   getForsaleList(
