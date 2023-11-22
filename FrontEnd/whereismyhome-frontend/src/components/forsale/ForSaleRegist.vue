@@ -40,8 +40,25 @@ onMounted(() => {
 
 // 숫자 금액 한글로 표현
 function geKoreanNumber(val) {
-  const numKor = new Array("", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구", "십");                                  // 숫자 문자
-  const danKor = new Array("", "십", "백", "천", "", "십", "백", "천", "", "십", "백", "천", "", "십", "백", "천");    // 만위 문자열
+  const numKor = new Array("", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구", "십"); // 숫자 문자
+  const danKor = new Array(
+    "",
+    "십",
+    "백",
+    "천",
+    "",
+    "십",
+    "백",
+    "천",
+    "",
+    "십",
+    "백",
+    "천",
+    "",
+    "십",
+    "백",
+    "천"
+  ); // 만위 문자열
   let result = "";
 
   val = val.toString();
@@ -49,11 +66,17 @@ function geKoreanNumber(val) {
     for (let i = 0; i < val.length; i++) {
       let str = "";
       const num = numKor[val.charAt(val.length - (i + 1))];
-      if (num != "") str += num + danKor[i];    // 숫자가 0인 경우 텍스트를 표현하지 않음
+      if (num != "") str += num + danKor[i]; // 숫자가 0인 경우 텍스트를 표현하지 않음
       switch (i) {
-        case 4: str += "만"; break;     // 4자리인 경우 '만'을 붙여줌 ex) 10000 -> 일만
-        case 8: str += "억"; break;     // 8자리인 경우 '억'을 붙여줌 ex) 100000000 -> 일억
-        case 12: str += "조"; break;    // 12자리인 경우 '조'를 붙여줌 ex) 1000000000000 -> 일조
+        case 4:
+          str += "만";
+          break; // 4자리인 경우 '만'을 붙여줌 ex) 10000 -> 일만
+        case 8:
+          str += "억";
+          break; // 8자리인 경우 '억'을 붙여줌 ex) 100000000 -> 일억
+        case 12:
+          str += "조";
+          break; // 12자리인 경우 '조'를 붙여줌 ex) 1000000000000 -> 일조
       }
 
       result = str + result;
@@ -150,7 +173,7 @@ function searchAptNameBtnClicked() {
 }
 
 // 아파트 검색결과 선택 시
-function selectApt(aptCode) {
+function selectApt(aptCode, apartmentName) {
   // 아파트 코드로 평균 2년 거래가격 얻어오기
   avgDealAmount(
     aptCode,
@@ -169,13 +192,14 @@ function selectApt(aptCode) {
       else {
         avgDealAmounMsg.value = "최근 2년 거래가 평균은 " + data / 10000 + "억원이예요.";
       }
-
     },
     (error) => {
       console.log(error);
     }
   );
 
+  // 매물 정보 입력창 갱신
+  forsaleDto.value.apartmentName = apartmentName;
   forsaleDto.value.aptCode = aptCode;
 
   // 선택된 아이템 배경색 바꾸기
@@ -213,14 +237,41 @@ function selectApt(aptCode) {
           </div>
 
           <div class="mb-3">
+            <label for="apt-name" class="form-label">아파트명 : </label>
+            <input
+              type="text"
+              class="form-control"
+              id="apt-name"
+              name="apt-name"
+              placeholder="아파트명"
+              v-model="forsaleDto.apartmentName"
+              readonly="readonly"
+            />
+          </div>
+
+          <div class="mb-3">
             <label for="apt-code" class="form-label">아파트 코드 : </label>
-            <input type="text" class="form-control" id="apt-code" name="apt-code" placeholder="아파트 코드"
-              v-model="forsaleDto.aptCode" readonly="readonly" />
+            <input
+              type="text"
+              class="form-control"
+              id="apt-code"
+              name="apt-code"
+              placeholder="아파트 코드"
+              v-model="forsaleDto.aptCode"
+              readonly="readonly"
+            />
           </div>
           <div class="mb-3">
             <label for="price" class="form-label">가격 : </label>
-            <input type="number" class="form-control" id="price" name="price" placeholder="가격을 입력하세요!"
-              v-model="forsaleDto.price" @keyup="checkUnit()" />
+            <input
+              type="number"
+              class="form-control"
+              id="price"
+              name="price"
+              placeholder="가격을 입력하세요!"
+              v-model="forsaleDto.price"
+              @keyup="checkUnit()"
+            />
             <p v-text="avgDealAmounMsg"></p>
             <p v-text="koreanNumber"></p>
           </div>
@@ -229,7 +280,12 @@ function selectApt(aptCode) {
             <FileUpload></FileUpload>
           </div>
           <div class="col-auto text-center">
-            <button type="button" id="btn-register" class="btn btn-outline-primary mb-3" @click="registForsaleBtnClicked">
+            <button
+              type="button"
+              id="btn-register"
+              class="btn btn-outline-primary mb-3"
+              @click="registForsaleBtnClicked"
+            >
               매물 등록 요청하기
             </button>
           </div>
@@ -242,23 +298,46 @@ function selectApt(aptCode) {
       <hr />
       <form id="form-search" method="POST" action="" onsubmit="return false;">
         <div class="search-box">
-          <input type="text" class="form-control" id="dongName" name="dongName" placeholder="동 입력" v-model="dongName" />
-          <input type="text" class="form-control" id="apartmentName" name="apartmentName" placeholder="아파트명 입력"
-            v-model="apartmentName" />
+          <input
+            type="text"
+            class="form-control"
+            id="dongName"
+            name="dongName"
+            placeholder="동 입력"
+            v-model="dongName"
+          />
+          <input
+            type="text"
+            class="form-control"
+            id="apartmentName"
+            name="apartmentName"
+            placeholder="아파트명 입력"
+            v-model="apartmentName"
+          />
 
-          <button type="button" class="regist-search-btn btn btn-outline-success" @click="searchAptNameBtnClicked">
+          <button
+            type="button"
+            class="regist-search-btn btn btn-outline-success"
+            @click="searchAptNameBtnClicked"
+          >
             검색
           </button>
         </div>
       </form>
       <div class="search-result-container">
-        <div v-for="item in searchResult" :key="item.aptCode" :id="item.aptCode" class="result-item"
-          @click="selectApt(item.aptCode)">
+        <div
+          v-for="item in searchResult"
+          :key="item.aptCode"
+          :id="item.aptCode"
+          class="result-item"
+          @click="selectApt(item.aptCode, item.apartmentName)"
+        >
           <p>
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
-                d="M64 48c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16h80V400c0-26.5 21.5-48 48-48s48 21.5 48 48v64h80c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64zM0 64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm88 40c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V104zM232 88h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V104c0-8.8 7.2-16 16-16zM88 232c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V232zm144-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V232c0-8.8 7.2-16 16-16z" />
+                d="M64 48c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16h80V400c0-26.5 21.5-48 48-48s48 21.5 48 48v64h80c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64zM0 64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm88 40c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V104zM232 88h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V104c0-8.8 7.2-16 16-16zM88 232c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H104c-8.8 0-16-7.2-16-16V232zm144-16h48c8.8 0 16 7.2 16 16v48c0 8.8-7.2 16-16 16H232c-8.8 0-16-7.2-16-16V232c0-8.8 7.2-16 16-16z"
+              />
             </svg>
             아파트명: {{ item.apartmentName }}
           </p>
@@ -324,7 +403,7 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: lightgray;
 }
 
-.result-item>* {
+.result-item > * {
   margin: 0;
 }
 

@@ -25,6 +25,7 @@ import com.ssafy.apt.model.ForsaleDto;
 import com.ssafy.apt.model.HouseInfoDto;
 import com.ssafy.apt.model.service.ForsaleService;
 import com.ssafy.home.file.model.ImgInfoDto;
+import com.ssafy.home.file.model.service.FileService;
 import com.ssafy.util.FileUtil;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE} , maxAge = 6000)
@@ -34,6 +35,9 @@ public class ForsaleController {
 	
 	@Autowired
 	private ForsaleService forsaleService;
+	
+	@Autowired
+	private FileService fileService;
 	
 	@Autowired
 	private FileUtil fileUtil;
@@ -137,6 +141,13 @@ public class ForsaleController {
 	@DeleteMapping("/deleteForsale/{forsaleNo}")
 	public ResponseEntity<?> deleteForsale(@PathVariable int forsaleNo) {
 		try {
+			// 이미지 로컬에서 삭제
+			List<ImgInfoDto> imgInfos = fileService.getForsaleImgInfo(forsaleNo);
+			if (imgInfos != null && !imgInfos.isEmpty()) {
+				fileUtil.deleteImg(imgInfos);
+			}
+						
+			// 매물 삭제
 			forsaleService.deleteForsale(forsaleNo);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {

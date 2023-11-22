@@ -23,7 +23,7 @@
 	</insert>
 	
 	<!-- 매물 이미지 등록 -->
-	<insert id="uploadBoardForsale" parameterType="java.util.List">
+	<insert id="uploadForsaleImg" parameterType="java.util.List">
 		insert into imginfo (forsaleNo, saveFolder, originalName, saveName)
 		values
 		<foreach collection="imgInfos" item="imgInfo" separator=", ">
@@ -37,6 +37,14 @@
 		from imginfo i join board b
 		on i.articleNo = b.articleNo
 		where i.articleNo = #{articleNo}
+	</select>
+	
+	<!-- Forsale - imginfo 얻기 -->
+	<select id="getForsaleImgInfo" parameterType="int" resultMap="img">
+		select i.imginfoNo, i.articleNo, i.saveFolder, i.originalName, i.saveName
+		from imginfo i join forsale f
+		on i.forsaleNo = f.forsaleNo
+		where i.forsaleNo = #{forsaleNo}
 	</select>
 	
 	<!-- 이미지 DB에서 삭제 -->

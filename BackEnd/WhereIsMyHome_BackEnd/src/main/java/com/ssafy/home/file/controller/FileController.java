@@ -79,6 +79,22 @@ public class FileController {
 	}
 	
 	/**
+	 * 매물 imginfo 얻기
+	 */
+	@GetMapping("/getForsaleImgInfo/{forsaleNo}")
+	public ResponseEntity<?> getForsaleImgInfo(@PathVariable("forsaleNo") int forsaleNo) {
+		
+		try {
+			List<ImgInfoDto> list = fileService.getForsaleImgInfo(forsaleNo);
+			return new ResponseEntity<List<ImgInfoDto>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("file getForsaleImgInfo Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
 	 * 파일 불러오기 
 	 */
 	@GetMapping("/getImg/{saveFolder}/{originalName}/{saveName}")
