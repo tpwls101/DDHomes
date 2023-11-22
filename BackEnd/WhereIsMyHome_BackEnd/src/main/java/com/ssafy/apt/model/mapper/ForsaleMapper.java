@@ -14,7 +14,7 @@ public interface ForsaleMapper {
 	/** 매물 등록하기 */
 	void registForsale(ForsaleDto forsaleDto) throws SQLException;
 	/** 등록된 매물 리스트 조회 */
-	List<ForsaleDto> forsaleList(String dongCode) throws SQLException;
+	List<ForsaleDto> forsaleList(Map<String, String> params) throws SQLException;
 	/** 동 이름, 아파트 이름으로 아파트 검색하기 */
 	List<HouseInfoDto> searchHouseInfo(Map<String, String> params) throws SQLException;
 	/** 아파트 코드로 최근 2년 평균 거래가 검색하기 */

@@ -1,10 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useMemberStore } from "../../stores/member";
 import { storeToRefs } from "pinia";
 import { searchAptName, registForsale, avgDealAmount } from "@/api/forsale";
 import FileUpload from "@/components/common/FileUpload.vue";
 
+const router = useRouter();
 const memberStore = useMemberStore();
 
 const { userInfo } = storeToRefs(memberStore);
@@ -17,7 +19,7 @@ const forsaleDto = ref({
 });
 
 // 가격 입력 시 단위 표시해주는 데이터
-const unitPrice = ref("");
+const koreanNumber = ref("");
 
 // 아파트 검색시 파라미터로 넘길 반응형 데이터
 const dongName = ref("");
@@ -37,40 +39,43 @@ onMounted(() => {
 });
 
 // 숫자 금액 한글로 표현
-function geKoreanNumber(number) {
-  const koreanNumber = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
-  const tenUnit = ['', '십', '백', '천'];
-  const tenThousandUnit = ['조', '억', '만', ''];
-  const unit = 10000;
+function geKoreanNumber(val) {
+  const numKor = new Array("", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구", "십");                                  // 숫자 문자
+  const danKor = new Array("", "십", "백", "천", "", "십", "백", "천", "", "십", "백", "천", "", "십", "백", "천");    // 만위 문자열
+  let result = "";
 
-  let answer = '';
+  val = val.toString();
+  if (val && !isNaN(val)) {
+    for (let i = 0; i < val.length; i++) {
+      let str = "";
+      const num = numKor[val.charAt(val.length - (i + 1))];
+      if (num != "") str += num + danKor[i];    // 숫자가 0인 경우 텍스트를 표현하지 않음
+      switch (i) {
+        case 4: str += "만"; break;     // 4자리인 경우 '만'을 붙여줌 ex) 10000 -> 일만
+        case 8: str += "억"; break;     // 8자리인 경우 '억'을 붙여줌 ex) 100000000 -> 일억
+        case 12: str += "조"; break;    // 12자리인 경우 '조'를 붙여줌 ex) 1000000000000 -> 일조
+      }
 
-  while (number > 0) {
-    const mod = number % unit;
-    const modToArray = mod.toString().split('');
-    const length = modToArray.length - 1;
+      result = str + result;
+    }
 
-    const modToKorean = modToArray.reduce((acc, value, index) => {
-      const valueToNumber = +value;
-      if (!valueToNumber) return acc;
-      // 단위가 십 이상인 '일'글자는 출력하지 않는다. ex) 일십 -> 십
-      const numberToKorean = index < length && valueToNumber === 1 ? '' : koreanNumber[valueToNumber];
-      return `${acc}${numberToKorean}${tenUnit[length - index]}`;
-    }, '');
+    // Step. 불필요 단위 제거
+    if (result.indexOf("억만") > 0) result = result.replace("억만", "억");
+    if (result.indexOf("조만") > 0) result = result.replace("조만", "조");
+    if (result.indexOf("조억") > 0) result = result.replace("조억", "조");
 
-    answer = `${modToKorean}${tenThousandUnit.pop()} ${answer}`;
-    number = Math.floor(number / unit);
+    result = result + "원";
   }
 
-  return answer.replace();
+  return result;
 }
 
 // 가격 입력 시 작동하는 이벤트
 function checkUnit() {
   if (forsaleDto.value.price === "") {
-    unitPrice.value = "";
+    koreanNumber.value = "";
   } else {
-    unitPrice.value = geKoreanNumber(forsaleDto.value.price) + "원";
+    koreanNumber.value = geKoreanNumber(forsaleDto.value.price);
   }
 }
 
@@ -106,7 +111,10 @@ function registForsaleBtnClicked() {
 
   registForsale(
     params,
-    ({ data }) => { },
+    ({ data }) => {
+      alert("매물이 정상적으로 등록 되었습니다.");
+      router.push({ name: "forsale-list" });
+    },
     (error) => {
       alert("[오류] 매물 등록에 문제가 발생했습니다.");
       console.log(error);
@@ -128,6 +136,11 @@ function searchAptNameBtnClicked() {
     ({ data }) => {
       searchResult.value = data;
       // console.log(data);
+
+      // 도로명주소 앞에 0빼기
+      for (let i = 0; i < searchResult.value.length; i++) {
+        searchResult.value[i].roadNameBonBun = Number(searchResult.value[i].roadNameBonBun);
+      }
     },
 
     (error) => {
@@ -143,6 +156,11 @@ function selectApt(aptCode) {
     aptCode,
     ({ data }) => {
       // console.log(data);
+
+      // 가격란 초기화
+      forsaleDto.value.price = "";
+      koreanNumber.value = "";
+
       // 최근 2년 거래내역이 없는 경우
       if (data === 0) {
         avgDealAmounMsg.value = "최근 2년동안 거래 내역이 없어요!";
@@ -151,6 +169,7 @@ function selectApt(aptCode) {
       else {
         avgDealAmounMsg.value = "최근 2년 거래가 평균은 " + data / 10000 + "억원이예요.";
       }
+
     },
     (error) => {
       console.log(error);
@@ -203,7 +222,7 @@ function selectApt(aptCode) {
             <input type="number" class="form-control" id="price" name="price" placeholder="가격을 입력하세요!"
               v-model="forsaleDto.price" @keyup="checkUnit()" />
             <p v-text="avgDealAmounMsg"></p>
-            <p v-text="unitPrice"></p>
+            <p v-text="koreanNumber"></p>
           </div>
           <div>
             <p>이미지 :</p>
