@@ -43,6 +43,7 @@ public class ForsaleServiceImpl implements ForsaleService {
 		return list;
 	}
 	
+	@Override
 	public List<HouseInfoDto> searchHouseInfo(Map<String, String> params) throws Exception {
 		return forsaleMapper.searchHouseInfo(params);
 	}
@@ -50,6 +51,16 @@ public class ForsaleServiceImpl implements ForsaleService {
 	@Override
 	public Integer getAvgDealAmount(String aptCode) throws Exception {
 		return forsaleMapper.getAvgDealAmount(aptCode);
+	}
+
+	@Override
+	public void modifyPrice(Map<String, String> params) throws Exception {
+		forsaleMapper.modifyPrice(params);
+	}
+
+	@Override
+	public void deleteForsale(int forsaleNo) throws Exception {
+		forsaleMapper.deleteForsale(forsaleNo);
 	}
 
 }

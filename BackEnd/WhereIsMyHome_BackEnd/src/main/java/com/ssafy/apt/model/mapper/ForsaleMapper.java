@@ -19,4 +19,8 @@ public interface ForsaleMapper {
 	List<HouseInfoDto> searchHouseInfo(Map<String, String> params) throws SQLException;
 	/** 아파트 코드로 최근 2년 평균 거래가 검색하기 */
 	Integer getAvgDealAmount(String aptCode) throws SQLException; 
+	/** 가격 수정 */
+	void modifyPrice(Map<String, String> params) throws SQLException;
+	/** 매물 삭제 */
+	void deleteForsale(int forsaleNo) throws SQLException;
 }

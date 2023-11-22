@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,7 +73,7 @@ public class ForsaleController {
 	public ResponseEntity<?> list(@RequestParam Map<String, String> params) {
 		try {
 			List<ForsaleDto> list = forsaleService.forsaleList(params);
-			System.out.println(list);
+//			System.out.println(list);
 			return new ResponseEntity<List<ForsaleDto>>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -111,6 +114,35 @@ public class ForsaleController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+	}
+	
+	/**
+	 * 아파트 매매가 수정 - 매물번호, 수정가격 map으로 받음
+	 */
+	@PutMapping("/modifyPrice")
+	public ResponseEntity<?> modifyPrice(@RequestBody Map<String, String> params) {
+		try {
+			forsaleService.modifyPrice(params);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("forsale modifyPrice Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+	 * 매물 삭제
+	 */
+	@DeleteMapping("/deleteForsale/{forsaleNo}")
+	public ResponseEntity<?> deleteForsale(@PathVariable int forsaleNo) {
+		try {
+			forsaleService.deleteForsale(forsaleNo);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("forsale deleteForsale Controller Error");
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

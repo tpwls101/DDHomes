@@ -81,4 +81,17 @@
 		from housedeal
 		where aptCode = #{aptCode} and dealYear in (date_format(now(), '%Y')-1, date_format(now(), '%Y')-2)
 	</select>
+	
+	<!-- 매매가 수정 -->
+	<update id="modifyPrice" parameterType="map">
+		update forsale
+		set price = #{price}
+		where forsaleNo = #{forsaleNo}
+	</update>
+	
+	<!-- 매물 삭제 -->
+	<delete id="deleteForsale" parameterType="int">
+		delete from forsale
+		where forsaleNo = #{forsaleNo}
+	</delete>
 </mapper>
