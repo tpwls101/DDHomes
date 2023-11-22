@@ -24,6 +24,6 @@ console.log(dongCode);
 .in-a-row {
   display: flex;
   flex-direction: row;
-  height: 600px;
+  height: 800px;
 }
 </style>
