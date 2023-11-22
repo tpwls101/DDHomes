@@ -15,4 +15,8 @@ public interface ForsaleService {
 	List<HouseInfoDto> searchHouseInfo(Map<String, String> params) throws Exception;
 	/** 아파트 코드로 최근 2년 평균 거래가 검색하기 */
 	Integer getAvgDealAmount(String aptCode) throws Exception;
+	/** 가격 수정 */
+	void modifyPrice(Map<String, String> params) throws Exception;
+	/** 매물 삭제 */
+	void deleteForsale(int forsaleNo) throws Exception;
 }

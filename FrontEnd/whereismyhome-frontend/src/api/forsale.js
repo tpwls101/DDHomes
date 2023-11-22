@@ -31,4 +31,12 @@ function avgDealAmount(aptCode, success, fail) {
   local.get(`${url}/avgDealAmount/${aptCode}`).then(success).catch(fail);
 }
 
-export { searchAptName, registForsale, avgDealAmount, getForsaleList };
+function modifyPrice(params, success, fail) {
+  local.put(`${url}/modifyPrice`, JSON.stringify(params)).then(success).catch(fail);
+}
+
+function deleteForsale(forsaleNo, success, fail) {
+  local.delete(`${url}/deleteForsale/${forsaleNo}`).then(success).catch(fail);
+}
+
+export { searchAptName, registForsale, avgDealAmount, getForsaleList, modifyPrice, deleteForsale };
