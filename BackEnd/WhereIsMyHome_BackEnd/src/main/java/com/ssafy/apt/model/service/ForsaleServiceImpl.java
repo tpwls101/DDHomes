@@ -38,8 +38,8 @@ public class ForsaleServiceImpl implements ForsaleService {
 	}
 
 	@Override
-	public List<Map<String, String>> forsaleList(String dongCode) throws Exception {
-		List<Map<String, String>> list = forsaleMapper.forsaleList(dongCode);
+	public List<ForsaleDto> forsaleList(String dongCode) throws Exception {
+		List<ForsaleDto> list = forsaleMapper.forsaleList(dongCode);
 		return list;
 	}
 	

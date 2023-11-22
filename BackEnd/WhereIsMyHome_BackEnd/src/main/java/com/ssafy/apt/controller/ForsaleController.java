@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.apt.model.ForsaleDto;
 import com.ssafy.apt.model.HouseInfoDto;
 import com.ssafy.apt.model.service.ForsaleService;
-import com.ssafy.board.model.BoardCommentDto;
 import com.ssafy.home.file.model.ImgInfoDto;
 import com.ssafy.util.FileUtil;
 
@@ -72,9 +70,9 @@ public class ForsaleController {
 	public ResponseEntity<?> list(@PathVariable String dongCode) {
 		try {
 			System.out.println("dongCode : " + dongCode);
-			List<Map<String, String>> list = forsaleService.forsaleList(dongCode);
+			List<ForsaleDto> list = forsaleService.forsaleList(dongCode);
 			System.out.println(list);
-			return new ResponseEntity<List<Map<String, String>>>(list, HttpStatus.OK);
+			return new ResponseEntity<List<ForsaleDto>>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -28,6 +28,10 @@ function getForsaleList(dongCode, success, fail) {
   local.get(`${url}/forsaleList/${dongCode}`).then(success).catch(fail);
 }
 
+function getForsaleListByUserId(userId, success, fail) {
+  local.get(`${url}/forsaleList/${userId}`).then(success).catch(fail);
+}
+
 function avgDealAmount(aptCode, success, fail) {
   local.get(`${url}/avgDealAmount/${aptCode}`).then(success).catch(fail);
 }
