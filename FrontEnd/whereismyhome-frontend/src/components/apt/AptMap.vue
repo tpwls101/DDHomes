@@ -26,9 +26,8 @@ onMounted(() => {
     initMap();
   } else {
     const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-    }&libraries=services,clusterer`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+      }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
@@ -83,27 +82,7 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
 
-<<<<<<< HEAD
   checkData();
-=======
-  /** 추가 */
-  positions.value = [];
-  // console.log("AptMap -> watch -> forsaleList 확인!");
-  // console.log(forsaleList.value);
-  forsaleList.value.forEach((list) => {
-    let obj = {};
-    obj.latlng = new kakao.maps.LatLng(list.lat, list.lng);
-    obj.title = list.apartmentName;
-
-    positions.value.push(obj);
-  });
-
-  console.log("positions 확인!");
-  console.log(positions.value);
-  loadMarkers();
-
-  // loadMarkers();
->>>>>>> 09e2d7766def33646410fe53e8b1274b992f5d80
 };
 
 // 시군동 선택 후 지도 페이지로 넘어왔을 때 아파트 매물 목록들 지도에 마커 찍어주기
