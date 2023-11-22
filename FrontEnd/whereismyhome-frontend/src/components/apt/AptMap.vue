@@ -14,14 +14,21 @@ const { forsaleList } = storeToRefs(aptStore);
 // autoload=false
 // 비동기 로딩은 당장 페이지에서 필요 없는 지도 관련 스크립트 전체를 미리 로딩하지 않고 필요한 경우에만 로딩하기 위해 사용
 onMounted(() => {
+  // const { forsaleList } = storeToRefs(aptStore);
+  console.log("AptMap에서 onMounted 중!!! -> forsaleList 확인!");
+  console.log(forsaleList.value);
+  // forsaleList2.value = forsaleList.value;
+  // console.log("forsaleList2");
+  // console.log(forsaleList2.value);
   // forsaleList.value = forsaleList.value;
 
   if (window.kakao && window.kakao.maps) {
     initMap();
   } else {
     const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-      }&libraries=services,clusterer`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
+      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+    }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
@@ -76,12 +83,32 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
 
+<<<<<<< HEAD
   checkData();
+=======
+  /** 추가 */
+  positions.value = [];
+  // console.log("AptMap -> watch -> forsaleList 확인!");
+  // console.log(forsaleList.value);
+  forsaleList.value.forEach((list) => {
+    let obj = {};
+    obj.latlng = new kakao.maps.LatLng(list.lat, list.lng);
+    obj.title = list.apartmentName;
+
+    positions.value.push(obj);
+  });
+
+  console.log("positions 확인!");
+  console.log(positions.value);
+  loadMarkers();
+
+  // loadMarkers();
+>>>>>>> 09e2d7766def33646410fe53e8b1274b992f5d80
 };
 
 // 시군동 선택 후 지도 페이지로 넘어왔을 때 아파트 매물 목록들 지도에 마커 찍어주기
 const loadMarkers = () => {
-  console.log("loadMarkers");
+  console.log("loadMarkers 진입!");
 
   // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
   // deleteMarkers();
@@ -110,12 +137,12 @@ const loadMarkers = () => {
 
   // 4. 지도를 이동시켜주기
   // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
-  const bounds = positions.value.reduce(
-    (bounds, position) => bounds.extend(position.latlng),
-    new kakao.maps.LatLngBounds()
-  );
+  // const bounds = positions.value.reduce(
+  //   (bounds, position) => bounds.extend(position.latlng),
+  //   new kakao.maps.LatLngBounds()
+  // );
 
-  map.setBounds(bounds);
+  // map.setBounds(bounds);
 };
 </script>
 
