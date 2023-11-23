@@ -88,4 +88,9 @@ public class ForsaleServiceImpl implements ForsaleService {
 		forsaleMapper.deleteFavorite(params);
 	}
 
+	@Override
+	public Integer getAvgPrice(String dongCode) throws Exception {
+		return forsaleMapper.getAvgPrice(dongCode);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.ssafy.apt.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +24,6 @@ public interface ForsaleService {
 	void favorite(Map<String, String> params) throws Exception;
 	/** 매물 찜 삭제 */
 	void deleteFavorite(Map<String, String> params) throws Exception;
+	/**  최근 2년간 xx동의 평균 거래 가격 구하기 */
+	Integer getAvgPrice(String dongCode) throws Exception;
 }
