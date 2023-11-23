@@ -53,6 +53,7 @@ const housedealInfo = ref([]);
 onMounted(() => {
   makeData();
   getPriceAvg();
+  getDealInfo();
 });
 
 // 최근 2년간 xx동의 평균 거래 가격 구하기
