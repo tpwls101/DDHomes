@@ -8,6 +8,7 @@ public class ForsaleDto {
 	
 	private int forsaleNo;
 	private String aptCode;
+	private String dongCode;
 	private String apartmentName;
 	private String sidoName;
 	private String gugunName;
@@ -35,6 +36,12 @@ public class ForsaleDto {
 	}
 	public void setAptCode(String aptCode) {
 		this.aptCode = aptCode;
+	}
+	public String getDongCode() {
+		return dongCode;
+	}
+	public void setDongCode(String dongCode) {
+		this.dongCode = dongCode;
 	}
 	public String getApartmentName() {
 		return apartmentName;
@@ -124,11 +131,11 @@ public class ForsaleDto {
 	
 	@Override
 	public String toString() {
-		return "ForsaleDto [forsaleNo=" + forsaleNo + ", aptCode=" + aptCode + ", apartmentName=" + apartmentName
-				+ ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", dong=" + dong + ", jibun=" + jibun
-				+ ", roadName=" + roadName + ", roadNameBonBun=" + roadNameBonBun + ", userId=" + userId + ", price="
-				+ price + ", buildYear=" + buildYear + ", lat=" + lat + ", lng=" + lng + ", isFavorite=" + isFavorite
-				+ ", imgInfos=" + imgInfos + "]";
+		return "ForsaleDto [forsaleNo=" + forsaleNo + ", aptCode=" + aptCode + ", dongCode=" + dongCode
+				+ ", apartmentName=" + apartmentName + ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", dong="
+				+ dong + ", jibun=" + jibun + ", roadName=" + roadName + ", roadNameBonBun=" + roadNameBonBun
+				+ ", userId=" + userId + ", price=" + price + ", buildYear=" + buildYear + ", lat=" + lat + ", lng="
+				+ lng + ", isFavorite=" + isFavorite + ", imgInfos=" + imgInfos + "]";
 	}
 	
 }

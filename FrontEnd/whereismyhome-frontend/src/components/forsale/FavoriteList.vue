@@ -1,13 +1,18 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, onUnmounted } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { getForsaleList } from "@/api/forsale";
 import { useMemberStore } from "@/stores/member";
+import { useAptStore } from "@/stores/apt";
 import { storeToRefs } from "pinia";
 import FosaleListItem from "@/components/forsale/item/FosaleListItem.vue";
 
 const memberStore = useMemberStore();
+const aptStore = useAptStore();
+const router = useRouter();
 
 const { userInfo } = storeToRefs(memberStore);
+const { forsaleNo, dongCode } = storeToRefs(aptStore);
 
 // 매물 리스트 구할 때 필요한 파라미터
 const params = ref({});
@@ -50,6 +55,13 @@ function loadForsaleList() {
     }
   );
 }
+
+function favoriteForsaleClicked(forsale) {
+  dongCode.value = forsale.dongCode;
+  forsaleNo.value = forsale.forsaleNo;
+
+  router.push({ name: "apt-bundle" });
+}
 </script>
 
 <template>
@@ -74,7 +86,7 @@ function loadForsaleList() {
           </thead>
           <tbody>
             <FosaleListItem v-for="forsale in forsaleList" :key="forsale.forsaleNo" :forsale="forsale" :type="type"
-              @reloadForsaleList="loadForsaleList"></FosaleListItem>
+              @reloadForsaleList="loadForsaleList" @click="favoriteForsaleClicked(forsale)"></FosaleListItem>
           </tbody>
         </table>
       </div>

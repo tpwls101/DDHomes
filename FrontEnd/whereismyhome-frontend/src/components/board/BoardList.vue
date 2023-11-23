@@ -108,12 +108,7 @@ function boardWrite() {
     <div class="col-lg-8 col-md-10 col-sm-12">
       <div class="row align-self-center mb-2">
         <div v-if="userInfo != null" class="col-md-2 text-start">
-          <button
-            type="button"
-            id="btn-board-write"
-            class="btn btn-outline-primary btn-sm"
-            @click="boardWrite"
-          >
+          <button type="button" id="btn-board-write" class="btn btn-outline-primary btn-sm" @click="boardWrite">
             글쓰기
           </button>
         </div>
@@ -129,30 +124,18 @@ function boardWrite() {
           </tr>
         </thead>
         <tbody>
-          <BoardListItem
-            v-for="article in articles"
-            :key="article.articleNo"
-            :article="article"
-          ></BoardListItem>
+          <BoardListItem v-for="article in articles" :key="article.articleNo" :article="article"></BoardListItem>
         </tbody>
       </table>
     </div>
     <!-- 페이지 내비게이션 -->
     <div class="row">
-      <PageNavigation
-        :current-page="param.pgno"
-        :total-page="totalPageCount"
-        @pageChange="onPageChange"
-      >
+      <PageNavigation :current-page="param.pgno" :total-page="totalPageCount" @pageChange="onPageChange">
       </PageNavigation>
     </div>
     <!-- 정렬조건 -->
     <div>
-      <VSelect
-        :selectOption="selectOption"
-        v-model="param.sortCondition"
-        @onKeySelect="changeKey"
-      />
+      <VSelect :selectOption="selectOption" v-model="param.sortCondition" @onKeySelect="changeKey" />
     </div>
   </div>
 </template>
