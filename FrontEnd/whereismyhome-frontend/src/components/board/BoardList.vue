@@ -108,9 +108,19 @@ function boardWrite() {
     <div class="col-lg-8 col-md-10 col-sm-12">
       <div class="row align-self-center mb-2">
         <div v-if="userInfo != null" class="col-md-2 text-start">
-          <button type="button" id="btn-board-write" class="btn btn-outline-primary btn-sm" @click="boardWrite">
-            글쓰기
-          </button>
+          <!-- 공지사항인 경우는 admin만 작성 가능 -->
+          <template v-if="param.boardType == 'announcement'">
+            <button v-if="userInfo.grade == 'admin'" type="button" id="btn-board-write"
+              class="btn btn-outline-primary btn-sm" @click="boardWrite">
+              글쓰기
+            </button>
+          </template>
+          <!-- 정보게시판인 경우는 로그인만 하면 작성 가능 -->
+          <template v-else-if="param.boardType == 'information'">
+            <button type="button" id="btn-board-write" class="btn btn-outline-primary btn-sm" @click="boardWrite">
+              글쓰기
+            </button>
+          </template>
         </div>
       </div>
       <table class="table table-hover">

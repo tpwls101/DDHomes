@@ -12,12 +12,19 @@ const memberStore = useMemberStore();
 
 const { userInfo } = storeToRefs(memberStore);
 
+// admin등급 회원의 경우 글 작성시 게시판 타입 라디오버튼 활성화
+const isAdmin = ref(false);
+
 onMounted(() => {
   // 게시물 타입 설정
   boardDto.value.boardType = route.params.boardType;
   // 게시자 아이디 설정
   if (userInfo.value != null) {
     boardDto.value.userId = userInfo.value.userId;
+
+    if (userInfo.value.grade === "admin") {
+      isAdmin.value = true;
+    }
   }
 });
 
@@ -112,7 +119,7 @@ const write = () => {
       <form id="form-register" method="POST" action="">
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" name="boardType" id="announcement" value="announcement"
-            v-model="boardDto.boardType" />
+            v-model="boardDto.boardType" :disabled="!isAdmin" />
           <label class="form-check-label" for="inlineRadio1">공지사항</label>
         </div>
         <div class="form-check form-check-inline">
