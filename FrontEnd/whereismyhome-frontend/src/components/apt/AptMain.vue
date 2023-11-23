@@ -20,7 +20,14 @@ onMounted(() => {
   forsaleNo.value = "";
 })
 
+// 검색어로 검색 버튼 클릭시
 function searchForsaleByDongNameBtnClicked() {
+  // 입력값 확인
+  if (searchKeyword.value == "") {
+    alert("검색어를 입력하세요!");
+    return;
+  }
+
   // 파라미터 만들어서 해당하는 매물리스트 가져오기
   // 동 이름으로 검색 결과
   let params = {
