@@ -41,6 +41,9 @@ public class AptController {
 //		return jsonStr;
 //	}
 	
+	/**
+	 * 내가 선택한 select와 option에 대한 json 결과값 받기
+	 */
 	@GetMapping("/getSelector")
 	@ResponseBody
 	public String getSelector(@RequestParam Map<String, String> map) {
@@ -60,39 +63,54 @@ public class AptController {
 	}
 	
 	
-	
-	@GetMapping("/info")
-	public String list(String selectedValue, Model model) {
+	/**
+	 * 선택한 아파트의 거래 내역 구하기
+	 */
+	@GetMapping("/getHouseDealInfo/{aptCode}")
+	public ResponseEntity<?> getHouseDealInfo(@PathVariable String aptCode) {
 		try {
-			List<HouseInfoDto> list = aptService.getHouseInfo(selectedValue);
-			model.addAttribute("selectedValue", selectedValue);
-			model.addAttribute("houseinfoList", list);
+			System.out.println("?????????!?!?!?!?");
+			List<HouseDealDto> list = aptService.getHouseDealInfo(aptCode);
+			return new ResponseEntity<List<HouseDealDto>>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		return "apt/info";
 	}
 	
 	
-	@GetMapping("/deal")
-	public String deal(String aptCode, Model model) {
-		try {
-			List<HouseDealDto> list = aptService.getHouseDeal(aptCode);
-			model.addAttribute("aptCode", aptCode);
-			model.addAttribute("housedealList", list);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return "apt/deal";
-	}
+//	@GetMapping("/info")
+//	public String list(String selectedValue, Model model) {
+//		try {
+//			List<HouseInfoDto> list = aptService.getHouseInfo(selectedValue);
+//			model.addAttribute("selectedValue", selectedValue);
+//			model.addAttribute("houseinfoList", list);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return "apt/info";
+//	}
 	
-	@GetMapping("/infolist/{dongCode}")
-	@ResponseBody
-	public ResponseEntity<?> infolist(@PathVariable("dongCode") String dongCode) {
-		System.out.println(dongCode);
-		
-		return new ResponseEntity<String>(dongCode, HttpStatus.OK);
-	}
+	
+//	@GetMapping("/deal")
+//	public String deal(String aptCode, Model model) {
+//		try {
+//			List<HouseDealDto> list = aptService.getHouseDeal(aptCode);
+//			model.addAttribute("aptCode", aptCode);
+//			model.addAttribute("housedealList", list);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return "apt/deal";
+//	}
+	
+//	@GetMapping("/infolist/{dongCode}")
+//	@ResponseBody
+//	public ResponseEntity<?> infolist(@PathVariable("dongCode") String dongCode) {
+//		System.out.println(dongCode);
+//		
+//		return new ResponseEntity<String>(dongCode, HttpStatus.OK);
+//	}
 }

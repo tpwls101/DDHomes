@@ -1,5 +1,6 @@
 package com.ssafy.apt.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public interface AptService {
 	
 	/**
 	 * aptCode로 house deal 얻기
+	 * 선택한 아파트의 거래 내역 구하기
 	 */
-	public List<HouseDealDto> getHouseDeal(String aptCode) throws Exception;
+	public List<HouseDealDto> getHouseDealInfo(String aptCode) throws Exception;
 }
