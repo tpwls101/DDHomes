@@ -235,34 +235,9 @@ function favoriteBtnClicked(forsaleNo) {
 <template>
   <div class="detail-container">
     <h4>매물번호 {{ forsaleNo }}</h4>
-    <div id="carouselExample" class="carousel slide">
-      <div class="carousel-inner">
-        <div v-for="img in imgs" :key="img.imginfoNo" class="carousel-item active">
-          <img :src="img" class="d-block w-100" alt="..." />
-        </div>
-      </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExample"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExample"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-    <!-- <div class="forsale-img">
+    <div class="forsale-img">
       <img v-for="img in imgs" :key="img.imginfoNo" :src="img" />
-    </div> -->
+    </div>
     <hr />
     <div>
       <p class="apt-name apt-name-and-favorite">{{ forsaleInfo.apartmentName }}</p>
