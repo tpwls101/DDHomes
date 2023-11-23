@@ -1,5 +1,17 @@
 <script setup>
+import { ref, onMounted } from "vue";
+import { useAptStore } from "@/stores/apt";
+import { storeToRefs } from "pinia";
 import SelectArea from '@/components/common/SelectArea.vue';
+
+const aptStore = useAptStore();
+
+const { dongCode, forsaleList } = storeToRefs(aptStore);
+
+onMounted(() => {
+  dongCode.value = "";
+  forsaleList.value = [];
+})
 
 </script>
 
