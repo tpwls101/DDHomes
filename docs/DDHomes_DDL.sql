@@ -33,20 +33,15 @@ ALTER TABLE `housedeal` MODIFY COLUMN `aptCode`	BIGINT AFTER `no`;
 /* ================ 테이블 추가 ================ */
 -- member 테이블 추가
 CREATE TABLE IF NOT EXISTS `members` (
-	`userId` 		VARCHAR(16) 	NOT NULL PRIMARY KEY,
-	`userPwd` 		VARCHAR(200) 	NOT NULL,
-	`userName` 		VARCHAR(20) 	NOT NULL,
-	`emailId` 		VARCHAR(20) 	NOT NULL,
-	`emailDomain` 	VARCHAR(30) 	NOT NULL,
-	`joinDate` 		TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`grade` 		VARCHAR(20) 	DEFAULT 'basic'
+    `userId` VARCHAR(16) NOT NULL PRIMARY KEY,
+    `userPwd` VARCHAR(200) NOT NULL,
+    `userName` VARCHAR(20) NOT NULL,
+    `emailId` VARCHAR(20) NOT NULL,
+    `emailDomain` VARCHAR(30) NOT NULL,
+    `joinDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `grade` VARCHAR(20) not null default 'basic',
+    `token` varchar(1000)
 );
--- members 테이블에 token 컬럼 추가
-ALTER TABLE members ADD token VARCHAR(1000) AFTER grade;
-
--- members 테이블 제약사항 변경
-alter table members
-modify grade varchar(20) not null;
 
 -- board 테이블 추가
 CREATE TABLE IF NOT EXISTS `board` (
@@ -79,16 +74,13 @@ CREATE TABLE IF NOT EXISTS `forsale` (
 
 -- imginfo 테이블 추가
 CREATE TABLE IF NOT EXISTS `imginfo` (
-    `imginfoNo` 	INT 		AUTO_INCREMENT PRIMARY KEY,
+    `imgInfoNo` 	INT 		AUTO_INCREMENT PRIMARY KEY,
     `forsaleNo` 	INT,
     `articleNo` 	INT,
     `saveFolder` 	VARCHAR(45) NOT NULL,
     `originalName` 	VARCHAR(50) NOT NULL,
     `saveName` 		VARCHAR(50) NOT NULL
 );
-
--- imginfo 테이블 컬럼명 수정(231121)
-alter table imginfo change imginfoNo imgInfoNo int auto_increment;
 
 -- favorite 테이블 추가
 CREATE TABLE IF NOT EXISTS `favorite` (
@@ -101,14 +93,12 @@ CREATE TABLE IF NOT EXISTS `favorite` (
 -- houseinfo 유니크 키 제거
 alter table houseinfo drop index `UNIQUE`;
 
--- houseinfo 테이블 제약 수정
--- alter table `houseinfo`
--- drop constraint `buildYear`;
-
 -- board 테이블 제약사항 추가
 alter table `board`
 add foreign key (`userId`)
-references members (`userId`);
+references members (`userId`)
+on update no action
+on delete cascade;
 
 -- comment 테이블 제약사항 추가
 alter table `comment`
@@ -126,7 +116,9 @@ on delete cascade;
 -- forsale 테이블 제약사항 추가
 alter table `forsale`
 add foreign key (`aptCode`)
-references houseinfo (`aptCode`);
+references houseinfo (`aptCode`)
+on update no action
+on delete cascade;
 
 alter table `forsale`
 add foreign key (`userId`)
