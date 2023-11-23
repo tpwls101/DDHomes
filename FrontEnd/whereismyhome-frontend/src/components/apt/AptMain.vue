@@ -1,18 +1,62 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useAptStore } from "@/stores/apt";
 import { storeToRefs } from "pinia";
+import { getForsaleList } from "@/api/forsale";
 import SelectArea from '@/components/common/SelectArea.vue';
 
 const aptStore = useAptStore();
+const router = useRouter();
 
 const { dongCode, forsaleList, forsaleNo } = storeToRefs(aptStore);
+
+// 동이름으로 input
+const searchKeyword = ref("");
 
 onMounted(() => {
   dongCode.value = "";
   forsaleList.value = [];
   forsaleNo.value = "";
 })
+
+function searchForsaleByDongNameBtnClicked() {
+  // 파라미터 만들어서 해당하는 매물리스트 가져오기
+  // 동 이름으로 검색 결과
+  let params = {
+    condition: "dong",
+    value: searchKeyword.value,
+  }
+  getForsaleList(
+    params,
+    ({ data }) => {
+      // pinia에 검색한 결과 리스트 올리기
+      console.log(data);
+      forsaleList.value = data;
+
+      router.push({ name: "apt-bundle" });
+    },
+    (error) => {
+      console.log(error);
+    }
+  )
+
+  // 아파트 이름으로 검색 결과
+  // params.condition = "apartmentName";
+  // getForsaleList(
+  //   params,
+  //   ({ data }) => {
+  //     // pinia에 검색한 결과 리스트 올리기
+  //     console.log(data);
+  //     forsaleList.value = data;
+
+  //     router.push({ name: "apt-bundle" });
+  //   },
+  //   (error) => {
+  //     console.log(error);
+  //   }
+  // )
+}
 
 </script>
 
@@ -40,9 +84,10 @@ onMounted(() => {
             <!-- search start -->
             <div class="row mt-5 mb-5">
               <form action="" class="text-center">
-                <input type="text" class="form-control form-control-lg mx-auto" placeholder="검색어를 입력하세요!(예. 수완동)"
-                  style="max-width: 400px; display: inline" />
-                <input type="submit" class="btn btn-dark btn ms-2 mb-2" style=" outline: 1px solid white;" value="검색" />
+                <input v-model="searchKeyword" type="text" class="form-control form-control-lg mx-auto"
+                  placeholder="검색어를 입력하세요!(예. 수완동)" style="max-width: 400px; display: inline" />
+                <input @click="searchForsaleByDongNameBtnClicked" type="button" class="btn btn-dark btn ms-2 mb-2"
+                  style=" outline: 1px solid white;" value="검색" />
               </form>
             </div>
             <!-- search end -->

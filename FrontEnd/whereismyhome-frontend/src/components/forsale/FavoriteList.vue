@@ -12,13 +12,13 @@ const aptStore = useAptStore();
 const router = useRouter();
 
 const { userInfo } = storeToRefs(memberStore);
-const { forsaleNo, dongCode } = storeToRefs(aptStore);
+const { forsaleList } = storeToRefs(aptStore);
 
 // 매물 리스트 구할 때 필요한 파라미터
 const params = ref({});
 
 // 등록된 매물 리스트
-const forsaleList = ref([]);
+const favForsaleList = ref([]);
 
 // 리스트 아이템 호출할 때 필요한 타입
 const type = ref("favorite");
@@ -39,15 +39,15 @@ function loadForsaleList() {
   getForsaleList(
     params.value,
     ({ data }) => {
-      forsaleList.value = data;
+      favForsaleList.value = data;
 
-      for (let i = 0; i < forsaleList.value.length; i++) {
+      for (let i = 0; i < favForsaleList.value.length; i++) {
         // 도로명주소 앞에 0 빼기
-        forsaleList.value[i].roadNameBonBun = Number(forsaleList.value[i].roadNameBonBun);
+        favForsaleList.value[i].roadNameBonBun = Number(favForsaleList.value[i].roadNameBonBun);
         // 가격 콤마, 원 붙이기
-        let temp = forsaleList.value[i].price;
+        let temp = favForsaleList.value[i].price;
         temp = temp.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        forsaleList.value[i].price = temp + " 원";
+        favForsaleList.value[i].price = temp + " 원";
       }
     },
     (error) => {
@@ -57,9 +57,17 @@ function loadForsaleList() {
 }
 
 // 찜목록에서 항목 클릭 시
-function favoriteForsaleClicked(forsale) {
-  dongCode.value = forsale.dongCode;
-  forsaleNo.value = forsale.forsaleNo;
+function favoriteForsaleClicked() {
+  // 가격에 원 붙어있는거 되돌리기
+  for (let i = 0; i < favForsaleList.value.length; i++) {
+    let temp = favForsaleList.value[i].price;
+    temp = temp.replace(/\,/g, ""); // 콤마 제거
+    temp = temp.slice(0, -1); // 원 제거
+    favForsaleList.value[i].price = temp;
+  }
+
+  // pinia에 찜목록 리스트 올리기
+  forsaleList.value = favForsaleList.value;
 
   router.push({ name: "apt-bundle" });
 }
@@ -86,8 +94,8 @@ function favoriteForsaleClicked(forsale) {
             </tr>
           </thead>
           <tbody>
-            <FosaleListItem v-for="forsale in forsaleList" :key="forsale.forsaleNo" :forsale="forsale" :type="type"
-              @reloadForsaleList="loadForsaleList" @click="favoriteForsaleClicked(forsale)"></FosaleListItem>
+            <FosaleListItem v-for="forsale in favForsaleList" :key="forsale.forsaleNo" :forsale="forsale" :type="type"
+              @reloadForsaleList="loadForsaleList" @click="favoriteForsaleClicked()"></FosaleListItem>
           </tbody>
         </table>
       </div>
