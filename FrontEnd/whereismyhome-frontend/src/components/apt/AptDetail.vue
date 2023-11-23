@@ -331,7 +331,8 @@ function favoriteBtnClicked(forsaleNo) {
       </tr>
       <tr v-for="info in housedealInfo" :key="info.no">
         <td>{{ info.dealYear }}.{{ info.dealMonth }}</td>
-        <td>{{ info.dealAmount / 10000 }}억원</td>
+        <!-- 소수점 셋째자리에서 반올림 처리-->
+        <td>{{ Math.round((info.dealAmount / 10000) * 100) / 100 }}억원</td>
         <td>{{ info.area }}</td>
         <td>{{ info.floor }}</td>
       </tr>
