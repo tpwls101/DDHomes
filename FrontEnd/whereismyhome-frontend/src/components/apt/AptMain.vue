@@ -27,9 +27,9 @@ import SelectArea from '@/components/common/SelectArea.vue';
             <!-- search start -->
             <div class="row mt-5 mb-5">
               <form action="" class="text-center">
-                <input type="text" class="form-control form-control-lg mx-auto" placeholder="검색어를 입력하세요!(예. 수완동 정동)"
+                <input type="text" class="form-control form-control-lg mx-auto" placeholder="검색어를 입력하세요!(예. 수완동)"
                   style="max-width: 400px; display: inline" />
-                <input type="submit" value="검색" />
+                <input type="submit" class="btn btn-dark btn ms-2 mb-2" style=" outline: 1px solid white;" value="검색" />
               </form>
             </div>
             <!-- search end -->
