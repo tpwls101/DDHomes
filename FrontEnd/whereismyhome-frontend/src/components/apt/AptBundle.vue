@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useAptStore } from "../../stores/apt";
 import { storeToRefs } from "pinia";
 import { getForsaleList } from "@/api/forsale";
@@ -10,6 +11,7 @@ import AptDetail from "@/components/apt/AptDetail.vue";
 
 const aptStore = useAptStore();
 const memberStore = useMemberStore();
+const router = useRouter();
 
 const { userInfo } = storeToRefs(memberStore);
 const { dongCode } = storeToRefs(aptStore);
@@ -33,15 +35,19 @@ onMounted(() => {
     getForsaleList(
       params,
       ({ data }) => {
-        console.log("success");
-        console.log("data : ");
-        console.log(data);
+        if (data.length === 0) {
+          alert("해당 키워드에 해당하는 매물이 존재하지 않습니다. 다른 키워드를 입력해 주세요!");
+          router.push({ name: "main" });
+        }
+        // console.log("success");
+        // console.log("data : ");
+        // console.log(data);
         forsaleList.value = data;
-        console.log("AptBundle의 forsaleList");
-        console.log(forsaleList.value);
+        // console.log("AptBundle의 forsaleList");
+        // console.log(forsaleList.value);
       },
       (error) => {
-        console.log("fail");
+        // console.log("fail");
       }
     );
   }
