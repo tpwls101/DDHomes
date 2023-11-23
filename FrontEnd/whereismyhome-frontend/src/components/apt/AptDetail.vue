@@ -48,7 +48,13 @@ const forsaleInfo = ref({
 //   area: "",
 //   floor: "",
 // ]);
+
+// 전체 거래내역
 const housedealInfo = ref([]);
+// 선택된 년도 거래내역
+const housedealInfoYear = ref([]);
+// 선택된 년도
+const checkDealYear = ref();
 
 onMounted(() => {
   makeData();
@@ -82,6 +88,19 @@ watch(
   }
 );
 
+// 거래내역 확인할 거래년도 변화시
+watch(
+  () => checkDealYear.value,
+  () => {
+    housedealInfoYear.value = [];
+    for (let i = 0; i < housedealInfo.value.length; i++) {
+      if (housedealInfo.value[i].dealYear === checkDealYear.value) {
+        housedealInfoYear.value.push(housedealInfo.value[i]);
+      }
+    }
+  }
+);
+
 // 선택한 아파트의 거래 내역 구하기
 function getDealInfo() {
   getHouseDealInfo(
@@ -89,6 +108,8 @@ function getDealInfo() {
     ({ data }) => {
       console.log("success");
       housedealInfo.value = data;
+
+      checkDealYear.value = housedealInfo.value[0].dealYear;
 
       // 거래 가격의 , 제거하기
       for (let i = 0; i < housedealInfo.value.length; i++) {
@@ -324,7 +345,8 @@ function favoriteBtnClicked(forsaleNo) {
     <div v-for="info in housedealInfo" :key="info.no">
       {{ info.dealYear }}.{{ info.dealMonth }} {{ info.dealAmount }}
     </div> -->
-
+    <input type="number" v-model="checkDealYear" style="width: 70px" />
+    <span>년도 거래내역 확인</span>
     <table>
       <tr>
         <th>계약일</th>
@@ -332,7 +354,7 @@ function favoriteBtnClicked(forsaleNo) {
         <th>면적(㎡)</th>
         <th>층수</th>
       </tr>
-      <tr v-for="info in housedealInfo" :key="info.no">
+      <tr v-for="info in housedealInfoYear" :key="info.no">
         <td>{{ info.dealYear }}.{{ info.dealMonth }}</td>
         <!-- 소수점 셋째자리에서 반올림 처리-->
         <td>{{ Math.round((info.dealAmount / 10000) * 100) / 100 }}억원</td>

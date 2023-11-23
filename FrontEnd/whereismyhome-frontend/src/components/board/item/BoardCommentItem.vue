@@ -119,7 +119,7 @@ function clickDeleteButton() {
       </p>
       <p>{{ comment.content }}</p>
     </div>
-    <div v-if="isSameCommentUser" class="comment-btn-container">
+    <div v-if="userInfo.grade == 'admin' || isSameCommentUser" class="comment-btn-container">
       <input type="button" value="수정" @click="commentModify" />
       <input type="button" value="삭제" @click="commentDelete(comment.commentNo)" />
     </div>
