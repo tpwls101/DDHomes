@@ -119,4 +119,12 @@
 		where userId = #{userId} and forsaleNo = #{forsaleNo}
 	</delete>
 	
+	<!-- 최근 2년간 xx동의 평균 거래 가격 -->
+	<select id="getAvgPrice" parameterType="string" resultType="Integer">
+		select floor(avg(d.dealAmount * 1000)) as avg
+		from houseinfo i join housedeal d
+		on i.aptCode = d.aptCode
+		where i.dongCode = #{dongCode} and d.dealYear in (date_format(now(), '%Y')-1, date_format(now(), '%Y')-2);
+	</select>
+	
 </mapper>

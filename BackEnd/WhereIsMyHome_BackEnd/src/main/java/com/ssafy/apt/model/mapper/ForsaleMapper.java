@@ -29,4 +29,6 @@ public interface ForsaleMapper {
 	void favorite(Map<String, String> params) throws SQLException;
 	/** 매물 찜 삭제 */
 	void deleteFavorite(Map<String, String> params) throws SQLException;
+	/**  최근 2년간 xx동의 평균 거래 가격 구하기 */
+	Integer getAvgPrice(String dongCode) throws SQLException;
 }

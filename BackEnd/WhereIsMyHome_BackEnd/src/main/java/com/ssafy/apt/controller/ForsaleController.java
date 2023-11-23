@@ -186,4 +186,22 @@ public class ForsaleController {
 			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/**
+	 * 
+	 * 최근 2년간 xx동의 평균 거래 가격 구하기
+	 */
+	@GetMapping("/getAvgPrice/{dongCode}")
+	public ResponseEntity<?> getAvgPrice(@PathVariable String dongCode) {
+		System.out.println("??????????????");
+		try {
+			Integer price = forsaleService.getAvgPrice(dongCode);
+			System.out.println("price : " + price);
+			System.out.println(new ResponseEntity<Integer>(price, HttpStatus.OK));
+			return new ResponseEntity<Integer>(price, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
