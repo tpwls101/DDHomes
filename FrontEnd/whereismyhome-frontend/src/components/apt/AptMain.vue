@@ -2,12 +2,16 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAptStore } from "@/stores/apt";
+import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 import { getForsaleList } from "@/api/forsale";
 import SelectArea from "@/components/common/SelectArea.vue";
 
 const aptStore = useAptStore();
+const memberStore = useMemberStore();
 const router = useRouter();
+
+const { isLogin } = storeToRefs(memberStore);
 
 const { dongCode, forsaleList, forsaleNo } = storeToRefs(aptStore);
 
@@ -22,6 +26,12 @@ onMounted(() => {
 
 // 검색어로 검색 버튼 클릭시
 function searchForsaleByDongNameBtnClicked() {
+  // 로그인 확인
+  if (!isLogin.value) {
+    alert("로그인 후 이용 가능한 서비스입니다.");
+    return;
+  }
+
   // 입력값 확인
   if (searchKeyword.value == "") {
     alert("검색어를 입력하세요!");
