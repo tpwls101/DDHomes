@@ -56,6 +56,7 @@ function loadForsaleList() {
   );
 }
 
+// 찜목록에서 항목 클릭 시
 function favoriteForsaleClicked(forsale) {
   dongCode.value = forsale.dongCode;
   forsaleNo.value = forsale.forsaleNo;
@@ -73,7 +74,7 @@ function favoriteForsaleClicked(forsale) {
         </h2>
       </div>
       <div class="col-lg-8 col-md-10 col-sm-12">
-        <table class="table">
+        <table class="table table-hover">
           <thead>
             <tr class="text-center">
               <th scope="col">매물 번호</th>

@@ -113,12 +113,8 @@ function myPage() {
         <ul class="navbar-nav me-2" v-if="userInfo != null">
           <li id="nav-myPage" class="nav-item">
             <div class="dropdown dropstart">
-              <button
-                class="nav-link btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <button class="nav-link btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <img id="user-img" src="@/assets/user.png" />
               </button>
               <ul class="dropdown-menu">
@@ -128,10 +124,8 @@ function myPage() {
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
-                <li v-if="userInfo.grade == 'admin'">
-                  <a id="write" class="dropdown-item" @click="writeArticle('announcement')"
-                    >글쓰기</a
-                  >
+                <li>
+                  <a id="write" class="dropdown-item" @click="writeArticle('information')">글쓰기</a>
                 </li>
                 <li v-if="userInfo.grade == 'admin' || userInfo.grade == 'enter'" class="nav-item">
                   <a class="dropdown-item" @click="listForsale">매물 목록</a>

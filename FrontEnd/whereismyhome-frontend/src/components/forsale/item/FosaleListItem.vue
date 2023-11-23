@@ -138,7 +138,7 @@ function favoriteBtnClicked(forsaleNo) {
           </button>
         </div>
       </div>
-      <div>
+      <div v-else>
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"
           @click="favoriteBtnClicked(forsale.forsaleNo)">
           <path
