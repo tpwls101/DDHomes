@@ -140,17 +140,37 @@ const loadMarkers = () => {
 
 // 매물번호를 반응형으로 감시해서 값이 바뀌면 매물을 선택한 것이므로
 // 카카오 lat, lng 설정해서 지도에 해당 매물의 마커 보여주기
+// + 해당 위치에 인포윈도우 보여주기
 watch(
   () => forsaleNo.value,
   () => {
+    // 마커 이동
+    const index = ref(0); // markers 배열의 인덱스
     for (let i = 0; i < forsaleList.value.length; i++) {
       if (forsaleList.value[i].forsaleNo == forsaleNo.value) {
         lat.value = forsaleList.value[i].lat;
         lng.value = forsaleList.value[i].lng;
+        index.value = i;
       }
     }
     var moveLatLon = new kakao.maps.LatLng(lat.value, lng.value);
     map.panTo(moveLatLon);
+
+    const aptName = forsaleList.value[index.value].apartmentName;
+    // 인포윈도우 보여주기
+    // const iwContent = '<div style="padding:5px;">' + aptName.value + "</div>";
+    const iwContent = "<div style='padding:5px;'>" + aptName + "</div>";
+    console.log(typeof iwContent);
+    const iwPosition = new kakao.maps.LatLng(lat.value, lng.value);
+    const iwRemoveable = true; // removeable 속성을 true로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됨
+
+    const infowindow = new kakao.maps.InfoWindow({
+      position: iwPosition,
+      content: iwContent,
+      removable: iwRemoveable,
+    });
+
+    infowindow.open(map, markers[index.value]);
   }
 );
 
