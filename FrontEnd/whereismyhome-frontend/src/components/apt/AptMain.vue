@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useAptStore } from "@/stores/apt";
 import { storeToRefs } from "pinia";
 import { getForsaleList } from "@/api/forsale";
-import SelectArea from '@/components/common/SelectArea.vue';
+import SelectArea from "@/components/common/SelectArea.vue";
 
 const aptStore = useAptStore();
 const router = useRouter();
@@ -18,7 +18,7 @@ onMounted(() => {
   dongCode.value = "";
   forsaleList.value = [];
   forsaleNo.value = "";
-})
+});
 
 // 검색어로 검색 버튼 클릭시
 function searchForsaleByDongNameBtnClicked() {
@@ -33,7 +33,7 @@ function searchForsaleByDongNameBtnClicked() {
   let params = {
     condition: "dong",
     value: searchKeyword.value,
-  }
+  };
   getForsaleList(
     params,
     ({ data }) => {
@@ -46,7 +46,7 @@ function searchForsaleByDongNameBtnClicked() {
     (error) => {
       console.log(error);
     }
-  )
+  );
 
   // 아파트 이름으로 검색 결과
   // params.condition = "apartmentName";
@@ -64,7 +64,6 @@ function searchForsaleByDongNameBtnClicked() {
   //   }
   // )
 }
-
 </script>
 
 <template>
@@ -78,12 +77,13 @@ function searchForsaleByDongNameBtnClicked() {
       height: 900px;
     "> -->
     <div class="main-box container-fluid card">
-      <div class="card-img-overlay text-light md-5"
-        style="background-color: rgba(0, 0, 0, 0.6); height: auto; margin-top: auto">
+      <div
+        class="card-img-overlay text-light md-5"
+        style="background-color: rgba(0, 0, 0, 0.6); height: auto; margin-top: auto"
+      >
         <div class="card-img-overlay text-light" style="height: 350px; margin-top: 100px">
           <!-- main search start -->
           <div class="container mt-5">
-
             <!-- filter start -->
             <SelectArea></SelectArea>
             <!-- filter end -->
@@ -91,21 +91,32 @@ function searchForsaleByDongNameBtnClicked() {
             <!-- search start -->
             <div class="row mt-5 mb-5">
               <form action="" class="text-center">
-                <input v-model="searchKeyword" type="text" class="form-control form-control-lg mx-auto"
-                  placeholder="검색어를 입력하세요!(예. 수완동)" style="max-width: 400px; display: inline" />
-                <input @click="searchForsaleByDongNameBtnClicked" type="button" class="btn btn-dark btn ms-2 mb-2"
-                  style=" outline: 1px solid white;" value="검색" />
+                <input
+                  v-model="searchKeyword"
+                  type="text"
+                  class="form-control form-control-lg mx-auto"
+                  placeholder="검색어를 입력하세요!(예. 수완동)"
+                  style="max-width: 400px; display: inline"
+                />
+                <input
+                  @click="searchForsaleByDongNameBtnClicked"
+                  type="button"
+                  class="btn btn-dark btn ms-2 mb-2"
+                  style="outline: 1px solid white"
+                  value="검색"
+                />
               </form>
             </div>
             <!-- search end -->
-
           </div>
           <!-- main search end -->
           <div class="my-5"><br /><br /><br /></div>
           <!-- introduce start -->
           <div class="container text-center introduce-box">
             <p style="font-size: 60px">구해줘 HOMEs!!</p>
-            <p style="font-size: 20px">간편하게 지역 필터 혹은 검색어로 원하는 매물을 찾아보세요!</p>
+            <p style="font-size: 20px">
+              간편하게 지역 필터 혹은 검색어로 원하는 매물을 찾아보세요!
+            </p>
           </div>
           <!-- introduce end -->
         </div>
