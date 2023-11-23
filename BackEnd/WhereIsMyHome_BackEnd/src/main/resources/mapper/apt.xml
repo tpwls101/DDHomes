@@ -56,7 +56,7 @@
 	<select id="getHouseDealInfo" parameterType="string" resultMap="houseDeal">
 		select * from housedeal
 		where aptCode = #{aptCode}
-		order by dealYear desc, dealMonth desc limit 10
+		order by dealYear desc, dealMonth desc
 	</select>
 
 

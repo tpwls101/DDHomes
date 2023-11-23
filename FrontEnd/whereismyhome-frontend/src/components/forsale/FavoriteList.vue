@@ -94,8 +94,14 @@ function favoriteForsaleClicked() {
             </tr>
           </thead>
           <tbody>
-            <FosaleListItem v-for="forsale in favForsaleList" :key="forsale.forsaleNo" :forsale="forsale" :type="type"
-              @reloadForsaleList="loadForsaleList" @click="favoriteForsaleClicked()"></FosaleListItem>
+            <FosaleListItem
+              v-for="forsale in favForsaleList"
+              :key="forsale.forsaleNo"
+              :forsale="forsale"
+              :type="type"
+              @reloadForsaleList="loadForsaleList"
+              @favoriteForsaleClicked="favoriteForsaleClicked()"
+            ></FosaleListItem>
           </tbody>
         </table>
       </div>

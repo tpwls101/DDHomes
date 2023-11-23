@@ -48,7 +48,13 @@ const forsaleInfo = ref({
 //   area: "",
 //   floor: "",
 // ]);
+
+// 전체 거래내역
 const housedealInfo = ref([]);
+// 선택된 년도 거래내역
+const housedealInfoYear = ref([]);
+// 선택된 년도
+const checkDealYear = ref();
 
 onMounted(() => {
   makeData();
@@ -82,6 +88,19 @@ watch(
   }
 );
 
+// 거래내역 확인할 거래년도 변화시
+watch(
+  () => checkDealYear.value,
+  () => {
+    housedealInfoYear.value = [];
+    for (let i = 0; i < housedealInfo.value.length; i++) {
+      if (housedealInfo.value[i].dealYear === checkDealYear.value) {
+        housedealInfoYear.value.push(housedealInfo.value[i]);
+      }
+    }
+  }
+);
+
 // 선택한 아파트의 거래 내역 구하기
 function getDealInfo() {
   getHouseDealInfo(
@@ -89,6 +108,8 @@ function getDealInfo() {
     ({ data }) => {
       console.log("success");
       housedealInfo.value = data;
+
+      checkDealYear.value = housedealInfo.value[0].dealYear;
 
       // 거래 가격의 , 제거하기
       for (let i = 0; i < housedealInfo.value.length; i++) {
@@ -248,7 +269,7 @@ function favoriteBtnClicked(forsaleNo) {
     <div id="carouselExample" class="carousel slide">
       <div class="carousel-inner">
         <div v-for="img in imgs" :key="img.imginfoNo" class="carousel-item active">
-          <img :src="img" class="d-block w-100" alt="..." />
+          <img :src="img" class="carousel-img d-block" alt="..." />
         </div>
       </div>
       <button
@@ -324,7 +345,8 @@ function favoriteBtnClicked(forsaleNo) {
     <div v-for="info in housedealInfo" :key="info.no">
       {{ info.dealYear }}.{{ info.dealMonth }} {{ info.dealAmount }}
     </div> -->
-
+    <input type="number" v-model="checkDealYear" style="width: 70px" />
+    <span>년도 거래내역 확인</span>
     <table>
       <tr>
         <th>계약일</th>
@@ -332,7 +354,7 @@ function favoriteBtnClicked(forsaleNo) {
         <th>면적(㎡)</th>
         <th>층수</th>
       </tr>
-      <tr v-for="info in housedealInfo" :key="info.no">
+      <tr v-for="info in housedealInfoYear" :key="info.no">
         <td>{{ info.dealYear }}.{{ info.dealMonth }}</td>
         <!-- 소수점 셋째자리에서 반올림 처리-->
         <td>{{ Math.round((info.dealAmount / 10000) * 100) / 100 }}억원</td>
@@ -369,23 +391,36 @@ h4 {
   font-weight: bold;
 }
 
-.forsale-img {
-  /* width: 100%; */
-  /* height: 13%; */
-  /* width: 95%;*/
-  /* height: 200px; */
-  /* overflow: hidden; */
-  /* margin: 2px auto; */
-  /* background-color: lightpink; */
+.carousel-inner {
+  width: 40vh;
+  height: 30vh;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
-img {
-  /* width: 100%; */
-  /* height: 100%; */
+.carousel-img {
   width: 100%;
-  /* height: 200px; */
-  /* object-fit: cover; */
+  height: 100%;
+  object-fit: cover;
 }
+
+/* .forsale-img { */
+/* width: 100%; */
+/* height: 13%; */
+/* width: 95%;*/
+/* height: 200px; */
+/* overflow: hidden; */
+/* margin: 2px auto; */
+/* background-color: lightpink; */
+/* } */
+
+/* img { */
+/* width: 100%; */
+/* height: 100%; */
+/* width: 100%; */
+/* height: 200px; */
+/* object-fit: cover; */
+/* } */
 
 /* p {
   margin: 1px 7px;
