@@ -248,7 +248,7 @@ function favoriteBtnClicked(forsaleNo) {
     <div id="carouselExample" class="carousel slide">
       <div class="carousel-inner">
         <div v-for="img in imgs" :key="img.imginfoNo" class="carousel-item active">
-          <img :src="img" class="d-block w-100" alt="..." />
+          <img :src="img" class="carousel-img d-block" alt="..." />
         </div>
       </div>
       <button
@@ -369,23 +369,36 @@ h4 {
   font-weight: bold;
 }
 
-.forsale-img {
-  /* width: 100%; */
-  /* height: 13%; */
-  /* width: 95%;*/
-  /* height: 200px; */
-  /* overflow: hidden; */
-  /* margin: 2px auto; */
-  /* background-color: lightpink; */
+.carousel-inner {
+  width: 100%;
+  max-height: 300px;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
-img {
-  /* width: 100%; */
-  /* height: 100%; */
+.carousel-img {
   width: 100%;
-  /* height: 200px; */
-  /* object-fit: cover; */
+  height: 100%;
+  object-fit: cover;
 }
+
+/* .forsale-img { */
+/* width: 100%; */
+/* height: 13%; */
+/* width: 95%;*/
+/* height: 200px; */
+/* overflow: hidden; */
+/* margin: 2px auto; */
+/* background-color: lightpink; */
+/* } */
+
+/* img { */
+/* width: 100%; */
+/* height: 100%; */
+/* width: 100%; */
+/* height: 200px; */
+/* object-fit: cover; */
+/* } */
 
 /* p {
   margin: 1px 7px;
