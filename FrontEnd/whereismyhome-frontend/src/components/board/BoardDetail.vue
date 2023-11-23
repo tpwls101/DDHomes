@@ -192,7 +192,7 @@ function commentModify(commentNo) {
             글목록
           </button>
           <button
-            v-if="isSameArticleUser"
+            v-if="userInfo.grade == 'admin' || isSameArticleUser"
             type="button"
             id="btn-mv-modify"
             class="btn btn-outline-success mb-3 ms-1"
@@ -201,7 +201,7 @@ function commentModify(commentNo) {
             글수정
           </button>
           <button
-            v-if="isSameArticleUser"
+            v-if="userInfo.grade == 'admin' || isSameArticleUser"
             type="button"
             id="btn-delete"
             class="btn btn-outline-danger mb-3 ms-1"

@@ -3,13 +3,16 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { setSelector } from "@/api/apt";
 import { useAptStore } from "@/stores/apt";
+import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 
 const router = useRouter();
 
 const aptStore = useAptStore();
+const memberStore = useMemberStore();
 
 const { dongCode } = storeToRefs(aptStore);
+const { isLogin } = storeToRefs(memberStore);
 
 const param = ref({
   selectorId: "sido", // 설정할 셀렉터 id 속성
@@ -116,6 +119,11 @@ const aptInfo = () => {
   //   alert("동을 선택해주세요.");
   // }
 
+  if (!isLogin.value) {
+    alert("로그인 후 이용 가능한 서비스입니다.");
+    return;
+  }
+
   if (
     document.querySelector("#sido").value != "" &&
     document.querySelector("#gugun").value != "" &&
@@ -130,6 +138,9 @@ const aptInfo = () => {
     dongCode.value = selectedValue.value;
 
     router.push({ name: "apt-bundle" });
+  } else {
+    alert("모든 지역 필터를 선택해주세요!");
+    return;
   }
 };
 </script>
@@ -173,7 +184,13 @@ const aptInfo = () => {
     </div> -->
 
     <div class="form-group col-md-2">
-      <button type="button" id="list-btn" class="btn btn-dark btn" style=" outline: 1px solid white;" @click="aptInfo">
+      <button
+        type="button"
+        id="list-btn"
+        class="btn btn-dark btn"
+        style="outline: 1px solid white"
+        @click="aptInfo"
+      >
         아파트매매정보
       </button>
     </div>
