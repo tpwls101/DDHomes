@@ -53,7 +53,6 @@ const housedealInfo = ref([]);
 onMounted(() => {
   makeData();
   getPriceAvg();
-  getDealInfo();
 });
 
 // 최근 2년간 xx동의 평균 거래 가격 구하기
@@ -71,6 +70,13 @@ function getPriceAvg() {
     }
   );
 }
+
+watch(
+  () => aptCode.value,
+  () => {
+    getDealInfo();
+  }
+);
 
 // 선택한 아파트의 거래 내역 구하기
 function getDealInfo() {
@@ -391,13 +397,14 @@ img {
 table {
   border: 1px solid darkgrey;
   width: 100%;
-  height: 350px;
+  /* height: 350px; */
   text-align: center;
 }
 
 th,
 td {
   border: 1px solid darkgrey;
+  padding: 3px;
 }
 
 .dealinfo-table {
