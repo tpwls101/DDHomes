@@ -21,27 +21,30 @@ const { forsaleList } = storeToRefs(aptStore);
 const showForsaleDetail = ref(false);
 
 onMounted(() => {
-  // 리스트 호출시 필요한 파라미터 만들기
-  let params = {
-    condition: "dongCode",
-    value: dongCode.value,
-    userId: userInfo.value.userId,
-  };
-  // 리스트 받아오기
-  getForsaleList(
-    params,
-    ({ data }) => {
-      console.log("success");
-      console.log("data : ");
-      console.log(data);
-      forsaleList.value = data;
-      console.log("AptBundle의 forsaleList");
-      console.log(forsaleList.value);
-    },
-    (error) => {
-      console.log("fail");
-    }
-  );
+  // 셀렉터에서 값 선택시 동코드로 아파트 리스트 가져오기
+  if (forsaleList.value.length === 0) {
+    // 리스트 호출시 필요한 파라미터 만들기
+    let params = {
+      condition: "dongCode",
+      value: dongCode.value,
+      userId: userInfo.value.userId,
+    };
+    // 리스트 받아오기
+    getForsaleList(
+      params,
+      ({ data }) => {
+        console.log("success");
+        console.log("data : ");
+        console.log(data);
+        forsaleList.value = data;
+        console.log("AptBundle의 forsaleList");
+        console.log(forsaleList.value);
+      },
+      (error) => {
+        console.log("fail");
+      }
+    );
+  }
 });
 
 function ShowForsaleDetail(sfd) {

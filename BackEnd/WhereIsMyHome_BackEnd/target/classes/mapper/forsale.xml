@@ -67,6 +67,9 @@
 										from favorite
 										where userId = #{value} )
 			</when>
+			<when test="condition == 'dong'">
+				where i.dong like concat('%', #{value}, '%')
+			</when>
 		</choose>
 		order by f.forsaleNo desc
 	</select>
