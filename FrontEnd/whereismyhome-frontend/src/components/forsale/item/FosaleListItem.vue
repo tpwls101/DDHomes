@@ -1,6 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import { modifyPrice, deleteForsale, favorite, deleteFavorite } from "@/api/forsale";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+
+const { userInfo } = storeToRefs(memberStore);
 
 // 수정 버튼 토글
 const isModifyState = ref(false);
@@ -72,7 +78,7 @@ function deleteBtnClicked(forsaleNo) {
 function favoriteBtnClicked(forsaleNo) {
   const params = {
     // userId 수정할것!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    userId: "basic1",
+    userId: userInfo.value.userId,
     forsaleNo: forsaleNo,
   };
 
@@ -119,38 +125,21 @@ function favoriteBtnClicked(forsaleNo) {
     <td scope="col">{{ forsale.userId }}</td>
     <td scope="col">
       <div v-if="props.type === 'forsale'">
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-success"
-          @click="modifyPriceBtnClicked(forsale.forsaleNo)"
-        >
+        <button type="button" class="btn btn-sm btn-outline-success" @click="modifyPriceBtnClicked(forsale.forsaleNo)">
           수정
         </button>
         <div>
-          <button
-            v-if="isModifyState"
-            type="button"
-            class="btn btn-sm btn-outline-secondary"
-            @click="cancelModifyBtnClicked()"
-          >
+          <button v-if="isModifyState" type="button" class="btn btn-sm btn-outline-secondary"
+            @click="cancelModifyBtnClicked()">
             취소
           </button>
-          <button
-            v-else
-            type="button"
-            class="btn btn-sm btn-outline-danger"
-            @click="deleteBtnClicked(forsale.forsaleNo)"
-          >
+          <button v-else type="button" class="btn btn-sm btn-outline-danger" @click="deleteBtnClicked(forsale.forsaleNo)">
             삭제
           </button>
         </div>
       </div>
-      <div v-else-if="props.type === 'favorite'">
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-info"
-          @click="favoriteBtnClicked(forsale.forsaleNo)"
-        >
+      <div>
+        <button type="button" class="btn btn-sm btn-outline-info" @click="favoriteBtnClicked(forsale.forsaleNo)">
           찜
         </button>
       </div>
