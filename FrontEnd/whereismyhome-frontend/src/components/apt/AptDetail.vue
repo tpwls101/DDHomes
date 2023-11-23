@@ -82,6 +82,13 @@ function getPriceAvg() {
 }
 
 watch(
+  () => dongCode.value,
+  () => {
+    getPriceAvg();
+  }
+);
+
+watch(
   () => aptCode.value,
   () => {
     getDealInfo();
@@ -131,6 +138,7 @@ function makeData() {
   for (let i = 0; i < forsaleList.value.length; i++) {
     if (forsaleList.value[i].forsaleNo == forsaleNo.value) {
       console.log(forsaleList.value[i]);
+      dongCode.value = forsaleList.value[i].dongCode;
 
       deleteImage();
 
@@ -149,6 +157,7 @@ function makeData() {
       forsaleInfo.value.favorite = forsaleList.value[i].favorite;
 
       getImage();
+      return;
     }
   }
 }

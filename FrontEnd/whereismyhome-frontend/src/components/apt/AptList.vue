@@ -14,6 +14,7 @@ const showForsaleDetail = ref(true);
 const emit = defineEmits(["showForsaleDetail"]);
 
 function showMarker(fn, ac) {
+  console.log(forsaleList.value.dongCode);
   forsaleNo.value = fn;
   aptCode.value = ac;
   console.log("매물번호 : " + forsaleNo.value);
