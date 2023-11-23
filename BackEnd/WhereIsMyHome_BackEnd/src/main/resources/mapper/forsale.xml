@@ -7,6 +7,7 @@
 	<resultMap type="forsaleDto" id="forsale">
 		<result column="forsaleNo" property="forsaleNo"/>
 		<result column="aptCode" property="aptCode"/>
+		<result column="dongCode" property="dongCode"/>
 		<result column="apartmentName" property="apartmentName"/>
 		<result column="sidoName" property="sidoName"/>
 		<result column="gugunName" property="gugunName"/>
@@ -49,7 +50,7 @@
 	
 	<!-- 등록된 매물 리스트 조회 -->
 	<select id="forsaleList" parameterType="map" resultMap="forsale">
-		select f.forsaleNo, i.aptCode, i.apartmentName, d.sidoName, d.gugunName, i.dong, i.jibun, i.roadName, i.roadNameBonbun, f.userId, f.price, i.buildYear, i.lat, i.lng
+		select f.forsaleNo, i.aptCode, d.dongCode, i.apartmentName, d.sidoName, d.gugunName, i.dong, i.jibun, i.roadName, i.roadNameBonbun, f.userId, f.price, i.buildYear, i.lat, i.lng
 		from forsale f join houseinfo i
 		on f.aptCode = i.aptCode
 		join dongcode d
