@@ -6,11 +6,12 @@ import SelectArea from '@/components/common/SelectArea.vue';
 
 const aptStore = useAptStore();
 
-const { dongCode, forsaleList } = storeToRefs(aptStore);
+const { dongCode, forsaleList, forsaleNo } = storeToRefs(aptStore);
 
 onMounted(() => {
   dongCode.value = "";
   forsaleList.value = [];
+  forsaleNo.value = "";
 })
 
 </script>
