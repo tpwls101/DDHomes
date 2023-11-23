@@ -50,6 +50,15 @@
 			</when>
 		</choose>
 	</select>
+	
+	<!-- 아파트코드에 대한 거래 내역 가져오기 -->
+	<!-- 선택한 aptCode로 house deal 받기 -->
+	<select id="getHouseDealInfo" parameterType="string" resultMap="houseDeal">
+		select * from housedeal
+		where aptCode = #{aptCode}
+		order by dealYear desc, dealMonth desc limit 10
+	</select>
+
 
 	<!-- 선택한 dongCode로 house info 받기 --> 
 	<select id="getHouseInfo" parameterType="string" resultMap="houseInfo">
@@ -59,11 +68,12 @@
 	</select>
 	
 	<!-- 선택한 aptCode로 house deal 받기 -->
+	<!-- 
 	<select id="getHouseDeal" parameterType="string" resultMap="houseDeal">
 		select aptCode, dealAmount, dealYear, dealMonth, dealDay, area, floor
 		from housedeal
-		where aptCode = #{aprCode}
-		order by dealYear desc
-	</select>
+		where aptCode = #{aptCode}
+		order by dealYear desc, dealMonth desc
+	</select> -->
 	
 </mapper>

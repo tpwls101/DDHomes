@@ -60,8 +60,8 @@ public class AptServiceImpl implements AptService {
 	}
 
 	@Override
-	public List<HouseDealDto> getHouseDeal(String aptCode) throws Exception {
-		return aptMapper.getHouseDeal(aptCode);
+	public List<HouseDealDto> getHouseDealInfo(String aptCode) throws Exception {
+		return aptMapper.getHouseDealInfo(aptCode);
 	}
 	
 }

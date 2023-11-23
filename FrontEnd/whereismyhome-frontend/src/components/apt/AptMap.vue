@@ -127,14 +127,16 @@ watch(
 </script>
 
 <template>
-  <div class="container" id="map"></div>
+  <div class="map-container" id="map"></div>
 </template>
 
 <style scoped>
-.container {
+.map-container {
   /* background-color: lightgoldenrodyellow; */
-  width: 55%;
+  width: 50%;
   height: 100%;
+  /* width: 200px;
+  height: 100px; */
   /* border-right: 1px solid; */
 }
 

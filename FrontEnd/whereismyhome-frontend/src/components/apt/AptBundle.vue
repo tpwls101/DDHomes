@@ -63,5 +63,6 @@ function ShowForsaleDetail(sfd) {
   display: flex;
   flex-direction: row;
   height: 800px;
+  /* height: 100%; */
 }
 </style>

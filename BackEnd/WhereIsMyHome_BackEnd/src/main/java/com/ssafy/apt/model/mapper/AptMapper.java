@@ -17,4 +17,6 @@ public interface AptMapper {
 	public List<HouseInfoDto> getHouseInfo(String dongCode) throws SQLException;
 	// 선택한 aptCode로 해당 아파트의 house deal 얻기
 	public List<HouseDealDto> getHouseDeal(String aptCode) throws SQLException;
+	// 선택한 아파트의 거래 내역 구하기
+	public List<HouseDealDto> getHouseDealInfo(String aptCode) throws SQLException;
 }
