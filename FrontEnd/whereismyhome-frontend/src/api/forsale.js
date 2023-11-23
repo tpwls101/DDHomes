@@ -28,6 +28,7 @@ function getForsaleList(params, success, fail) {
   local.get(`${url}/forsaleList`, { params: params }).then(success).catch(fail);
 }
 
+// 아파트 하나에 대한 평균 가격
 function avgDealAmount(aptCode, success, fail) {
   local.get(`${url}/avgDealAmount/${aptCode}`).then(success).catch(fail);
 }
@@ -51,6 +52,13 @@ function deleteFavorite(params, success, fail) {
   local.delete(`${url}/deleteFavorite`, { params: params }).then(success).catch(fail);
 }
 
+// 최근 2년간 xx동의 평균 거래 가격
+function getAvgPrice(dongCode, success, fail) {
+  console.log("dongCode : " + dongCode);
+  local.get(`${url}/getAvgPrice/${dongCode}`).then(success).catch(fail);
+}
+
+
 export {
   searchAptName,
   registForsale,
@@ -60,4 +68,5 @@ export {
   deleteForsale,
   favorite,
   deleteFavorite,
+  getAvgPrice
 };
