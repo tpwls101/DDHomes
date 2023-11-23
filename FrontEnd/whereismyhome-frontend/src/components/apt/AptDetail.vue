@@ -370,8 +370,8 @@ h4 {
 }
 
 .carousel-inner {
-  width: 100%;
-  max-height: 300px;
+  width: 40vh;
+  height: 30vh;
   overflow: hidden;
   margin: 0 auto;
 }
