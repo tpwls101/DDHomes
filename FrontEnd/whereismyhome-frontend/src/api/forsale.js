@@ -66,5 +66,5 @@ export {
   deleteForsale,
   favorite,
   deleteFavorite,
-  getAvgPrice
+  getAvgPrice,
 };

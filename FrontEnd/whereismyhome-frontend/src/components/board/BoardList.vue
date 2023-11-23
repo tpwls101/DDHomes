@@ -98,7 +98,7 @@ function boardWrite() {
 </script>
 
 <template>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center" id="container">
     <div class="col-lg-8 col-md-10 col-sm-12">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark v-if="param.boardType == 'announcement'" class="sky">공지사항</mark>
@@ -110,14 +110,24 @@ function boardWrite() {
         <div v-if="userInfo != null" class="col-md-2 text-start">
           <!-- 공지사항인 경우는 admin만 작성 가능 -->
           <template v-if="param.boardType == 'announcement'">
-            <button v-if="userInfo.grade == 'admin'" type="button" id="btn-board-write"
-              class="btn btn-outline-primary btn-sm" @click="boardWrite">
+            <button
+              v-if="userInfo.grade == 'admin'"
+              type="button"
+              id="btn-board-write"
+              class="btn btn-outline-primary btn-sm"
+              @click="boardWrite"
+            >
               글쓰기
             </button>
           </template>
           <!-- 정보게시판인 경우는 로그인만 하면 작성 가능 -->
           <template v-else-if="param.boardType == 'information'">
-            <button type="button" id="btn-board-write" class="btn btn-outline-primary btn-sm" @click="boardWrite">
+            <button
+              type="button"
+              id="btn-board-write"
+              class="btn btn-outline-primary btn-sm"
+              @click="boardWrite"
+            >
               글쓰기
             </button>
           </template>
@@ -134,20 +144,37 @@ function boardWrite() {
           </tr>
         </thead>
         <tbody>
-          <BoardListItem v-for="article in articles" :key="article.articleNo" :article="article"></BoardListItem>
+          <BoardListItem
+            v-for="article in articles"
+            :key="article.articleNo"
+            :article="article"
+          ></BoardListItem>
         </tbody>
       </table>
     </div>
     <!-- 페이지 내비게이션 -->
     <div class="row">
-      <PageNavigation :current-page="param.pgno" :total-page="totalPageCount" @pageChange="onPageChange">
+      <PageNavigation
+        :current-page="param.pgno"
+        :total-page="totalPageCount"
+        @pageChange="onPageChange"
+      >
       </PageNavigation>
     </div>
     <!-- 정렬조건 -->
     <div>
-      <VSelect :selectOption="selectOption" v-model="param.sortCondition" @onKeySelect="changeKey" />
+      <VSelect
+        :selectOption="selectOption"
+        v-model="param.sortCondition"
+        @onKeySelect="changeKey"
+      />
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#container {
+  min-height: 730px;
+  overflow-x: hidden;
+}
+</style>

@@ -193,7 +193,6 @@ public class ForsaleController {
 	 */
 	@GetMapping("/getAvgPrice/{dongCode}")
 	public ResponseEntity<?> getAvgPrice(@PathVariable String dongCode) {
-		System.out.println("??????????????");
 		try {
 			Integer price = forsaleService.getAvgPrice(dongCode);
 			System.out.println("price : " + price);
@@ -204,4 +203,6 @@ public class ForsaleController {
 			return new ResponseEntity<String>("Error : " + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
 }

@@ -16,7 +16,10 @@ export const useAptStore = defineStore(
     // 매물 정보
     const forsaleInfo = ref({});
 
-    return { dongCode, forsaleList, forsaleNo, forsaleInfo };
+    // 아파트 코드
+    const aptCode = ref("");
+
+    return { dongCode, forsaleList, forsaleNo, forsaleInfo, aptCode };
   },
   {
     // 새로고침 해도 데이터가 유지되도록 해줌
