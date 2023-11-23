@@ -58,18 +58,21 @@ onMounted(() => {
 
 // 최근 2년간 xx동의 평균 거래 가격 구하기
 function getPriceAvg() {
-  getAvgPrice(
-    dongCode.value,
-    ({ data }) => {
-      console.log("success");
-      avgPrice.value = data;
-      avgPrice.value = Math.floor(avgPrice.value / 10000);
-      console.log("최근 2년간 xx동의 평균 거래 가격 : " + avgPrice.value);
-    },
-    (error) => {
-      console.log("fail");
-    }
-  );
+  // 리스트에서 클릭해 동코드가 존재하는 경우에만 아래 실행
+  if (dongCode.value != "") {
+    getAvgPrice(
+      dongCode.value,
+      ({ data }) => {
+        console.log("success");
+        avgPrice.value = data;
+        avgPrice.value = Math.floor(avgPrice.value / 10000);
+        console.log("최근 2년간 xx동의 평균 거래 가격 : " + avgPrice.value);
+      },
+      (error) => {
+        console.log("fail");
+      }
+    );
+  }
 }
 
 watch(
