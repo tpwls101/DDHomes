@@ -24,6 +24,7 @@ onMounted(() => {
     params.value = {
       condition: "enter",
       value: userInfo.value.userId,
+      userId: userInfo.value.userId,
     };
   } else {
     params.value = {
@@ -78,13 +79,8 @@ function loadForsaleList() {
           </tr>
         </thead>
         <tbody>
-          <FosaleListItem
-            v-for="forsale in forsaleList"
-            :key="forsale.forsaleNo"
-            :forsale="forsale"
-            :type="type"
-            @reloadForsaleList="loadForsaleList"
-          ></FosaleListItem>
+          <FosaleListItem v-for="forsale in forsaleList" :key="forsale.forsaleNo" :forsale="forsale" :type="type"
+            @reloadForsaleList="loadForsaleList"></FosaleListItem>
         </tbody>
       </table>
     </div>

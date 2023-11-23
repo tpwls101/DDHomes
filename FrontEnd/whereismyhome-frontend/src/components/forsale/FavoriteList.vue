@@ -1,7 +1,13 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, onUnmounted } from "vue";
 import { getForsaleList } from "@/api/forsale";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
 import FosaleListItem from "@/components/forsale/item/FosaleListItem.vue";
+
+const memberStore = useMemberStore();
+
+const { userInfo } = storeToRefs(memberStore);
 
 // 매물 리스트 구할 때 필요한 파라미터
 const params = ref({});
@@ -15,10 +21,9 @@ const type = ref("favorite");
 onMounted(() => {
   // 리스트 불러올 때 파라미터 설정하기
   params.value = {
-    // basic1 수정하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     condition: "favorite",
-    value: "basic1",
-    userId: "basic1",
+    value: userInfo.value.userId,
+    userId: userInfo.value.userId,
   };
 
   loadForsaleList();
@@ -68,13 +73,8 @@ function loadForsaleList() {
             </tr>
           </thead>
           <tbody>
-            <FosaleListItem
-              v-for="forsale in forsaleList"
-              :key="forsale.forsaleNo"
-              :forsale="forsale"
-              :type="type"
-              @reloadForsaleList="loadForsaleList"
-            ></FosaleListItem>
+            <FosaleListItem v-for="forsale in forsaleList" :key="forsale.forsaleNo" :forsale="forsale" :type="type"
+              @reloadForsaleList="loadForsaleList"></FosaleListItem>
           </tbody>
         </table>
       </div>

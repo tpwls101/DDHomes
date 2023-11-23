@@ -3,12 +3,15 @@ import { ref, onMounted } from "vue";
 import { useAptStore } from "../../stores/apt";
 import { storeToRefs } from "pinia";
 import { getForsaleList } from "@/api/forsale";
+import { useMemberStore } from "@/stores/member";
 import AptList from "@/components/apt/AptList.vue";
 import AptMap from "@/components/apt/AptMap.vue";
 import AptDetail from "@/components/apt/AptDetail.vue";
 
 const aptStore = useAptStore();
+const memberStore = useMemberStore();
 
+const { userInfo } = storeToRefs(memberStore);
 const { dongCode } = storeToRefs(aptStore);
 const { forsaleList } = storeToRefs(aptStore);
 // const { forsaleNo } = storeToRefs(aptStore);
@@ -22,6 +25,7 @@ onMounted(() => {
   let params = {
     condition: "dongCode",
     value: dongCode.value,
+    userId: userInfo.value.userId,
   };
   // 리스트 받아오기
   getForsaleList(

@@ -24,6 +24,7 @@ function registForsale(params, success, fail) {
 
 // 파라미터로 변수 전달
 function getForsaleList(params, success, fail) {
+  console.log(params);
   local.get(`${url}/forsaleList`, { params: params }).then(success).catch(fail);
 }
 
