@@ -173,7 +173,7 @@ const aptInfo = () => {
     </div> -->
 
     <div class="form-group col-md-2">
-      <button type="button" id="list-btn" class="btn btn-outline-primary" @click="aptInfo">
+      <button type="button" id="list-btn" class="btn btn-dark btn" style=" outline: 1px solid white;" @click="aptInfo">
         아파트매매정보
       </button>
     </div>
